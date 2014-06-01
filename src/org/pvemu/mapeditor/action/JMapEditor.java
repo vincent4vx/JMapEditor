@@ -6,6 +6,8 @@
 
 package org.pvemu.mapeditor.action;
 
+import java.awt.HeadlessException;
+import java.io.IOException;
 import org.pvemu.mapeditor.handler.TilesHandler;
 import org.pvemu.mapeditor.ui.MainWindow;
 
@@ -17,7 +19,7 @@ public class JMapEditor {
     private static MainWindow ui;
     private static TilesHandler tilesHandler;
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws HeadlessException, IOException {
         tilesHandler = new TilesHandler();
         ui = new MainWindow();
         ui.setVisible(true);

@@ -8,6 +8,7 @@ package org.pvemu.mapeditor.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
@@ -62,10 +63,11 @@ public class SplashScreen extends JWindow{
         info.setText("chargement...");
         add(info);
         info.setForeground(Color.WHITE);
-        info.setBounds(70, 200, 350, 20);
+        info.setBounds(70, 202, 350, 20);
+        info.setFont(info.getFont().deriveFont(Font.ITALIC, 10));
         
         add(progressBar);
-        progressBar.setBounds(65, 220, 375, 5);
+        progressBar.setBounds(65, 220, 370, 5);
         progressBar.setBackground(new Color(0, 0, 0, 0f));
         progressBar.setForeground(Color.WHITE);
         progressBar.setBorder(null);
