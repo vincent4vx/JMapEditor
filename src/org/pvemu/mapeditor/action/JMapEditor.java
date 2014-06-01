@@ -6,6 +6,7 @@
 
 package org.pvemu.mapeditor.action;
 
+import org.pvemu.mapeditor.handler.TilesHandler;
 import org.pvemu.mapeditor.ui.MainWindow;
 
 /**
@@ -13,13 +14,20 @@ import org.pvemu.mapeditor.ui.MainWindow;
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class JMapEditor {
-    final private static MainWindow ui = new MainWindow();
+    private static MainWindow ui;
+    private static TilesHandler tilesHandler;
     
     public static void main(String[] args) {
+        tilesHandler = new TilesHandler();
+        ui = new MainWindow();
         ui.setVisible(true);
     }
 
     public static MainWindow getUI() {
         return ui;
+    }
+
+    public static TilesHandler getTilesHandler() {
+        return tilesHandler;
     }
 }

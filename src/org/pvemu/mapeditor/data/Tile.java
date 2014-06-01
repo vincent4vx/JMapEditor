@@ -14,21 +14,15 @@ import java.awt.image.BufferedImage;
  */
 public class Tile {
     final private int id;
-    final private TileType type;
     final private BufferedImage image;
 
-    public Tile(int id, TileType type, BufferedImage image) {
+    public Tile(int id, BufferedImage image) {
         this.id = id;
-        this.type = type;
         this.image = image;
     }
 
     public int getId() {
         return id;
-    }
-
-    public TileType getType() {
-        return type;
     }
 
     public BufferedImage getImage() {

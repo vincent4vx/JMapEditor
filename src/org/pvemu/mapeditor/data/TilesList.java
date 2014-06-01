@@ -11,32 +11,42 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
+import org.pvemu.mapeditor.common.LoadingListener;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-abstract public class TilesList implements ListModel<Tile>{
+public class TilesList implements ListModel<Tile>{
     final private List<Tile> tiles = new ArrayList<>();
     final private File directory;
+    private LoadingListener loadingListener = null;
 
     public TilesList(File directory) throws IOException {
         this.directory = directory;
-        refresh();
     }
-    
-    abstract protected TileType tileType();
     
     final public void refresh() throws IOException{
         tiles.clear();
         
-        for(File file : directory.listFiles((dir, name) -> name.matches(".*\\.(png|bmp|jpg)"))){
+        File[] files = directory.listFiles((dir, name) -> name.matches(".*\\.(png|bmp|jpg)"));
+        
+        for(File file : files){
             String strId = file.getName().split("\\.")[0];
-            int id = Integer.parseInt(strId);
-            tiles.add(new Tile(id, tileType(), ImageIO.read(file)));
+            int id;
+            
+            try{
+                id = Integer.parseInt(strId);
+            }catch(NumberFormatException e){
+                continue;
+            }
+            
+            tiles.add(new Tile(id, ImageIO.read(file)));
+            
+            if(loadingListener != null)
+                loadingListener.loaded(file.getName(), 1f / (float)files.length);
         }
     }
 
@@ -62,5 +72,13 @@ abstract public class TilesList implements ListModel<Tile>{
     @Override
     public void removeListDataListener(ListDataListener l) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public LoadingListener getLoadingListener() {
+        return loadingListener;
+    }
+
+    public void setLoadingListener(LoadingListener loadingListener) {
+        this.loadingListener = loadingListener;
     }
 }

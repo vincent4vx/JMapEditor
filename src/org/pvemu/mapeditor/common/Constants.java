@@ -27,4 +27,9 @@ public class Constants {
     final static public String RESOURCES_DIR    = "resources/";
     final static public String TILES_DIR        = RESOURCES_DIR + "tiles/";
     final static public String BACKGROUNDS_DIR  = TILES_DIR + "backgrounds/";
+    final static public String GROUNDS_DIR      = TILES_DIR + "grounds/";
+    final static public String OBJECTS_DIR      = TILES_DIR + "objects/";
+    final static public int TILES_PER_LOADER    = 30;
+    final static public String UI_RESOURCES_DIR = RESOURCES_DIR + "ui/";
+    final static public String SPLASH_IMG       = UI_RESOURCES_DIR + "splashscreen.jpg";
 }

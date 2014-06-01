@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package org.pvemu.mapeditor.data;
+package org.pvemu.mapeditor.common;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public enum TileType {
-    BACKGROUND,
+public interface LoadingListener {
+    public void loaded(String what, float value);
 }

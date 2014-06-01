@@ -11,18 +11,14 @@ import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import javax.swing.JDesktopPane;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.xml.parsers.ParserConfigurationException;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.ui.rightmenu.RightMenu;
@@ -49,6 +45,8 @@ public class MainWindow extends JFrame{
             }
             
         });
+        
+        setLocationRelativeTo(null);
     }
     
     private void makePanel(){
