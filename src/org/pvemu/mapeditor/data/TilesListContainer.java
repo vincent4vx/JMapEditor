@@ -17,11 +17,13 @@ import org.pvemu.mapeditor.common.LoadingListener;
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class TilesListContainer{
+    final private File directory;
     final private List<TilesListContainer> tilesListContainers = new ArrayList<>();
     final private TilesList tilesList;
     final private List<Tile> tiles = new ArrayList<>();
 
     public TilesListContainer(File directory, LoadingListener listener) throws IOException{
+        this.directory = directory;
         File[] files = directory.listFiles();
         int count = 1;
         
@@ -64,5 +66,9 @@ public class TilesListContainer{
 
     public Tile getTile(int id){
         return tiles.get(id);
+    }
+
+    public File getDirectory() {
+        return directory;
     }
 }

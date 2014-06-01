@@ -25,12 +25,13 @@ public class TileRenderer implements ListCellRenderer<Tile>{
     public Component getListCellRendererComponent(JList<? extends Tile> list, Tile value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel label = new JLabel();
         label.setText("" + value.getId());
-        label.setIcon(new ImageIcon(value.getImage().getScaledInstance(100, 63, BufferedImage.SCALE_FAST)));
+        label.setIcon(value.getThumbnail());
         
-        if(isSelected)
+        if(isSelected){
             label.setBackground(Constants.SELECTED_COLOR);
+            label.setOpaque(true);
+        }
         
-        label.setOpaque(true);
         return label;
     }
     

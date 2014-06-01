@@ -22,6 +22,7 @@ import javax.swing.KeyStroke;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.ui.rightmenu.RightMenu;
+import org.pvemu.mapeditor.ui.tileselector.TileSelector;
 
 /**
  *
@@ -53,6 +54,7 @@ public class MainWindow extends JFrame{
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(desktopPane, BorderLayout.CENTER);
         panel.add(new RightMenu(), BorderLayout.EAST);
+        panel.add(new TileSelector(), BorderLayout.SOUTH);
         setContentPane(panel);
     }
     
