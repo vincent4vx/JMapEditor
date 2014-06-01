@@ -6,7 +6,10 @@
 
 package org.pvemu.mapeditor.ui.rightmenu;
 
+import java.awt.BorderLayout;
+import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import org.pvemu.mapeditor.action.EditMap;
@@ -18,13 +21,10 @@ import org.pvemu.mapeditor.ui.TileRenderer;
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class BackgroundTab extends JScrollPane{
+public class BackgroundTab extends JPanel{
 
     public BackgroundTab() {        
-        displayBackgrounds();
-    }
-    
-    private void displayBackgrounds(){
+        super(new BorderLayout());
         JList<Tile> list = new JList(JMapEditor.getTilesHandler().getBackgrounds());
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setCellRenderer(new TileRenderer());
@@ -34,7 +34,15 @@ public class BackgroundTab extends JScrollPane{
             EditMap.changeBackground(tile);
         });
         
-        setViewportView(list);
+        JButton clear = new JButton("Effacer");
+        clear.addActionListener((e) -> {
+            list.setSelectedIndex(-1);
+            EditMap.changeBackground(null);
+        });
+        
+        add(clear, BorderLayout.NORTH);
+        
+        add(new JScrollPane(list), BorderLayout.CENTER);
     }
     
     
