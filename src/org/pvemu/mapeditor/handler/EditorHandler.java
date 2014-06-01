@@ -10,9 +10,12 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.pvemu.mapeditor.action.JMapEditor;
+import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.XMLUtils;
 import org.pvemu.mapeditor.data.MapData;
 import org.pvemu.mapeditor.ui.MapEditorUI;
@@ -61,12 +64,25 @@ final public class EditorHandler {
         return ui;
     }
     
-    public void save() throws IOException, ParserConfigurationException, TransformerException{
+    public void save() throws IOException, ParserConfigurationException, TransformerException, Exception{
         if(!changed)
             return;
         
         if(file == null){
             JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileFilter() {
+
+                @Override
+                public boolean accept(File f) {
+                    return f.isDirectory() || f.getName().endsWith(Constants.JME_EXT);
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Fichier de sauvegarde JMapEditor";
+                }
+            });
+            
             int r = fileChooser.showSaveDialog(ui);
             
             if(r == JFileChooser.CANCEL_OPTION){
@@ -75,6 +91,29 @@ final public class EditorHandler {
             
             if(r == JFileChooser.APPROVE_OPTION){
                 file = fileChooser.getSelectedFile();
+                
+                if(file.getName().split("\\.").length < 2){
+                    file = new File(file.getAbsolutePath() + Constants.JME_EXT);
+                }
+                
+                if(file.isDirectory()){
+                    throw new Exception(file.getName() + " is a folder !");
+                }
+                
+                if(file.exists()){
+                    r = JOptionPane.showConfirmDialog(JMapEditor.getUI(), "Ce fichier existe déjà. Voulez-vous l'écraser ?");
+                    
+                    if(r == JOptionPane.NO_OPTION){
+                        file = null;
+                        save(); //show new filechooser
+                        return;
+                    }
+                    
+                    if(r == JOptionPane.CANCEL_OPTION){
+                        file = null;
+                        return; //quit saving
+                    }
+                }
             }
         }
         

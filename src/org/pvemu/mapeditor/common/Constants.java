@@ -32,4 +32,5 @@ public class Constants {
     final static public int TILES_PER_LOADER    = 30;
     final static public String UI_RESOURCES_DIR = RESOURCES_DIR + "ui/";
     final static public String SPLASH_IMG       = UI_RESOURCES_DIR + "splashscreen.jpg";
+    final static public String JME_EXT          = ".jme";
 }
