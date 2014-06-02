@@ -25,6 +25,10 @@ public class Cell{
     private boolean layerObject2Flip = false;
     private boolean layerObject2Interactive = false;
     private int layerObject2Num = 0;
+    
+    private CellObject ground = null;
+    private CellObject layer1 = null;
+    private CellObject layer2 = null;
 
     public boolean isActive() {
         return active;
@@ -136,5 +140,29 @@ public class Cell{
 
     public void setLayerObject2Num(int layerObject2Num) {
         this.layerObject2Num = layerObject2Num;
+    }
+
+    public CellObject getGround() {
+        return ground;
+    }
+
+    public CellObject getLayer1() {
+        return layer1;
+    }
+
+    public CellObject getLayer2() {
+        return layer2;
+    }
+
+    public void setGround(CellObject ground) {
+        this.ground = ground;
+    }
+
+    public void setLayer1(CellObject layer1) {
+        this.layer1 = layer1;
+    }
+
+    public void setLayer2(CellObject layer2) {
+        this.layer2 = layer2;
     }
 }

@@ -11,6 +11,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import org.pvemu.mapeditor.action.EditMap;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.Tile;
 import org.pvemu.mapeditor.data.TilesList;
 import org.pvemu.mapeditor.ui.TileRenderer;
@@ -37,7 +38,7 @@ public class TileListUI extends JScrollPane{
         
         list.addListSelectionListener((e) -> {
             Tile tile = list.getSelectedValue();
-            EditMap.changeBackground(tile);
+            JMapEditor.getToolsHandler().setCurrentTile(tile);
         });
         
         setViewportView(list);

@@ -18,7 +18,7 @@ import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.XMLUtils;
 import org.pvemu.mapeditor.data.MapData;
-import org.pvemu.mapeditor.ui.MapEditorUI;
+import org.pvemu.mapeditor.ui.editor.MapEditorUI;
 
 /**
  *

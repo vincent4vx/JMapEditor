@@ -4,14 +4,12 @@
  * and open the template in the editor.
  */
 
-package org.pvemu.mapeditor.ui;
+package org.pvemu.mapeditor.ui.editor;
 
-import java.io.IOException;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.xml.parsers.ParserConfigurationException;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.handler.EditorHandler;
 

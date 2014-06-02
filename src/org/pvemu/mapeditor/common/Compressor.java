@@ -44,7 +44,7 @@ final public class Compressor {
         cell.setLayerObject2Num(((_loc8[0] & 2) << 12) + ((_loc8[7] & 1) << 12) + (_loc8[8] << 6) + _loc8[9]);
         
         return cell;
-    }    
+    }
 
     public static byte getHashIndex(char c) {
         if(c >= 'a' && c <= 'z'){
