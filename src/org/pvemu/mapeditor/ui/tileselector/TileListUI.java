@@ -10,8 +10,8 @@ import java.awt.Dimension;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import org.pvemu.mapeditor.action.EditMap;
 import org.pvemu.mapeditor.action.JMapEditor;
+import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.data.Tile;
 import org.pvemu.mapeditor.data.TilesList;
 import org.pvemu.mapeditor.ui.TileRenderer;
@@ -38,7 +38,8 @@ public class TileListUI extends JScrollPane{
         
         list.addListSelectionListener((e) -> {
             Tile tile = list.getSelectedValue();
-            JMapEditor.getToolsHandler().setCurrentTile(tile);
+            JMapEditor.getToolsHandler().setCurrentObject(new CellObject(tile));
+            JMapEditor.getToolsHandler().setAddTool();
         });
         
         setViewportView(list);

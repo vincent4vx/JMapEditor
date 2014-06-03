@@ -6,9 +6,8 @@
 
 package org.pvemu.mapeditor.ui.editor;
 
+import org.pvemu.mapeditor.ui.CellObjectRenderer;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 import java.util.List;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
@@ -51,21 +50,7 @@ abstract class LayerDisplayer {
             if(obj == null)
                 continue;
             
-            BufferedImage img = obj.getTile().getImage();
-            
-            int width = img.getWidth();
-            int height = img.getHeight();
-            
-            if(obj.isFlip()){
-                width = -width;
-            }
-            
-            if(shape.isSelected()){
-                RescaleOp rescale = new RescaleOp(new float[]{1f, 1f, 1f, 1f}, new float[]{100f, 100f, 100f, 0f}, null);
-                img = rescale.filter(img, null);
-            }
-            
-            g.drawImage(img, shape.getX(), shape.getY(), width, height, null);
+            CellObjectRenderer.render(g, obj, shape, shape.isHovered());
         }
     }
 }

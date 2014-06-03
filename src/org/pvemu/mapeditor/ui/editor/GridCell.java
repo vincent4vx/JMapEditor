@@ -7,18 +7,19 @@ package org.pvemu.mapeditor.ui.editor;
 
 import java.awt.Polygon;
 import org.pvemu.mapeditor.common.Constants;
+import org.pvemu.mapeditor.common.Coordinate;
 import org.pvemu.mapeditor.data.Cell;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-class GridCell extends Polygon {
+class GridCell extends Polygon implements Coordinate{
 
     final private Cell cell;
     final private int x;
     final private int y;
-    private boolean selected = false;
+    private boolean hovered = false;
 
     public GridCell(Cell cell, int x, int y) {
         this.cell = cell;
@@ -35,19 +36,21 @@ class GridCell extends Polygon {
         return cell;
     }
 
+    @Override
     public int getX() {
         return x;
     }
 
+    @Override
     public int getY() {
         return y;
     }
 
-    public boolean isSelected() {
-        return selected;
+    public boolean isHovered() {
+        return hovered;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
+    public void setHovered(boolean hovered) {
+        this.hovered = hovered;
     }
 }

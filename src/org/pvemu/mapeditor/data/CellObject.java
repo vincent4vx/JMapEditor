@@ -12,13 +12,17 @@ package org.pvemu.mapeditor.data;
  */
 public class CellObject {
     final private Tile tile;
-    final private boolean flip;
-    final private boolean interactive;
+    private boolean flip = false;
+    private boolean interactive = false;
+    
+    public CellObject(CellObject obj){
+        tile = obj.tile;
+        flip = obj.flip;
+        interactive = obj.interactive;
+    }
 
-    public CellObject(Tile tile, boolean flip, boolean interactive) {
+    public CellObject(Tile tile) {
         this.tile = tile;
-        this.flip = flip;
-        this.interactive = interactive;
     }
 
     public Tile getTile() {
@@ -33,7 +37,11 @@ public class CellObject {
         return interactive;
     }
     
-    public CellObject rotate(){
-        return new CellObject(tile, !flip, interactive);
+    public void flip(){
+        flip = !flip;
+    }
+
+    public void setInteractive(boolean interactive) {
+        this.interactive = interactive;
     }
 }

@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.CellObject;
-import org.pvemu.mapeditor.data.Tile;
 
 /**
  *
@@ -29,9 +28,9 @@ class GridListener extends MouseAdapter {
             if (cell.contains(e.getPoint())) {
                 if (selected != cell) {
                     if(selected != null)
-                        selected.setSelected(false);
+                        selected.setHovered(false);
                     
-                    cell.setSelected(true);
+                    cell.setHovered(true);
                     selected = cell;
                     grid.repaint();
                 }
@@ -45,13 +44,8 @@ class GridListener extends MouseAdapter {
         if (selected == null) {
             return;
         }
-
-        Tile tile = JMapEditor.getToolsHandler().getCurrentTile();
-
-        if (tile != null) {
-            selected.getCell().setLayer1(new CellObject(tile, false, false));
-            grid.repaint();
-        }
+        
+        JMapEditor.getToolsHandler().getTool().onClick(selected.getCell());
     }
 
 }

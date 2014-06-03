@@ -19,7 +19,7 @@ public class LayerManager extends JPanel{
 
     public LayerManager() {
         makeBorder();
-        add(new JTable(4, 3));
+        add(new JTable(4, 2));
     }
     
     private void makeBorder(){

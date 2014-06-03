@@ -6,6 +6,7 @@
 
 package org.pvemu.mapeditor.ui.editor;
 
+import org.pvemu.mapeditor.ui.CellObjectRenderer;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -16,9 +17,8 @@ import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.Utils;
 import org.pvemu.mapeditor.data.Cell;
-import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.data.MapData;
-import org.pvemu.mapeditor.data.Tile;
+import org.pvemu.mapeditor.handler.tool.AddTool;
 
 /**
  *
@@ -105,18 +105,14 @@ public class MapGrid extends JPanel{
                     (int)(Constants.CELL_COORD[cell.getCell().getGroundSlope()][2][1] + cell.getY())
             );
             
-            if(cell.isSelected()){
+            if(cell.isHovered()){
                 g.setColor(Constants.SELECTED_COLOR);
                 g.fillPolygon(cell);
                 
-                if(cell.getCell().getLayer1() != null)
+                if(cell.getCell().getLayer1() != null || !(JMapEditor.getToolsHandler().getTool() instanceof AddTool))
                     continue;
                 
-                Tile tile = JMapEditor.getToolsHandler().getCurrentTile();
-            
-                if(tile != null){
-                    g.drawImage(tile.getImage(), cell.getX(), cell.getY(), this);
-                }
+                CellObjectRenderer.render(g2d, JMapEditor.getToolsHandler().getCurrentObject(), cell, false);
             }
         }
     }

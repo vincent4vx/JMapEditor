@@ -30,6 +30,7 @@ import org.pvemu.mapeditor.ui.tileselector.TileSelector;
  */
 public class MainWindow extends JFrame{
     final private JDesktopPane desktopPane = new JDesktopPane();
+    final private RightMenu rightMenu = new RightMenu();
 
     public MainWindow() throws HeadlessException {
         super(Constants.TITLE);
@@ -53,7 +54,7 @@ public class MainWindow extends JFrame{
     private void makePanel(){
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(desktopPane, BorderLayout.CENTER);
-        panel.add(new RightMenu(), BorderLayout.EAST);
+        panel.add(rightMenu, BorderLayout.EAST);
         panel.add(new TileSelector(), BorderLayout.SOUTH);
         setContentPane(panel);
     }
@@ -103,5 +104,9 @@ public class MainWindow extends JFrame{
 
     public JDesktopPane getDesktopPane() {
         return desktopPane;
+    }
+
+    public RightMenu getRightMenu() {
+        return rightMenu;
     }
 }
