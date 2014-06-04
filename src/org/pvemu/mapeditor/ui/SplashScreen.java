@@ -75,6 +75,7 @@ public class SplashScreen extends JWindow{
         
         pack();
         setLocationRelativeTo(null);
+        setAlwaysOnTop(true);
     }
     
     public void setInfoText(String text){
