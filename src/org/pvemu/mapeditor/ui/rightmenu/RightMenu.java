@@ -16,21 +16,25 @@ import javax.swing.JToolBar;
  */
 public class RightMenu extends JToolBar{
     private ObjectTab objectTab = null;
+    final private EditTab editTab = new EditTab();
+    final private BackgroundTab backgroundTab = new BackgroundTab();
     final private JTabbedPane tab = new JTabbedPane();
 
     public RightMenu() {
         super(VERTICAL);
         setPreferredSize(new Dimension(200, getPreferredSize().height));
-        tab.addTab("Edition", new EditTab());
-        tab.addTab("Fond", new BackgroundTab());
+        tab.addTab("Edition", editTab);
+        tab.addTab("Fond", backgroundTab);
         
         add(tab);
         add(new LayerManager());
     }
     
     public void removeObjectTab(){
-        if(objectTab != null)
+        if(objectTab != null){
             tab.remove(objectTab);
+            tab.setSelectedComponent(editTab);
+        }
         objectTab = null;
     }
     

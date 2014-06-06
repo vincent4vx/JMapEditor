@@ -9,6 +9,7 @@ package org.pvemu.mapeditor.ui.editor;
 import org.pvemu.mapeditor.ui.CellObjectRenderer;
 import java.awt.Graphics2D;
 import java.util.List;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
 
@@ -44,13 +45,17 @@ abstract class LayerDisplayer {
     abstract CellObject extractObject(Cell cell);
     
     public void draw(Graphics2D g, List<GridCell> shapes){
+        Cell currentCell = JMapEditor.getToolsHandler().getCurrentCell();
         for(GridCell shape : shapes){
             CellObject obj = extractObject(shape.getCell());
             
             if(obj == null)
                 continue;
             
-            CellObjectRenderer.render(g, obj, shape, shape.isHovered());
+            boolean hightlight = shape.isHovered() 
+                    || currentCell == shape.getCell();
+            
+            CellObjectRenderer.render(g, obj, shape, hightlight);
         }
     }
 }

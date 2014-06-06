@@ -13,6 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -21,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.handler.EditorHandler;
+import org.pvemu.mapeditor.ui.editor.MapEditorUI;
 import org.pvemu.mapeditor.ui.rightmenu.RightMenu;
 import org.pvemu.mapeditor.ui.tileselector.TileSelector;
 
@@ -63,6 +65,16 @@ public class MainWindow extends JFrame{
         int i = JOptionPane.showConfirmDialog(this, "Voulez-vous vraiment quitter ?");
         
         if(i == JOptionPane.YES_OPTION){
+            for(JInternalFrame frame : desktopPane.getAllFrames()){
+                if(frame.isClosed() || !(frame instanceof MapEditorUI))
+                    continue;
+                
+                MapEditorUI editor = (MapEditorUI)frame;
+                
+                if(!editor.closeWin()) //don't close
+                    return;
+            }
+            
             System.exit(0);
         }
     }

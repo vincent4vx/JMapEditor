@@ -17,7 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.Point;
+import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
+import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.ui.CellObjectRenderer;
 
 /**
@@ -26,6 +28,7 @@ import org.pvemu.mapeditor.ui.CellObjectRenderer;
  */
 public class ObjectTab extends JPanel{
     final private CellObject obj;
+    final private Cell cell;
     
     private class ObjectView extends JPanel{
 
@@ -44,20 +47,35 @@ public class ObjectTab extends JPanel{
     public ObjectTab(CellObject obj) {
         super(new BorderLayout());
         this.obj = obj;
-        
+        cell = null;
+        makeContent();
+    }
+    
+    public ObjectTab(Cell cell){
+        super(new BorderLayout());
+        this.cell = cell;
+        obj = cell.getLayer1();
+        makeContent();
+    }
+    
+    private void makeContent(){
         ObjectView view = new ObjectView();
         add(new JScrollPane(view), BorderLayout.CENTER);
         
         JPanel tools = new JPanel(new FlowLayout());
         JButton rotate = new JButton(new ImageIcon(Constants.UI_RESOURCES_DIR + "rotate.png"));
+        
         rotate.addActionListener((e) -> {
             obj.flip();
             view.repaint();
+            
+            if(cell != null){
+                EditorHandler.getCurrentHandler().update();
+            }
         });
+        
         tools.add(rotate);
         
         add(tools, BorderLayout.SOUTH);
     }
-    
-    
 }
