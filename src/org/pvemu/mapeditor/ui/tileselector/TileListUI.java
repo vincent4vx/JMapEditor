@@ -15,6 +15,7 @@ import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.data.Tile;
 import org.pvemu.mapeditor.data.TilesList;
 import org.pvemu.mapeditor.ui.TileRenderer;
+import org.pvemu.mapeditor.ui.rightmenu.ObjectTab;
 
 /**
  *
@@ -38,7 +39,9 @@ public class TileListUI extends JScrollPane{
         
         list.addListSelectionListener((e) -> {
             Tile tile = list.getSelectedValue();
-            JMapEditor.getToolsHandler().setCurrentObject(new CellObject(tile));
+            CellObject obj = new CellObject(tile);
+            JMapEditor.getToolsHandler().setCurrentObject(obj);
+            JMapEditor.getUI().getRightMenu().setObjectTab(new ObjectTab(obj));
             JMapEditor.getToolsHandler().setAddTool();
         });
         

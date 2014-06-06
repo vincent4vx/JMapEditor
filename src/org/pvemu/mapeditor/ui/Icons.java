@@ -18,4 +18,5 @@ final public class Icons {
     final static public Icon SELECT = new ImageIcon(Constants.UI_RESOURCES_DIR + "cursor.png");
     final static public Icon REMOVE = new ImageIcon(Constants.UI_RESOURCES_DIR + "bin.png");
     final static public Icon ADD    = new ImageIcon(Constants.UI_RESOURCES_DIR + "add.png");
+    final static public Icon ROTATE = new ImageIcon(Constants.UI_RESOURCES_DIR + "rotate.png");
 }

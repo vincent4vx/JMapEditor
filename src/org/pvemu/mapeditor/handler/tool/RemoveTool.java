@@ -24,9 +24,7 @@ public class RemoveTool implements Tool{
 
     @Override
     public void onClick(Cell cell) {
-        CellObject obj = cell.getLayer1();
         cell.setLayer1(null);
-        handler.setCurrentObject(obj);
         EditorHandler.getCurrentHandler().update();
     }
     

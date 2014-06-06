@@ -35,11 +35,6 @@ public class ToolsHandler {
 
     public void setCurrentObject(CellObject currentObject) {
         this.currentObject = currentObject;
-        
-        if(currentObject != null)
-            JMapEditor.getUI().getRightMenu().setObjectTab(new ObjectTab(currentObject));
-        else
-            JMapEditor.getUI().getRightMenu().removeObjectTab();
     }
 
     public Tool getTool() {

@@ -11,16 +11,15 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.Point;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.ui.CellObjectRenderer;
+import org.pvemu.mapeditor.ui.Icons;
 
 /**
  *
@@ -58,20 +57,26 @@ public class ObjectTab extends JPanel{
         makeContent();
     }
     
+    private interface Yolo{
+        Cell s();
+    }
+    
     private void makeContent(){
         ObjectView view = new ObjectView();
         add(new JScrollPane(view), BorderLayout.CENTER);
         
         JPanel tools = new JPanel(new FlowLayout());
-        JButton rotate = new JButton(new ImageIcon(Constants.UI_RESOURCES_DIR + "rotate.png"));
+        JButton rotate = new JButton(Icons.ROTATE);
+        
+        Yolo y = () -> cell;
+        System.out.println(y.s());
         
         rotate.addActionListener((e) -> {
             obj.flip();
             view.repaint();
             
-            if(cell != null){
+            if(cell != null)
                 EditorHandler.getCurrentHandler().update();
-            }
         });
         
         tools.add(rotate);
