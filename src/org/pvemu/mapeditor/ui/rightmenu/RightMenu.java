@@ -32,6 +32,7 @@ public class RightMenu extends JToolBar{
     
     public void removeObjectTab(){
         if(objectTab != null){
+            objectTab.onClose();
             tab.remove(objectTab);
             tab.setSelectedComponent(editTab);
         }
@@ -43,5 +44,13 @@ public class RightMenu extends JToolBar{
         this.objectTab = objectTab;
         tab.add("Objet", objectTab);
         tab.setSelectedComponent(objectTab);
+    }
+
+    public EditTab getEditTab() {
+        return editTab;
+    }
+
+    public BackgroundTab getBackgroundTab() {
+        return backgroundTab;
     }
 }

@@ -6,14 +6,22 @@
 
 package org.pvemu.mapeditor.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class CellObject {
+    public interface RotationListener{
+        public void onRotation(CellObject obj);
+    }
+    
     final private Tile tile;
     private boolean flip = false;
     private boolean interactive = false;
+    final private List<RotationListener> listeners = new ArrayList<>();
     
     public CellObject(CellObject obj){
         tile = obj.tile;
@@ -39,9 +47,24 @@ public class CellObject {
     
     public void flip(){
         flip = !flip;
+        
+        for(RotationListener listener : listeners)
+            listener.onRotation(this);
     }
 
     public void setInteractive(boolean interactive) {
         this.interactive = interactive;
+    }
+    
+    public void addRotationListener(RotationListener listener){
+        listeners.add(listener);
+    }
+    
+    public void clearRotationListeners(){
+        listeners.clear();
+    }
+    
+    public void removeRotationListener(RotationListener listener){
+        listeners.remove(listener);
     }
 }

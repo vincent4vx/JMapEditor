@@ -53,6 +53,7 @@ public class ToolsHandler {
     public void setAddTool(){
         currentCell = null;
         toolType = ADD;
+        JMapEditor.getUI().getRightMenu().getEditTab().getAdd().setSelected(true);
     }
 
     public Cell getCurrentCell() {

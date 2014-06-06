@@ -17,7 +17,6 @@ import javax.swing.JScrollPane;
 import org.pvemu.mapeditor.common.Point;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
-import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.ui.CellObjectRenderer;
 import org.pvemu.mapeditor.ui.Icons;
 
@@ -28,6 +27,7 @@ import org.pvemu.mapeditor.ui.Icons;
 public class ObjectTab extends JPanel{
     final private CellObject obj;
     final private Cell cell;
+    private CellObject.RotationListener listener;
     
     private class ObjectView extends JPanel{
 
@@ -57,30 +57,24 @@ public class ObjectTab extends JPanel{
         makeContent();
     }
     
-    private interface Yolo{
-        Cell s();
-    }
-    
     private void makeContent(){
         ObjectView view = new ObjectView();
         add(new JScrollPane(view), BorderLayout.CENTER);
         
+        listener = (c) -> view.repaint();
+        obj.addRotationListener(listener);
+        
         JPanel tools = new JPanel(new FlowLayout());
         JButton rotate = new JButton(Icons.ROTATE);
         
-        Yolo y = () -> cell;
-        System.out.println(y.s());
-        
-        rotate.addActionListener((e) -> {
-            obj.flip();
-            view.repaint();
-            
-            if(cell != null)
-                EditorHandler.getCurrentHandler().update();
-        });
+        rotate.addActionListener((e) -> obj.flip());
         
         tools.add(rotate);
         
         add(tools, BorderLayout.SOUTH);
+    }
+    
+    public void onClose(){
+        obj.removeRotationListener(listener);
     }
 }

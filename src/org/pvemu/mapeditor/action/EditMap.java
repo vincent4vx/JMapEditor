@@ -6,6 +6,7 @@
 
 package org.pvemu.mapeditor.action;
 
+import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.data.Tile;
 import org.pvemu.mapeditor.handler.EditorHandler;
 
@@ -22,5 +23,9 @@ final public class EditMap {
         
         handler.getMap().setBackground(tile);
         handler.update();
+    }
+    
+    static public void rotateObject(CellObject obj){
+        
     }
 }
