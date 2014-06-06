@@ -10,6 +10,7 @@ import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.handler.tool.AddTool;
+import org.pvemu.mapeditor.handler.tool.RemoveTool;
 import org.pvemu.mapeditor.handler.tool.SelectTool;
 import org.pvemu.mapeditor.handler.tool.Tool;
 import org.pvemu.mapeditor.ui.rightmenu.ObjectTab;
@@ -23,7 +24,8 @@ public class ToolsHandler {
     private Cell currentCell = null;
     
     final private Tool SELECT = new SelectTool(this),
-                       ADD = new AddTool(this);
+                       ADD = new AddTool(this),
+                       REMOVE = new RemoveTool(this);
     
     private Tool toolType = SELECT;
 
@@ -50,7 +52,7 @@ public class ToolsHandler {
     
     public void setRemoveTool(){
         currentCell = null;
-        //toolType = ToolType.REMOVE;
+        toolType = REMOVE;
     }
     
     public void setAddTool(){

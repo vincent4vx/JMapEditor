@@ -155,14 +155,23 @@ public class Cell{
     }
 
     public void setGround(CellObject ground) {
-        this.ground = new CellObject(ground);
+        if(ground == null)
+            this.ground = null;
+        else
+            this.ground = new CellObject(ground);
     }
 
     public void setLayer1(CellObject layer1) {
-        this.layer1 =new CellObject(layer1);
+        if(layer1 == null)
+            this.layer1 = null;
+        else
+            this.layer1 =new CellObject(layer1);
     }
 
     public void setLayer2(CellObject layer2) {
-        this.layer2 = new CellObject(layer2);
+        if(layer2 == null)
+            this.layer2 = null;
+        else
+            this.layer2 = new CellObject(layer2);
     }
 }
