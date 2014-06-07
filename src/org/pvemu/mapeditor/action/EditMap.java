@@ -24,8 +24,4 @@ final public class EditMap {
         handler.getMap().setBackground(tile);
         handler.update();
     }
-    
-    static public void rotateObject(CellObject obj){
-        
-    }
 }

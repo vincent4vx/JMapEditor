@@ -5,11 +5,16 @@
  */
 package org.pvemu.mapeditor.ui.editor;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Constants;
+import org.pvemu.mapeditor.data.Cell;
+import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.handler.EditorHandler;
 
 /**
@@ -39,6 +44,29 @@ public class MapEditorUI extends JInternalFrame {
             public void internalFrameClosing(InternalFrameEvent e) {
                 closeWin();
             }
+        });
+        
+        setFocusable(true);
+        addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(e.getKeyChar() == 'r'){
+                    CellObject obj = JMapEditor.getToolsHandler().getCurrentObject();
+                    
+                    if(obj != null)
+                        obj.flip();
+                }else if(e.getKeyChar() == KeyEvent.VK_DELETE){
+                    System.out.println("ok");
+                    Cell cell = JMapEditor.getToolsHandler().getCurrentCell();
+                    
+                    if(cell != null){
+                        cell.setLayer1(null);
+                        EditorHandler.getCurrentHandler().update();
+                    }
+                }
+            }
+            
         });
     }
 
