@@ -10,6 +10,8 @@ import org.pvemu.mapeditor.ui.CellObjectRenderer;
 import java.awt.Graphics2D;
 import java.util.List;
 import org.pvemu.mapeditor.action.JMapEditor;
+import org.pvemu.mapeditor.common.Constants;
+import org.pvemu.mapeditor.common.Point;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
 

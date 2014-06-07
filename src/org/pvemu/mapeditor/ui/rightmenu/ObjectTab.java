@@ -38,7 +38,7 @@ public class ObjectTab extends JPanel{
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            CellObjectRenderer.render((Graphics2D)g, obj, new Point(0, 0), false);
+            CellObjectRenderer.render((Graphics2D)g, obj, new Point(getBounds().width / 2, obj.getTile().getImage().getHeight()), false);
         }
         
     }
