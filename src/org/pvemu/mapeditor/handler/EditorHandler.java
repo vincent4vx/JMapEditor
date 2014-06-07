@@ -37,6 +37,14 @@ final public class EditorHandler {
         ui.setTitle(getTitle());
         ui.setVisible(true);
     }
+    
+    public EditorHandler(MapData map, File file){
+        this.map = map;
+        this.file = file;
+        ui = new MapEditorUI(this);
+        ui.setTitle(getTitle());
+        ui.setVisible(true);
+    }
 
     public MapData getMap() {
         return map;

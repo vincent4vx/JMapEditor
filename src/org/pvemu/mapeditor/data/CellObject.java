@@ -67,4 +67,24 @@ public class CellObject {
     public void removeRotationListener(RotationListener listener){
         listeners.remove(listener);
     }
+
+    public void setFlip(boolean flip) {
+        this.flip = flip;
+    }
+    
+    static public CellObject getCellObject(int tileNumber, boolean flip, boolean interactive, TilesRegistry registry){
+        if(tileNumber == 0)
+            return null;
+        
+        Tile tile = registry.getTileById(tileNumber);
+        
+        if(tile == null)
+            return null;
+        
+        CellObject obj = new CellObject(tile);
+        obj.setInteractive(interactive);
+        obj.setFlip(flip);
+        
+        return obj;
+    }
 }

@@ -9,7 +9,9 @@ package org.pvemu.mapeditor.data;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
@@ -19,8 +21,9 @@ import org.pvemu.mapeditor.common.LoadingListener;
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class TilesList implements ListModel<Tile>{
+public class TilesList implements ListModel<Tile>, TilesRegistry{
     final private List<Tile> tiles = new ArrayList<>();
+    final private Map<Integer, Tile> tilesById = new HashMap<>();
     final private File directory;
     private LoadingListener loadingListener = null;
 
@@ -30,6 +33,7 @@ public class TilesList implements ListModel<Tile>{
     
     final public void refresh() throws IOException{
         tiles.clear();
+        tilesById.clear();
         
         File[] files = directory.listFiles((dir, name) -> name.matches(".*\\.(png|bmp|jpg)"));
         
@@ -43,7 +47,10 @@ public class TilesList implements ListModel<Tile>{
                 continue;
             }
             
-            tiles.add(new Tile(id, ImageIO.read(file)));
+            Tile tile = new Tile(id, ImageIO.read(file));
+            
+            tiles.add(tile);
+            tilesById.put(id, tile);
             
             if(loadingListener != null)
                 loadingListener.loaded(file.getName(), 1f / (float)files.length);
@@ -52,6 +59,10 @@ public class TilesList implements ListModel<Tile>{
 
     public List<Tile> getTiles() {
         return tiles;
+    }
+
+    public Map<Integer, Tile> getTilesById() {
+        return tilesById;
     }
 
     @Override
@@ -80,5 +91,10 @@ public class TilesList implements ListModel<Tile>{
 
     public void setLoadingListener(LoadingListener loadingListener) {
         this.loadingListener = loadingListener;
+    }
+
+    @Override
+    public Tile getTileById(int id) {
+        return tilesById.get(id);
     }
 }

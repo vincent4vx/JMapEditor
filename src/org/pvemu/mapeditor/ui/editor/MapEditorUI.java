@@ -57,7 +57,6 @@ public class MapEditorUI extends JInternalFrame {
                     if(obj != null)
                         obj.flip();
                 }else if(e.getKeyChar() == KeyEvent.VK_DELETE){
-                    System.out.println("ok");
                     Cell cell = JMapEditor.getToolsHandler().getCurrentCell();
                     
                     if(cell != null){

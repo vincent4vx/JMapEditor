@@ -5,12 +5,9 @@
  */
 package org.pvemu.mapeditor.ui.editor;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.data.CellObject;
 
 /**
  *

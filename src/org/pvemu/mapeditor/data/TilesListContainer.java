@@ -9,18 +9,21 @@ package org.pvemu.mapeditor.data;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.pvemu.mapeditor.common.LoadingListener;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class TilesListContainer{
+public class TilesListContainer implements TilesRegistry{
     final private File directory;
     final private List<TilesListContainer> tilesListContainers = new ArrayList<>();
     final private TilesList tilesList;
     final private List<Tile> tiles = new ArrayList<>();
+    final private Map<Integer, Tile> tilesById = new HashMap<>();
 
     public TilesListContainer(File directory, LoadingListener listener) throws IOException{
         this.directory = directory;
@@ -44,6 +47,7 @@ public class TilesListContainer{
             
             tilesListContainers.add(tlc);
             tiles.addAll(tlc.tiles);
+            tilesById.putAll(tlc.tilesById);
         }
         
         tilesList = new TilesList(directory);
@@ -54,6 +58,7 @@ public class TilesListContainer{
         tilesList.refresh();
         
         tiles.addAll(tilesList.getTiles());
+        tilesById.putAll(tilesList.getTilesById());
     }
 
     public List<TilesListContainer> getTilesListContainers() {
@@ -70,5 +75,10 @@ public class TilesListContainer{
 
     public File getDirectory() {
         return directory;
+    }
+
+    @Override
+    public Tile getTileById(int id) {
+        return tilesById.get(id);
     }
 }

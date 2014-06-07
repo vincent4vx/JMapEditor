@@ -11,7 +11,9 @@ import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
@@ -20,6 +22,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import org.pvemu.mapeditor.action.OpenMap;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.ui.editor.MapEditorUI;
@@ -89,6 +92,20 @@ public class MainWindow extends JFrame{
         newMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
         newMap.addActionListener((e) -> new NewMapDialog(this));
         file.add(newMap);
+        
+        JMenuItem open = new JMenuItem("Ouvrir");
+        open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+        open.addActionListener((e) -> {
+            try{
+                JFileChooser chooser = new JFileChooser();
+                chooser.showOpenDialog(this);
+                File xml = chooser.getSelectedFile();
+                OpenMap.loadMap(xml);
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(this, "Erreur loars de l'ouverture : " + ex, "Ouverture : erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        file.add(open);
         
         JMenuItem save = new JMenuItem("Sauvegarder");
         save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));

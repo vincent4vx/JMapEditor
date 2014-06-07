@@ -29,6 +29,12 @@ public class MapData implements Iterable<Cell>{
         }
     }
 
+    public MapData(int width, int height, Cell[] cells) {
+        this.width = width;
+        this.height = height;
+        this.cells = cells;
+    }
+
     public int getWidth() {
         return width;
     }
