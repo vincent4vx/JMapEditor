@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.action.OpenMap;
+import org.pvemu.mapeditor.common.JMEFileChooser;
 import org.pvemu.mapeditor.handler.EditorHandler;
 
 /**
@@ -67,14 +68,12 @@ public class MainMenuBar extends JMenuBar{
     
     private void open(){
         try{
-            JFileChooser chooser = new JFileChooser();
-            chooser.showOpenDialog(JMapEditor.getUI());
+            JFileChooser chooser = JMEFileChooser.getFileChooser();
             
-            File file = chooser.getSelectedFile();
-            
-            if(file == null)
+            if(chooser.showOpenDialog(JMapEditor.getUI()) == JFileChooser.CANCEL_OPTION)
                 return;
             
+            File file = chooser.getSelectedFile();
             OpenMap.loadMap(file.getAbsolutePath());
         }catch(Exception ex){
             JOptionPane.showMessageDialog(JMapEditor.getUI(), "Erreur lors de l'ouverture : " + ex, "Ouverture : erreur", JOptionPane.ERROR_MESSAGE);

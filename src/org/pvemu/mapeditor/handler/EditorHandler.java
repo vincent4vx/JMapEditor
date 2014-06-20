@@ -20,6 +20,7 @@ import javax.xml.transform.TransformerException;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Compressor;
 import org.pvemu.mapeditor.common.Constants;
+import org.pvemu.mapeditor.common.JMEFileChooser;
 import org.pvemu.mapeditor.data.MapData;
 import org.pvemu.mapeditor.data.db.model.MapHistory;
 import org.pvemu.mapeditor.ui.editor.MapEditorUI;
@@ -78,19 +79,7 @@ final public class EditorHandler {
         
         if(data == null){
             File file;
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new FileFilter() {
-
-                @Override
-                public boolean accept(File f) {
-                    return f.isDirectory() || f.getName().endsWith(Constants.JME_EXT);
-                }
-
-                @Override
-                public String getDescription() {
-                    return "Fichier de sauvegarde JMapEditor";
-                }
-            });
+            JFileChooser fileChooser = JMEFileChooser.getFileChooser();
             
             int r = fileChooser.showSaveDialog(ui);
             
@@ -100,14 +89,6 @@ final public class EditorHandler {
             
             if(r == JFileChooser.APPROVE_OPTION){
                 file = fileChooser.getSelectedFile();
-                
-                if(file.getName().split("\\.").length < 2){
-                    file = new File(file.getAbsolutePath() + Constants.JME_EXT);
-                }
-                
-                if(file.isDirectory()){
-                    throw new Exception(file.getName() + " is a folder !");
-                }
                 
                 if(file.exists()){
                     r = JOptionPane.showConfirmDialog(JMapEditor.getUI(), "Ce fichier existe déjà. Voulez-vous l'écraser ?");
