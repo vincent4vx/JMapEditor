@@ -102,4 +102,17 @@ public class Cell{
     public void setLayer2(CellObject layer2) {
         this.layer2 = layer2;
     }
+    
+    public void copy(Cell cell){
+        active = cell.active;
+        lineOfSight = cell.lineOfSight;
+        layerGroundRot = cell.layerGroundRot;
+        layerObject1Rot = cell.layerObject1Rot;
+        ground = cell.ground;
+        layer1 = cell.layer1;
+        layer2 = cell.layer2;
+        groundLevel = cell.groundLevel;
+        groundSlope = cell.groundSlope;
+        movement = cell.movement;
+    }
 }

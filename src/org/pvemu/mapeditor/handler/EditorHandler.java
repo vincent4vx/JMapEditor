@@ -14,13 +14,13 @@ import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.pvemu.mapeditor.action.EditMap;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Compressor;
-import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.JMEFileChooser;
+import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.MapData;
 import org.pvemu.mapeditor.data.db.model.MapHistory;
 import org.pvemu.mapeditor.ui.editor.MapEditorUI;
@@ -130,6 +130,28 @@ final public class EditorHandler {
         map.getInfo().setLastDate(history.getDate());
         data.getHistoryDAO().add(history);
         data.getInfoDAO().update(map.getInfo());
+    }
+
+    public MapDBHandler getData() {
+        return data;
+    }
+    
+    public void loadHistory(MapHistory history){
+        map.getInfo().setLastDate(history.getDate());
+        ui.setTitle(getTitle());
+        
+        Cell[] hCells = Compressor.decompressMapData(history.getCells());
+        int i = 0;
+        
+        for(Cell cell : map){
+            cell.copy(hCells[i++]);
+        }
+        
+        map.setBackground(
+                JMapEditor.getTilesHandler().getBackgrounds().getTileById(history.getBackground())
+        );
+        
+        ui.getGrid().repaint();
     }
     
     static public EditorHandler getCurrentHandler(){

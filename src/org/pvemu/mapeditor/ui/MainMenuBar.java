@@ -9,6 +9,9 @@ package org.pvemu.mapeditor.ui;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -17,10 +20,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.action.OpenMap;
 import org.pvemu.mapeditor.common.JMEFileChooser;
+import org.pvemu.mapeditor.data.db.model.MapHistory;
 import org.pvemu.mapeditor.handler.EditorHandler;
+import org.pvemu.mapeditor.handler.MapDBHandler;
 
 /**
  *
@@ -62,6 +69,43 @@ public class MainMenuBar extends JMenuBar{
         JMenuItem export = new JMenuItem("Exporter");
         export.addActionListener((e) -> export());
         map.add(export);
+        
+        final JMenu versions = new JMenu("Versions");
+        versions.addMenuListener(new MenuListener() {
+
+            @Override
+            public void menuSelected(MenuEvent e) {
+                try {
+                    versions.removeAll();
+                    
+                    EditorHandler handler = EditorHandler.getCurrentHandler();
+                    
+                    if(handler == null)
+                        return;
+                    
+                    MapDBHandler DBHandler = handler.getData();
+                    
+                    if(DBHandler == null)
+                        return;
+                    
+                    for(MapHistory history : DBHandler.getHistoryDAO().getAll()){
+                        JMenuItem item = new JMenuItem((new SimpleDateFormat("d/M/y H:m:s")).format(new Date(history.getDate())));
+                        item.addActionListener((evt) -> handler.loadHistory(history));
+                        versions.add(item);
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(JMapEditor.getUI(), ex, "Error during loading history", JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace(System.err);
+                }
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {}
+
+            @Override
+            public void menuCanceled(MenuEvent e) {}
+        });
+        map.add(versions);
         
         return map;
     }
