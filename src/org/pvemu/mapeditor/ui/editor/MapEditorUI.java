@@ -35,7 +35,7 @@ public class MapEditorUI extends JInternalFrame {
         setIconifiable(true);
         setMaximizable(false);
         setClosable(true);
-        setSize((handler.getMap().getWidth() - 1) * Constants.CELL_WIDTH + 10, handler.getMap().getHeight() * Constants.CELL_HEIGHT + 6);
+        setSize((handler.getMap().getInfo().getWidth() - 1) * Constants.CELL_WIDTH + 10, handler.getMap().getInfo().getHeight() * Constants.CELL_HEIGHT + 6);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addInternalFrameListener(new InternalFrameAdapter() {

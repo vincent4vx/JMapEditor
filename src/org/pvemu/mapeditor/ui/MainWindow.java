@@ -103,10 +103,10 @@ public class MainWindow extends JFrame{
             try{
                 JFileChooser chooser = new JFileChooser();
                 chooser.showOpenDialog(this);
-                File xml = chooser.getSelectedFile();
-                OpenMap.loadMap(xml);
+                File jme = chooser.getSelectedFile();
+                OpenMap.loadMap(jme.getAbsolutePath());
             }catch(Exception ex){
-                JOptionPane.showMessageDialog(this, "Erreur loars de l'ouverture : " + ex, "Ouverture : erreur", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Erreur lors de l'ouverture : " + ex, "Ouverture : erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
         file.add(open);

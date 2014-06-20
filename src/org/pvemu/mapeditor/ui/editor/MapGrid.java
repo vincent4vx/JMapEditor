@@ -32,10 +32,10 @@ public class MapGrid extends JPanel{
 
     public MapGrid(MapData map) {
         this.map = map;
-        shapes = new ArrayList<>(Utils.getCellNumberBySize(map.getWidth(), map.getHeight()));
+        shapes = new ArrayList<>(Utils.getCellNumberBySize(map.getInfo().getWidth(), map.getInfo().getHeight()));
         listener = new GridListener(this);
         
-        int _loc14 = map.getWidth() - 1;
+        int _loc14 = map.getInfo().getWidth() - 1;
         int _loc9 = -1;
         int _loc10 = 0;
         double _loc11 = 0;

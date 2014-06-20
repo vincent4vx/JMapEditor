@@ -7,40 +7,30 @@
 package org.pvemu.mapeditor.data;
 
 import java.util.Iterator;
+import org.pvemu.mapeditor.action.JMapEditor;
+import org.pvemu.mapeditor.common.Compressor;
 import org.pvemu.mapeditor.common.Utils;
+import org.pvemu.mapeditor.data.db.model.MapHistory;
+import org.pvemu.mapeditor.data.db.model.MapInfo;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class MapData implements Iterable<Cell>{
-    final private int width;
-    final private int height;
+    final private MapInfo info;
+    private Tile background;
     final private Cell[] cells;
-    private Tile background = null;
 
-    public MapData(int width, int height) {
-        this.width = width;
-        this.height = height;
-        cells = new Cell[Utils.getCellNumberBySize(width, height)];
-        
-        for(int i = 0; i < cells.length; ++i){
-            cells[i] = new Cell();
-        }
-    }
-
-    public MapData(int width, int height, Cell[] cells) {
-        this.width = width;
-        this.height = height;
+    private MapData(MapInfo info, Tile background, Cell[] cells) {
+        this.info = info;
+        this.background = background;
         this.cells = cells;
     }
+    
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
+    public MapInfo getInfo() {
+        return info;
     }
 
     @Override
@@ -70,5 +60,21 @@ public class MapData implements Iterable<Cell>{
 
     public void setBackground(Tile background) {
         this.background = background;
+    }
+    
+    static public MapData generateMap(MapInfo info){
+        Cell[] cells = new Cell[Utils.getCellNumberBySize(info.getWidth(), info.getHeight())];
+        
+        for(int i = 0; i < cells.length; ++i){
+            cells[i] = new Cell();
+        }
+        
+        return new MapData(info, null, cells);
+    }
+    
+    static public MapData loadMap(MapInfo info, MapHistory history){
+        Cell[] cells = Compressor.decompressMapData(history.getCells());
+        Tile background = history.getBackground() == 0 ? null : JMapEditor.getTilesHandler().getBackgrounds().getTileById(history.getBackground());
+        return new MapData(info, background, cells);
     }
 }

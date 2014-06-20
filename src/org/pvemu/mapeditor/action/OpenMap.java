@@ -6,12 +6,12 @@
 
 package org.pvemu.mapeditor.action;
 
-import java.io.File;
-import java.io.IOException;
-import org.pvemu.mapeditor.common.XMLUtils;
+import java.sql.SQLException;
 import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.data.MapData;
-import org.xml.sax.SAXException;
+import org.pvemu.mapeditor.data.db.model.MapHistory;
+import org.pvemu.mapeditor.data.db.model.MapInfo;
+import org.pvemu.mapeditor.handler.MapDBHandler;
 
 /**
  *
@@ -19,14 +19,17 @@ import org.xml.sax.SAXException;
  */
 final public class OpenMap {
     static public void newMap(int width, int height){
-        MapData map = new MapData(width, height);
+        MapData map = MapData.generateMap(new MapInfo(16000, width, height));
         EditorHandler editor = new EditorHandler(map);
         JMapEditor.getUI().getDesktopPane().add(editor.getUI());
     }
     
-    static public void loadMap(File file) throws SAXException, IOException, Exception{
-        MapData map = XMLUtils.loadMapXML(file);
-        EditorHandler editor = new EditorHandler(map, file);
-        JMapEditor.getUI().getDesktopPane().add(editor.getUI());
+    static public void loadMap(String file) throws SQLException, ClassNotFoundException{
+        MapDBHandler data = new MapDBHandler(file);
+        MapInfo info = data.getInfoDAO().load();
+        MapHistory history = data.getHistoryDAO().getLast();
+        MapData map = MapData.loadMap(info, history);
+        EditorHandler handler = new EditorHandler(map, data);
+        JMapEditor.getUI().getDesktopPane().add(handler.getUI());
     }
 }

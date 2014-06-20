@@ -6,7 +6,6 @@
 
 package org.pvemu.mapeditor.handler;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,8 +26,8 @@ public class ExportHandler {
     
     private enum FlmVar{
         ID((m) -> "16000"),
-        WIDTH((m) -> String.valueOf(m.getWidth())),
-        HEIGHT((m) -> String.valueOf(m.getHeight())),
+        WIDTH((m) -> String.valueOf(m.getInfo().getWidth())),
+        HEIGHT((m) -> String.valueOf(m.getInfo().getHeight())),
         BACKGROUND((m) -> String.valueOf(m.getBackground().getId())),
         AMBIANCE((m) -> "0"),
         MUSIC((m) -> "0"),
