@@ -15,6 +15,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.action.OpenMap;
 import org.pvemu.mapeditor.common.Constants;
 
@@ -26,13 +27,13 @@ public class NewMapDialog extends JDialog{
     final private JTextField width = new JTextField("" + Constants.DEFAULT_WIDTH);
     final private JTextField height = new JTextField("" + Constants.DEFAULT_HEIGHT);
 
-    public NewMapDialog(MainWindow parent) throws HeadlessException {
-        super(parent, "Nouvelle map");
+    public NewMapDialog() throws HeadlessException {
+        super(JMapEditor.getUI(), "Nouvelle map");
         setModal(true);        
         makePanel();
         pack();
         setResizable(false);
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(JMapEditor.getUI());
         setVisible(true);
     }
     

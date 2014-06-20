@@ -43,7 +43,7 @@ public class MainWindow extends JFrame{
 
     public MainWindow() throws HeadlessException {
         super(Constants.TITLE);
-        makeMenu();
+        setJMenuBar(new MainMenuBar());
         makePanel();
         setSize(1010, 650);
         
@@ -84,72 +84,6 @@ public class MainWindow extends JFrame{
             
             System.exit(0);
         }
-    }
-    
-    private void makeMenu(){
-        JMenuBar bar = new JMenuBar();
-        
-        JMenu file = new JMenu("Fichier");
-        file.setMnemonic('F');
-        
-        JMenuItem newMap = new JMenuItem("Nouvelle map");
-        newMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
-        newMap.addActionListener((e) -> new NewMapDialog(this));
-        file.add(newMap);
-        
-        JMenuItem open = new JMenuItem("Ouvrir");
-        open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
-        open.addActionListener((e) -> {
-            try{
-                JFileChooser chooser = new JFileChooser();
-                chooser.showOpenDialog(this);
-                File jme = chooser.getSelectedFile();
-                OpenMap.loadMap(jme.getAbsolutePath());
-            }catch(Exception ex){
-                JOptionPane.showMessageDialog(this, "Erreur lors de l'ouverture : " + ex, "Ouverture : erreur", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-        file.add(open);
-        
-        JMenuItem save = new JMenuItem("Sauvegarder");
-        save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
-        save.addActionListener((e) -> {
-            EditorHandler handler = EditorHandler.getCurrentHandler();
-            
-            if(handler == null){
-                JOptionPane.showMessageDialog(this, "Veuillez sélectionner une map à sauvegarder", "Sauvegarde : erreur", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            
-            try{
-                handler.save();
-            }catch(Exception ex){
-                JOptionPane.showMessageDialog(this, ex, "Sauvegarde : erreur", JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace(System.err);
-            }
-        });
-        file.add(save);
-        
-        JMenuItem export = new JMenuItem("Exporter");
-        export.addActionListener((e) -> {
-            EditorHandler handler = EditorHandler.getCurrentHandler();
-            
-            if(handler == null)
-                return;
-            
-            try {
-                JMapEditor.getExportHandler().export(handler.getMap());
-            } catch (IOException ex) {
-                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        file.add(export);
-        
-        bar.add(file);
-        
-        setJMenuBar(bar);
     }
 
     public JDesktopPane getDesktopPane() {
