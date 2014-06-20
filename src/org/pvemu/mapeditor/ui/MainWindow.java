@@ -12,6 +12,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -22,6 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.action.OpenMap;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.handler.EditorHandler;
@@ -125,6 +129,23 @@ public class MainWindow extends JFrame{
             }
         });
         file.add(save);
+        
+        JMenuItem export = new JMenuItem("Exporter");
+        export.addActionListener((e) -> {
+            EditorHandler handler = EditorHandler.getCurrentHandler();
+            
+            if(handler == null)
+                return;
+            
+            try {
+                JMapEditor.getExportHandler().export(handler.getMap());
+            } catch (IOException ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        file.add(export);
         
         bar.add(file);
         
