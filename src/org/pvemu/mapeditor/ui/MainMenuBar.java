@@ -59,20 +59,7 @@ public class MainMenuBar extends JMenuBar{
         map.setMnemonic('M');
         
         JMenuItem export = new JMenuItem("Exporter");
-        export.addActionListener((e) -> {
-            EditorHandler handler = EditorHandler.getCurrentHandler();
-            
-            if(handler == null)
-                return;
-            
-            try {
-                JMapEditor.getExportHandler().export(handler.getMap());
-            } catch (IOException ex) {
-                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        export.addActionListener((e) -> export());
         map.add(export);
         
         return map;
@@ -82,8 +69,13 @@ public class MainMenuBar extends JMenuBar{
         try{
             JFileChooser chooser = new JFileChooser();
             chooser.showOpenDialog(JMapEditor.getUI());
-            File jme = chooser.getSelectedFile();
-            OpenMap.loadMap(jme.getAbsolutePath());
+            
+            File file = chooser.getSelectedFile();
+            
+            if(file == null)
+                return;
+            
+            OpenMap.loadMap(file.getAbsolutePath());
         }catch(Exception ex){
             JOptionPane.showMessageDialog(JMapEditor.getUI(), "Erreur lors de l'ouverture : " + ex, "Ouverture : erreur", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace(System.err);
@@ -103,6 +95,21 @@ public class MainMenuBar extends JMenuBar{
         }catch(Exception ex){
             JOptionPane.showMessageDialog(JMapEditor.getUI(), ex, "Sauvegarde : erreur", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace(System.err);
+        }
+    }
+    
+    private void export(){
+        EditorHandler handler = EditorHandler.getCurrentHandler();
+
+        if(handler == null)
+            return;
+
+        try {
+            JMapEditor.getExportHandler().export(handler.getMap());
+        } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
