@@ -24,11 +24,11 @@ import org.pvemu.mapeditor.handler.EditorHandler;
 public class MapEditorUI extends JInternalFrame {
 
     final private EditorHandler handler;
-    final private MapGrid grid;
+    final private EditorGrid grid;
 
     public MapEditorUI(EditorHandler handler) {
         this.handler = handler;
-        grid = new MapGrid(handler.getMap());
+        grid = new EditorGrid(handler.getMap());
         add(grid);
 
         setResizable(false);
@@ -69,7 +69,7 @@ public class MapEditorUI extends JInternalFrame {
         });
     }
 
-    public MapGrid getGrid() {
+    public EditorGrid getGrid() {
         return grid;
     }
 

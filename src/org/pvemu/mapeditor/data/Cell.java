@@ -6,6 +6,9 @@
 
 package org.pvemu.mapeditor.data;
 
+import java.util.EnumMap;
+import org.pvemu.mapeditor.handler.layer.Layer;
+
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
@@ -19,9 +22,7 @@ public class Cell{
     private int groundSlope = 1;
     private int layerObject1Rot = 0;
     
-    private CellObject ground = null;
-    private CellObject layer1 = null;
-    private CellObject layer2 = null;
+    final private EnumMap<Layer, CellObject> objects = new EnumMap<>(Layer.class);
 
     public boolean isActive() {
         return active;
@@ -78,29 +79,37 @@ public class Cell{
     public void setLayerObject1Rot(int layerObject1Rot) {
         this.layerObject1Rot = layerObject1Rot;
     }
+    
+    public CellObject getObjectAt(Layer layer){
+        return objects.get(layer);
+    }
+    
+    public void setObjectAt(Layer layer, CellObject obj){
+        objects.put(layer, obj);
+    }
 
     public CellObject getGround() {
-        return ground;
+        return objects.get(Layer.GROUND);
     }
 
     public CellObject getLayer1() {
-        return layer1;
+        return objects.get(Layer.LAYER1);
     }
 
     public CellObject getLayer2() {
-        return layer2;
+        return objects.get(Layer.LAYER2);
     }
 
     public void setGround(CellObject ground) {
-        this.ground = ground;
+        objects.put(Layer.GROUND, ground);
     }
 
     public void setLayer1(CellObject layer1) {
-        this.layer1 = layer1;
+        objects.put(Layer.LAYER1, layer1);
     }
 
     public void setLayer2(CellObject layer2) {
-        this.layer2 = layer2;
+        objects.put(Layer.LAYER2, layer2);
     }
     
     public void copy(Cell cell){
@@ -108,9 +117,8 @@ public class Cell{
         lineOfSight = cell.lineOfSight;
         layerGroundRot = cell.layerGroundRot;
         layerObject1Rot = cell.layerObject1Rot;
-        ground = cell.ground;
-        layer1 = cell.layer1;
-        layer2 = cell.layer2;
+        objects.clear();
+        objects.putAll(cell.objects);
         groundLevel = cell.groundLevel;
         groundSlope = cell.groundSlope;
         movement = cell.movement;

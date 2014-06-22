@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.ui.editor;
 
-import org.pvemu.mapeditor.ui.CellObjectRenderer;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -18,19 +12,21 @@ import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.Utils;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.MapData;
+import org.pvemu.mapeditor.handler.layer.Layer;
 import org.pvemu.mapeditor.handler.tool.AddTool;
+import org.pvemu.mapeditor.ui.CellObjectRenderer;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class MapGrid extends JPanel{
+public class EditorGrid extends JPanel{
     final private MapData map;
     final private List<GridCell> shapes;
     final private GridListener listener;
     
 
-    public MapGrid(MapData map) {
+    public EditorGrid(MapData map) {
         this.map = map;
         shapes = new ArrayList<>(Utils.getCellNumberBySize(map.getInfo().getWidth(), map.getInfo().getHeight()));
         listener = new GridListener(this);
@@ -80,45 +76,27 @@ public class MapGrid extends JPanel{
                 RenderingHints.VALUE_ANTIALIAS_ON
          );
         
-        if(map.getBackground() != null){
-            g.drawImage(map.getBackground().getImage(), 0, 0, getSize().width, getSize().height ,this);
+        //display layers
+        for(Layer layer : Layer.values()){
+            LayerDisplayer.display(layer, this, g2d);
         }
         
-        LayerDisplayer.GROUND.draw(g2d, shapes);
-        LayerDisplayer.LAYER_ONE.draw(g2d, shapes);
-        LayerDisplayer.LAYER_TWO.draw(g2d, shapes);
-        
-        for(GridCell cell : shapes){
-        
-            g.setColor(Constants.GRID_COLOR);
-            
-            g.drawLine(
-                    (int)(Constants.CELL_COORD[cell.getCell().getGroundSlope()][0][0] + cell.getX()), 
-                    (int)(Constants.CELL_COORD[cell.getCell().getGroundSlope()][0][1] + cell.getY()), 
-                    (int)(Constants.CELL_COORD[cell.getCell().getGroundSlope()][1][0] + cell.getX()), 
-                    (int)(Constants.CELL_COORD[cell.getCell().getGroundSlope()][1][1] + cell.getY())
-            );
-            g.drawLine(
-                    (int)(Constants.CELL_COORD[cell.getCell().getGroundSlope()][1][0] + cell.getX()), 
-                    (int)(Constants.CELL_COORD[cell.getCell().getGroundSlope()][1][1] + cell.getY()), 
-                    (int)(Constants.CELL_COORD[cell.getCell().getGroundSlope()][2][0] + cell.getX()), 
-                    (int)(Constants.CELL_COORD[cell.getCell().getGroundSlope()][2][1] + cell.getY())
-            );
-            
-            if(cell.isHovered()){
-                g.setColor(Constants.SELECTED_COLOR);
-                g.fillPolygon(cell);
-                
-                if(cell.getCell().getLayer1() != null || !(JMapEditor.getToolsHandler().getTool() instanceof AddTool))
-                    continue;
-                
-                CellObjectRenderer.render(g2d, JMapEditor.getToolsHandler().getCurrentObject(), cell, false);
-            }
+        //display current cell
+        GridCell cell = listener.getHovered();
+        if (cell != null) {
+            Color tmp = g.getColor();
+            g.setColor(Constants.SELECTED_COLOR);
+            g.fillPolygon(cell);
+            g.setColor(tmp);
         }
     }
 
     List<GridCell> getShapes() {
         return shapes;
+    }
+
+    public MapData getMap() {
+        return map;
     }
     
 }

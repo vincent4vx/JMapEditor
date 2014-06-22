@@ -10,6 +10,7 @@ import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.handler.ToolsHandler;
+import org.pvemu.mapeditor.handler.layer.Layer;
 
 /**
  *
@@ -31,8 +32,7 @@ public class AddTool implements Tool{
         EditorHandler editorHandler = EditorHandler.getCurrentHandler();
         obj.addRotationListener((c) -> editorHandler.update());
         
-        
-        cell.setLayer1(obj);
+        cell.setObjectAt(Layer.getSelected(), obj);
         editorHandler.update();
     }
     

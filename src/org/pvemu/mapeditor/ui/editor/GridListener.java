@@ -14,10 +14,10 @@ import org.pvemu.mapeditor.action.JMapEditor;
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 class GridListener extends MouseAdapter{
-    final private MapGrid grid;
+    final private EditorGrid grid;
     private GridCell hovered = null;
 
-    public GridListener(MapGrid grid) {
+    public GridListener(EditorGrid grid) {
         this.grid = grid;
     }
 
@@ -45,6 +45,10 @@ class GridListener extends MouseAdapter{
         }
         
         JMapEditor.getToolsHandler().getTool().onClick(hovered.getCell());
+    }
+
+    public GridCell getHovered() {
+        return hovered;
     }
 
 }
