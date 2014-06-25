@@ -12,8 +12,10 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.action.OpenMap;
@@ -24,11 +26,17 @@ import org.pvemu.mapeditor.common.Constants;
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class NewMapDialog extends JDialog{
-    final private JTextField width = new JTextField("" + Constants.DEFAULT_WIDTH);
-    final private JTextField height = new JTextField("" + Constants.DEFAULT_HEIGHT);
+    final private JSpinner id = new JSpinner();
+    final private JSpinner width = new JSpinner();
+    final private JSpinner height = new JSpinner();
 
     public NewMapDialog() throws HeadlessException {
         super(JMapEditor.getUI(), "Nouvelle map");
+        
+        id.setValue(16000);
+        width.setValue(Constants.DEFAULT_WIDTH);
+        height.setValue(Constants.DEFAULT_HEIGHT);
+        
         setModal(true);        
         makePanel();
         pack();
@@ -41,6 +49,8 @@ public class NewMapDialog extends JDialog{
         JPanel panel = new JPanel(new BorderLayout());
         
         JPanel opts = new JPanel(new GridLayout(0, 2));
+        opts.add(new JLabel("ID"));
+        opts.add(id);
         opts.add(new JLabel("Hauteur"));
         opts.add(height);
         opts.add(new JLabel("Largeur"));
@@ -51,10 +61,12 @@ public class NewMapDialog extends JDialog{
         
         JButton ok = new JButton("Ok");
         ok.addActionListener((e) -> {
-            OpenMap.newMap(Integer.parseInt(width.getText()), Integer.parseInt(height.getText()));
+            OpenMap.newMap((Integer)id.getValue(), (Integer)width.getValue(), (Integer)height.getValue());
             setVisible(false);
             dispose();
         });
+        getRootPane().setDefaultButton(ok);
+        ok.requestFocus();
         
         JButton cancel  = new JButton("Annuler");
         cancel.addActionListener((e) -> {

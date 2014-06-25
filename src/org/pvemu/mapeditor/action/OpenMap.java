@@ -18,8 +18,8 @@ import org.pvemu.mapeditor.handler.MapDBHandler;
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 final public class OpenMap {
-    static public void newMap(int width, int height){
-        MapData map = MapData.generateMap(new MapInfo(16000, width, height));
+    static public void newMap(int id, int width, int height){
+        MapData map = MapData.generateMap(new MapInfo(id, width, height));
         EditorHandler editor = new EditorHandler(map);
         JMapEditor.getUI().getDesktopPane().add(editor.getUI());
     }
