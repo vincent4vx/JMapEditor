@@ -162,6 +162,10 @@ final public class EditorHandler {
         this.selectedCell = selectedCell;
     }
     
+    public boolean haveFocus(){
+        return equals(getCurrentHandler());
+    }
+    
     static public EditorHandler getCurrentHandler(){
         JInternalFrame frame = JMapEditor.getUI().getDesktopPane().getSelectedFrame();
         

@@ -23,6 +23,9 @@ class GridListener extends MouseAdapter{
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        if(!grid.getHandler().haveFocus())
+            return;
+        
         for (GridCell cell : grid.getShapes()) {
             if (cell.contains(e.getPoint())) {
                 if (hovered != cell) {
@@ -40,11 +43,23 @@ class GridListener extends MouseAdapter{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (hovered == null) {
+        if (!grid.getHandler().haveFocus() || hovered == null) {
             return;
         }
         
         JMapEditor.getToolsHandler().getTool().onClick(grid.getHandler(), hovered.getCell());
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if(!grid.getHandler().haveFocus())
+            return;
+        
+        if(hovered != null)
+            hovered.setHovered(false);
+        
+        hovered = null;
+        grid.repaint();
     }
 
     public GridCell getHovered() {
