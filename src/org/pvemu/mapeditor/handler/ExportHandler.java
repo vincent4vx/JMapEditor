@@ -6,11 +6,19 @@
 
 package org.pvemu.mapeditor.handler;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringReader;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import org.pvemu.mapeditor.common.Compressor;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.data.MapData;
@@ -25,10 +33,10 @@ public class ExportHandler {
     }
     
     private enum FlmVar{
-        ID((m) -> "16000"),
+        ID((m) -> String.valueOf(m.getInfo().getId())),
         WIDTH((m) -> String.valueOf(m.getInfo().getWidth())),
         HEIGHT((m) -> String.valueOf(m.getInfo().getHeight())),
-        BACKGROUND((m) -> String.valueOf(m.getBackground().getId())),
+        BACKGROUND((m) -> String.valueOf(m.getBackground() == null ? 0 : m.getBackground().getId())),
         AMBIANCE((m) -> "0"),
         MUSIC((m) -> "0"),
         OUTDOOR((m) -> "TRUE"),
@@ -50,31 +58,49 @@ public class ExportHandler {
         }
     }
     
-    final private String blank;
+    final private Path blank;
 
-    public ExportHandler() throws IOException {
-        byte[] data = Files.readAllBytes(Paths.get(Constants.BLANK_FILE));
-        blank = new String(data);
+    public ExportHandler() {
+        blank = Paths.get(Constants.BLANK_FILE);
     }
     
-    private String mapToFlm(MapData map){
-        String flm = blank;
-        
+    private String mapToFlm(String pattern, MapData map){        
         for(FlmVar var : FlmVar.values()){
-            flm = flm.replace(var.getName(), var.getValue(map));
+            pattern = pattern.replace(var.getName(), var.getValue(map));
         }
         
-        return flm;
+        return pattern;
     }
     
     public void export(MapData map) throws FileNotFoundException, IOException, InterruptedException{
-        String flm = mapToFlm(map);
+        String baseName = map.getInfo().getId() + "_" + map.getInfo().getLastDate();
+        Path swf = Paths.get(baseName + Constants.SWF_EXT);
+        Path flm = Paths.get(baseName + Constants.FLM_EXT);
         
-        PrintWriter pw = new PrintWriter("test.flm");
-        pw.print(flm);
-        pw.close();
+        Files.copy(blank, swf, StandardCopyOption.REPLACE_EXISTING);
         
-        Process p = Runtime.getRuntime().exec("flasm -a test.flm");
+        Process p = Runtime.getRuntime().exec("flasm -d " + swf);
         p.waitFor();
+        
+        InputStreamReader isr = new InputStreamReader(p.getInputStream());
+        BufferedReader br = new BufferedReader(isr);
+        
+        StringBuilder sb = new StringBuilder();
+        
+        for(String line = br.readLine(); line != null; line = br.readLine()){
+            sb.append(line);
+            sb.append("\r\n");
+        }
+        
+        String pattern = sb.toString();
+        
+        String data = mapToFlm(pattern, map);
+        
+        Files.write(flm, data.getBytes(), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
+        
+        p = Runtime.getRuntime().exec("flasm -a " + flm);
+        p.waitFor();
+        
+        Files.delete(flm);
     }
 }

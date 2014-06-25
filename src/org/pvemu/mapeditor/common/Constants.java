@@ -33,6 +33,8 @@ public class Constants {
     final static public String UI_RESOURCES_DIR = RESOURCES_DIR + "ui/";
     final static public String SPLASH_IMG       = UI_RESOURCES_DIR + "splashscreen.jpg";
     final static public String JME_EXT          = ".jme";
+    final static public String SWF_EXT          = ".swf";
+    final static public String FLM_EXT          = ".flm";
     final static public String FLASM_DIR        = RESOURCES_DIR + "flasm/";
-    final static public String BLANK_FILE       = FLASM_DIR + "blank.flm";
+    final static public String BLANK_FILE       = FLASM_DIR + "blank" + SWF_EXT;
 }
