@@ -55,7 +55,6 @@ public class MapEditorUI extends JInternalFrame {
             @Override
             public void keyTyped(KeyEvent e) {
                 if(e.getKeyChar() == 'r'){
-                    
                     Cell cell = handler.getSelectedCell();
                     
                     if(cell != null){
@@ -68,6 +67,14 @@ public class MapEditorUI extends JInternalFrame {
                             grid.repaint();
                         }
                     }
+                }else if(e.getKeyChar() == KeyEvent.VK_DELETE){
+                    Cell cell = handler.getSelectedCell();
+                    
+                    if(cell == null)
+                        return;
+                    
+                    handler.setSelectedCell(null);
+                    handler.getChangeHandler().addChange(ChangeActionFactory.removeObject(handler, cell, Layer.getSelected()));
                 }
             }
             
