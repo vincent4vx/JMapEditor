@@ -33,6 +33,12 @@ public class CellObject {
         this.tile = tile;
     }
 
+    public CellObject(Tile tile, boolean flip, boolean interactive) {
+        this.tile = tile;
+        this.flip = flip;
+        this.interactive = interactive;
+    }
+
     public Tile getTile() {
         return tile;
     }

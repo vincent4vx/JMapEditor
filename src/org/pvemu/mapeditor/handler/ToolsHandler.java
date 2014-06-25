@@ -13,7 +13,6 @@ import org.pvemu.mapeditor.handler.tool.AddTool;
 import org.pvemu.mapeditor.handler.tool.RemoveTool;
 import org.pvemu.mapeditor.handler.tool.SelectTool;
 import org.pvemu.mapeditor.handler.tool.Tool;
-import org.pvemu.mapeditor.ui.rightmenu.ObjectTab;
 
 /**
  *
@@ -21,11 +20,10 @@ import org.pvemu.mapeditor.ui.rightmenu.ObjectTab;
  */
 public class ToolsHandler {
     private CellObject currentObject = null;
-    private Cell currentCell = null;
     
-    final private Tool SELECT = new SelectTool(this),
-                       ADD = new AddTool(this),
-                       REMOVE = new RemoveTool(this);
+    final private Tool SELECT = new SelectTool(),
+                       ADD = new AddTool(),
+                       REMOVE = new RemoveTool();
     
     private Tool toolType = SELECT;
 
@@ -46,21 +44,11 @@ public class ToolsHandler {
     }
     
     public void setRemoveTool(){
-        currentCell = null;
         toolType = REMOVE;
     }
     
     public void setAddTool(){
-        currentCell = null;
         toolType = ADD;
         JMapEditor.getUI().getRightMenu().getEditTab().getAdd().setSelected(true);
-    }
-
-    public Cell getCurrentCell() {
-        return currentCell;
-    }
-
-    public void setCurrentCell(Cell currentCell) {
-        this.currentCell = currentCell;
     }
 }

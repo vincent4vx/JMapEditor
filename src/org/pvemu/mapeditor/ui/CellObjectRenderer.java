@@ -8,7 +8,6 @@ package org.pvemu.mapeditor.ui;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
-import jdk.nashorn.internal.runtime.regexp.joni.ast.ConsAltNode;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.Coordinate;
 import org.pvemu.mapeditor.data.CellObject;

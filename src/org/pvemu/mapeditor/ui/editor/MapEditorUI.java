@@ -16,6 +16,8 @@ import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.handler.EditorHandler;
+import org.pvemu.mapeditor.handler.changeaction.ChangeActionFactory;
+import org.pvemu.mapeditor.handler.layer.Layer;
 
 /**
  *
@@ -28,7 +30,7 @@ public class MapEditorUI extends JInternalFrame {
 
     public MapEditorUI(EditorHandler handler) {
         this.handler = handler;
-        grid = new EditorGrid(handler.getMap());
+        grid = new EditorGrid(handler.getMap(), handler);
         add(grid);
 
         setResizable(false);
@@ -46,22 +48,25 @@ public class MapEditorUI extends JInternalFrame {
             }
         });
         
+        
         setFocusable(true);
         addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyTyped(KeyEvent e) {
                 if(e.getKeyChar() == 'r'){
-                    CellObject obj = JMapEditor.getToolsHandler().getCurrentObject();
                     
-                    if(obj != null)
-                        obj.flip();
-                }else if(e.getKeyChar() == KeyEvent.VK_DELETE){
-                    Cell cell = JMapEditor.getToolsHandler().getCurrentCell();
+                    Cell cell = handler.getSelectedCell();
                     
                     if(cell != null){
-                        cell.setLayer1(null);
-                        EditorHandler.getCurrentHandler().update();
+                        handler.getChangeHandler().addChange(ChangeActionFactory.flip(handler, cell, Layer.getSelected()));
+                    }else{
+                        CellObject obj = JMapEditor.getToolsHandler().getCurrentObject();
+                        
+                        if(obj != null){
+                            obj.flip();
+                            grid.repaint();
+                        }
                     }
                 }
             }

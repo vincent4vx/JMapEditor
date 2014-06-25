@@ -7,14 +7,12 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
-import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.Utils;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.MapData;
+import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.handler.layer.Layer;
-import org.pvemu.mapeditor.handler.tool.AddTool;
-import org.pvemu.mapeditor.ui.CellObjectRenderer;
 
 /**
  *
@@ -24,10 +22,12 @@ public class EditorGrid extends JPanel{
     final private MapData map;
     final private List<GridCell> shapes;
     final private GridListener listener;
+    final private EditorHandler handler;
     
 
-    public EditorGrid(MapData map) {
+    public EditorGrid(MapData map, EditorHandler handler) {
         this.map = map;
+        this.handler = handler;
         shapes = new ArrayList<>(Utils.getCellNumberBySize(map.getInfo().getWidth(), map.getInfo().getHeight()));
         listener = new GridListener(this);
         
@@ -97,6 +97,10 @@ public class EditorGrid extends JPanel{
 
     public MapData getMap() {
         return map;
+    }
+
+    public EditorHandler getHandler() {
+        return handler;
     }
     
 }

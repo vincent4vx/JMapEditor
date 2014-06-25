@@ -60,7 +60,7 @@ abstract class LayerDisplayer {
 
         @Override
         void draw(Layer layer, EditorGrid grid, Graphics2D g) {
-            Cell currentCell = JMapEditor.getToolsHandler().getCurrentCell();
+            Cell currentCell = grid.getHandler().getSelectedCell();//JMapEditor.getToolsHandler().getCurrentCell();
             for (GridCell shape : grid.getShapes()) {
                 CellObject obj = shape.getCell().getObjectAt(layer);
 

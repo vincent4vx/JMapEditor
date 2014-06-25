@@ -8,8 +8,9 @@ package org.pvemu.mapeditor.handler.tool;
 
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.Cell;
+import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.handler.EditorHandler;
-import org.pvemu.mapeditor.handler.ToolsHandler;
+import org.pvemu.mapeditor.handler.layer.Layer;
 import org.pvemu.mapeditor.ui.rightmenu.ObjectTab;
 
 /**
@@ -17,23 +18,23 @@ import org.pvemu.mapeditor.ui.rightmenu.ObjectTab;
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class SelectTool implements Tool{
-    final private ToolsHandler handler;
-
-    public SelectTool(ToolsHandler handler) {
-        this.handler = handler;
-    }
 
     @Override
-    public void onClick(Cell cell) {
-        handler.setCurrentCell(cell);
+    public void onClick(EditorHandler handler, Cell cell) {
+        Layer layer = Layer.getSelected();
+        CellObject obj = cell.getObjectAt(layer);
         
-        if(cell.getLayer1() == null)
+        if(obj == null){
             JMapEditor.getUI().getRightMenu().removeObjectTab();
-        else
-            JMapEditor.getUI().getRightMenu().setObjectTab(new ObjectTab(cell));
+            handler.setSelectedCell(null);
+            JMapEditor.getToolsHandler().setCurrentObject(null);
+            return;
+        }
         
-        handler.setCurrentObject(cell.getLayer1());
-        EditorHandler.getCurrentHandler().getUI().getGrid().repaint();
+        handler.setSelectedCell(cell);
+        JMapEditor.getUI().getRightMenu().setObjectTab(new ObjectTab(cell));
+        JMapEditor.getToolsHandler().setCurrentObject(obj);
+        handler.getUI().getGrid().repaint();
     }
     
 }

@@ -62,11 +62,19 @@ public class MapData implements Iterable<Cell>{
         this.background = background;
     }
     
+    public Cell getCell(int id){
+        return cells[id];
+    }
+    
+    public void setCell(Cell cell){
+        cells[cell.getId()] = cell;
+    }
+    
     static public MapData generateMap(MapInfo info){
         Cell[] cells = new Cell[Utils.getCellNumberBySize(info.getWidth(), info.getHeight())];
         
         for(int i = 0; i < cells.length; ++i){
-            cells[i] = new Cell();
+            cells[i] = new Cell(i);
         }
         
         return new MapData(info, null, cells);

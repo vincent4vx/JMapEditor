@@ -14,7 +14,11 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import org.pvemu.mapeditor.action.EditMap;
 import org.pvemu.mapeditor.action.JMapEditor;
+import org.pvemu.mapeditor.data.Change;
 import org.pvemu.mapeditor.data.Tile;
+import org.pvemu.mapeditor.handler.EditorHandler;
+import org.pvemu.mapeditor.handler.changeaction.ChangeActionFactory;
+import org.pvemu.mapeditor.handler.changeaction.ChangeActions;
 import org.pvemu.mapeditor.ui.TileRenderer;
 
 /**
@@ -31,13 +35,23 @@ public class BackgroundTab extends JPanel{
         
         list.addListSelectionListener((e) -> {
             Tile tile = list.getSelectedValue();
-            EditMap.changeBackground(tile);
+            EditorHandler handler = EditorHandler.getCurrentHandler();
+            handler.getChangeHandler().addChange(ChangeActionFactory.changeBackground(
+                    handler, 
+                    handler.getMap(), 
+                    tile.getId()
+            ));
         });
         
         JButton clear = new JButton("Effacer");
         clear.addActionListener((e) -> {
+            EditorHandler handler = EditorHandler.getCurrentHandler();
+            handler.getChangeHandler().addChange(ChangeActionFactory.changeBackground(
+                    handler, 
+                    handler.getMap(), 
+                    0
+            ));
             list.setSelectedIndex(-1);
-            EditMap.changeBackground(null);
         });
         
         add(clear, BorderLayout.NORTH);

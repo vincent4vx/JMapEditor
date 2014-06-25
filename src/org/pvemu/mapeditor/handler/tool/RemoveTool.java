@@ -7,25 +7,21 @@
 package org.pvemu.mapeditor.handler.tool;
 
 import org.pvemu.mapeditor.data.Cell;
-import org.pvemu.mapeditor.data.CellObject;
+import org.pvemu.mapeditor.data.Change;
 import org.pvemu.mapeditor.handler.EditorHandler;
-import org.pvemu.mapeditor.handler.ToolsHandler;
+import org.pvemu.mapeditor.handler.changeaction.ChangeActionFactory;
+import org.pvemu.mapeditor.handler.layer.Layer;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class RemoveTool implements Tool{
-    final private ToolsHandler handler;
-
-    public RemoveTool(ToolsHandler handler) {
-        this.handler = handler;
-    }
 
     @Override
-    public void onClick(Cell cell) {
-        cell.setLayer1(null);
-        EditorHandler.getCurrentHandler().update();
+    public void onClick(EditorHandler handler, Cell cell) {
+        Change change = ChangeActionFactory.removeObject(handler, cell, Layer.getSelected());
+        handler.getChangeHandler().addChange(change);
     }
     
 }

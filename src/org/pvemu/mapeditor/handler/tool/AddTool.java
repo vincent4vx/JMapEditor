@@ -6,10 +6,12 @@
 
 package org.pvemu.mapeditor.handler.tool;
 
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
+import org.pvemu.mapeditor.data.Change;
 import org.pvemu.mapeditor.handler.EditorHandler;
-import org.pvemu.mapeditor.handler.ToolsHandler;
+import org.pvemu.mapeditor.handler.changeaction.ChangeActionFactory;
 import org.pvemu.mapeditor.handler.layer.Layer;
 
 /**
@@ -17,23 +19,15 @@ import org.pvemu.mapeditor.handler.layer.Layer;
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class AddTool implements Tool{
-    final private ToolsHandler handler;
-
-    public AddTool(ToolsHandler handler) {
-        this.handler = handler;
-    }
 
     @Override
-    public void onClick(Cell cell) {
-        if(handler.getCurrentObject() == null)
+    public void onClick(EditorHandler handler, Cell cell) {
+        CellObject obj = JMapEditor.getToolsHandler().getCurrentObject();
+        if(obj == null)
             return;
         
-        CellObject obj = new CellObject(handler.getCurrentObject()); //copy object
-        EditorHandler editorHandler = EditorHandler.getCurrentHandler();
-        obj.addRotationListener((c) -> editorHandler.update());
-        
-        cell.setObjectAt(Layer.getSelected(), obj);
-        editorHandler.update();
+        Change change = ChangeActionFactory.addObject(handler, cell, Layer.getSelected(), obj);
+        handler.getChangeHandler().addChange(change);
     }
     
 }

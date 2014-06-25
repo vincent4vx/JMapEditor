@@ -44,7 +44,7 @@ class GridListener extends MouseAdapter{
             return;
         }
         
-        JMapEditor.getToolsHandler().getTool().onClick(hovered.getCell());
+        JMapEditor.getToolsHandler().getTool().onClick(grid.getHandler(), hovered.getCell());
     }
 
     public GridCell getHovered() {

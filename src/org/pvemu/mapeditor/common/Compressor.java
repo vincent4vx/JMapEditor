@@ -24,8 +24,8 @@ final public class Compressor {
         'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_'
     };
     
-    public static Cell decompressCell(String cellData){
-        Cell cell = new Cell();
+    public static Cell decompressCell(int index, String cellData){
+        Cell cell = new Cell(index);
         
         byte[] _loc8 = new byte[cellData.length()];
         
@@ -100,7 +100,7 @@ final public class Compressor {
 
         for(int i = 0; i < mapData.length(); i += 10){
             String cellData = mapData.substring(i, i + 10);
-            cells.add(decompressCell(cellData));
+            cells.add(decompressCell(i / 10, cellData));
         }
         
         return cells.toArray(new Cell[0]);

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.handler;
 
 import java.io.File;
@@ -16,7 +10,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import org.pvemu.mapeditor.action.EditMap;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Compressor;
 import org.pvemu.mapeditor.common.JMEFileChooser;
@@ -32,8 +25,11 @@ import org.pvemu.mapeditor.ui.editor.MapEditorUI;
 final public class EditorHandler {
     final private MapData map;
     final private MapEditorUI ui;
+    final private ChangeHandler changeHandler = new ChangeHandler();
     private MapDBHandler data = null;
     private boolean changed = false;
+    
+    private Cell selectedCell = null;
 
     public EditorHandler(MapData map) {
         changed = true;
@@ -152,6 +148,18 @@ final public class EditorHandler {
         );
         
         ui.getGrid().repaint();
+    }
+
+    public ChangeHandler getChangeHandler() {
+        return changeHandler;
+    }
+
+    public Cell getSelectedCell() {
+        return selectedCell;
+    }
+
+    public void setSelectedCell(Cell selectedCell) {
+        this.selectedCell = selectedCell;
     }
     
     static public EditorHandler getCurrentHandler(){

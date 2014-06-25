@@ -14,6 +14,7 @@ import org.pvemu.mapeditor.handler.layer.Layer;
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class Cell{
+    final private int id;
     private boolean active = true;
     private boolean lineOfSight = true;
     private int layerGroundRot = 0;
@@ -23,6 +24,10 @@ public class Cell{
     private int layerObject1Rot = 0;
     
     final private EnumMap<Layer, CellObject> objects = new EnumMap<>(Layer.class);
+
+    public Cell(int id) {
+        this.id = id;
+    }
 
     public boolean isActive() {
         return active;
@@ -87,6 +92,10 @@ public class Cell{
     public void setObjectAt(Layer layer, CellObject obj){
         objects.put(layer, obj);
     }
+    
+    public void removeObjectAt(Layer layer){
+        objects.remove(layer);
+    }
 
     public CellObject getGround() {
         return objects.get(Layer.GROUND);
@@ -122,5 +131,9 @@ public class Cell{
         groundLevel = cell.groundLevel;
         groundSlope = cell.groundSlope;
         movement = cell.movement;
+    }
+
+    public int getId() {
+        return id;
     }
 }
