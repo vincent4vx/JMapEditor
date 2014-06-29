@@ -149,10 +149,9 @@ public class MainMenuBar extends JMenuBar{
 
         try {
             JMapEditor.getExportHandler().export(handler.getMap());
-        } catch (IOException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex){
+            JOptionPane.showMessageDialog(JMapEditor.getUI(), ex, "Exportation : erreur", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace(System.err);
         }
     }
 }

@@ -10,10 +10,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.StringReader;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -72,14 +68,14 @@ public class ExportHandler {
         return pattern;
     }
     
-    public void export(MapData map) throws FileNotFoundException, IOException, InterruptedException{
+    public void export(MapData map) throws FileNotFoundException, IOException, InterruptedException, Exception{
         String baseName = map.getInfo().getId() + "_" + map.getInfo().getLastDate();
         Path swf = Paths.get(baseName + Constants.SWF_EXT);
         Path flm = Paths.get(baseName + Constants.FLM_EXT);
         
         Files.copy(blank, swf, StandardCopyOption.REPLACE_EXISTING);
         
-        Process p = Runtime.getRuntime().exec("flasm -d " + swf);
+        Process p = Runtime.getRuntime().exec(getFlasmCommand() + " -d " + swf);
         p.waitFor();
         
         InputStreamReader isr = new InputStreamReader(p.getInputStream());
@@ -98,9 +94,23 @@ public class ExportHandler {
         
         Files.write(flm, data.getBytes(), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
         
-        p = Runtime.getRuntime().exec("flasm -a " + flm);
+        p = Runtime.getRuntime().exec(getFlasmCommand() + " -a " + flm);
         p.waitFor();
         
         Files.delete(flm);
+    }
+    
+    private String getFlasmCommand() throws Exception{
+        String os = System.getProperty("os.name").toLowerCase();
+        
+        if(os.startsWith("windows")){
+            return Constants.FLASM_WIN;
+        }else if(os.startsWith("linux")){
+            return Constants.FLASM_LINUX;
+        }else if(os.startsWith("mac")){
+            return Constants.FLASM_MAC;
+        }else{
+            throw new Exception("Cannot reconnized OS " + os);
+        }
     }
 }

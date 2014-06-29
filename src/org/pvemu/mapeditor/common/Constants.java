@@ -37,4 +37,7 @@ public class Constants {
     final static public String FLM_EXT          = ".flm";
     final static public String FLASM_DIR        = RESOURCES_DIR + "flasm/";
     final static public String BLANK_FILE       = FLASM_DIR + "blank" + SWF_EXT;
+    final static public String FLASM_WIN        = FLASM_DIR + "flasm16win/flasm.exe";
+    final static public String FLASM_LINUX      = FLASM_DIR + "flasm16linux/flasm";
+    final static public String FLASM_MAC        = FLASM_DIR + "flasm16mac/flasm";
 }

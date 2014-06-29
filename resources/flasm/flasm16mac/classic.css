@@ -1,0 +1,121 @@
+body {
+	background-color: #001144;
+	margin: 0;
+	text-align: center;
+	max-width: 60em;
+	margin: auto;
+}
+
+#maintable {
+	text-align: left;
+	width: 100%;
+	height: 100%;
+	width: expression(document.body.clientWidth > 500/6 * parseInt(document.body.currentStyle.fontSize) ? "60em" : "auto");
+}
+
+a {
+	color: #FD4D30;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+code {
+	color: #666666;
+	font-size: 90%
+}
+
+h3, h4, h5 {
+	color: #001455;
+}
+
+ul {
+	margin-left: 1.2em;
+	padding-left: 0
+}
+
+.menu {
+	color: #FFF7E0;
+	font: bold 16px/24px Verdana, sans-serif;
+}
+
+.menu * {
+	margin-right: 24px;
+}
+
+
+.menu .logina {
+	margin-right: 0;
+}
+
+.menu a {
+	color: #FD684F;
+}
+
+.menu a:hover {
+	color: #FFF7E0;
+	text-decoration: none;
+}
+
+.subhead {
+	color: #FFF7E0;
+}
+
+#menutd {
+	font: 16px/24px Georgia, "Times New Roman", Times, serif;
+	background: #921212 url('perf.gif') repeat-x center bottom;
+	padding: 36px 48px;
+}
+
+.contenttd {
+	background-color: #FFF7E0;
+	color: #001144;
+	font: 16px/24px Georgia, "Times New Roman", Times, serif;
+	padding: 36px 48px;
+}
+
+.copyrighttd {
+	font-size: 13px;
+}
+
+.whitehr {
+	margin: 8px 0 6px 0;
+	padding: 0;
+	border-bottom: 1px dotted #FFF7E0;
+}
+
+.bluehr {
+	margin: 18px 0 12px 0;
+	padding: 0;
+	border-bottom: 1px dotted #001144;
+
+}
+
+
+@media print {
+	body {
+		background: white;
+		font-size: 12pt;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	a {
+		text-decoration: underline;
+	}
+
+	.subhead, .contenttd {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	code {
+		font-size: 9pt;
+	}
+
+	#menutd, .whitehr {
+		display: none;
+	}
+}
