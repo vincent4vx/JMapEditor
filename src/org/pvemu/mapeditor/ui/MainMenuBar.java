@@ -8,12 +8,9 @@ package org.pvemu.mapeditor.ui;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -147,11 +144,13 @@ public class MainMenuBar extends JMenuBar{
         if(handler == null)
             return;
 
-        try {
+        /*try {
             JMapEditor.getExportHandler().export(handler.getMap());
         } catch (Exception ex){
             JOptionPane.showMessageDialog(JMapEditor.getUI(), ex, "Exportation : erreur", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace(System.err);
-        }
+        }*/
+        
+        new ExportDialog(handler);
     }
 }
