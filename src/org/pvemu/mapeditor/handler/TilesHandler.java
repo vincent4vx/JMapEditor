@@ -10,6 +10,7 @@ import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.data.TilesList;
 import org.pvemu.mapeditor.data.TilesListContainer;
@@ -32,7 +33,7 @@ public class TilesHandler {
         
         try{
             loader.setInfoText("Loading backgrounds");
-            backgrounds = new TilesList(new File(Constants.BACKGROUNDS_DIR));
+            backgrounds = new TilesList(new File(JMapEditor.getParametersHandler().getString("BACKGROUNDS_DIR")));
             
             backgrounds.setLoadingListener((s, v) -> {
                     loadingValue += v * 10;
@@ -44,7 +45,7 @@ public class TilesHandler {
             loader.setValue((int)loadingValue);
             loader.setInfoText("Loading grounds");
             grounds = new TilesListContainer(
-                    new File(Constants.GROUNDS_DIR),
+                    new File(JMapEditor.getParametersHandler().getString("GROUNDS_DIR")),
                     (s, v) -> {
                         loadingValue += v * 20;
                         loader.setValue((int)loadingValue);
@@ -54,7 +55,7 @@ public class TilesHandler {
             
             loader.setInfoText("Loading objects");
             objects = new TilesListContainer(
-                    new File(Constants.OBJECTS_DIR),
+                    new File(JMapEditor.getParametersHandler().getString("OBJECTS_DIR")),
                     (s, v) -> {
                         loadingValue += v * 70;
                         loader.setValue((int)loadingValue);

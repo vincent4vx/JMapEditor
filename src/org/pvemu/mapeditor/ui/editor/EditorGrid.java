@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.Utils;
 import org.pvemu.mapeditor.data.Cell;
@@ -36,6 +38,9 @@ public class EditorGrid extends JPanel{
         int _loc10 = 0;
         double _loc11 = 0;
         
+        final double CELL_HALF_WIDTH = JMapEditor.getParametersHandler().getDouble("CELL_HALF_WIDTH");
+        final double CELL_HALF_HEIGHT = JMapEditor.getParametersHandler().getDouble("CELL_HALF_HEIGHT");
+        final int CELL_WIDTH = JMapEditor.getParametersHandler().getInt("CELL_WIDTH");
         
         for(Cell cell : map){
             if(_loc9 == _loc14){
@@ -43,7 +48,7 @@ public class EditorGrid extends JPanel{
                 ++_loc10;
 
                 if(_loc11 == 0D){
-                    _loc11 = Constants.CELL_HALF_WIDTH;
+                    _loc11 = CELL_HALF_WIDTH;
                     --_loc14;
                 }else{
                     _loc11 = 0;
@@ -53,8 +58,8 @@ public class EditorGrid extends JPanel{
                 ++_loc9;
             }
             
-            int x = (int)(_loc9 * Constants.CELL_WIDTH + _loc11);
-            int y = (int)(_loc10 * Constants.CELL_HALF_HEIGHT);
+            int x = (int)(_loc9 * CELL_WIDTH + _loc11);
+            int y = (int)(_loc10 * CELL_HALF_HEIGHT);
             
             shapes.add(new GridCell(cell, x, y));
         }

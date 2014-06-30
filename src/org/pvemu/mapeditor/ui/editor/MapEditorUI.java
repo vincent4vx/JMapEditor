@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.pvemu.mapeditor.ui.editor;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameAdapter;
@@ -28,7 +24,7 @@ public class MapEditorUI extends JInternalFrame {
     final private EditorHandler handler;
     final private EditorGrid grid;
 
-    public MapEditorUI(EditorHandler handler) {
+    public MapEditorUI(EditorHandler handler){
         this.handler = handler;
         grid = new EditorGrid(handler.getMap(), handler);
         add(grid);
@@ -37,7 +33,11 @@ public class MapEditorUI extends JInternalFrame {
         setIconifiable(true);
         setMaximizable(false);
         setClosable(true);
-        setSize((handler.getMap().getInfo().getWidth() - 1) * Constants.CELL_WIDTH + 10, handler.getMap().getInfo().getHeight() * Constants.CELL_HEIGHT + 6);
+        
+        final int CELL_WIDTH = JMapEditor.getParametersHandler().getInt("CELL_WIDTH");
+        final int CELL_HEIGHT = JMapEditor.getParametersHandler().getInt("CELL_HEIGHT");
+        
+        setSize((handler.getMap().getInfo().getWidth() - 1) * CELL_WIDTH + 10, handler.getMap().getInfo().getHeight() * CELL_HEIGHT + 6);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addInternalFrameListener(new InternalFrameAdapter() {

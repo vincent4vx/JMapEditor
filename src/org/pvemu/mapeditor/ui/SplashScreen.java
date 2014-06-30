@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JWindow;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Constants;
 
 /**
@@ -45,7 +46,7 @@ public class SplashScreen extends JWindow{
         public SplashPanel() throws IOException {
             setLayout(null);
             setPreferredSize(new Dimension(440, 286));
-            bg = ImageIO.read(new File(Constants.SPLASH_IMG));
+            bg = ImageIO.read(new File(JMapEditor.getParametersHandler().getString("SPLASH_IMG")));
         }
 
         @Override

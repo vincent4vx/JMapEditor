@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import org.pvemu.mapeditor.action.JMapEditor;
 
 /**
  *
@@ -25,7 +26,7 @@ public class JMEFileChooser extends JFileChooser {
                 if(!f.canRead() || !f.canWrite())
                     return false;
                 
-                return f.isDirectory() || f.getName().endsWith(Constants.JME_EXT);
+                return f.isDirectory() || f.getName().endsWith(JMapEditor.getParametersHandler().getString("JME_EXT"));
             }
 
             @Override
@@ -50,7 +51,7 @@ public class JMEFileChooser extends JFileChooser {
         
         //ADD ext
         if(selected.getName().split("\\.").length < 2){
-            selected = new File(selected.getAbsolutePath() + Constants.JME_EXT);
+            selected = new File(selected.getAbsolutePath() + JMapEditor.getParametersHandler().getString("JME_EXT"));
         }
         
         return selected;

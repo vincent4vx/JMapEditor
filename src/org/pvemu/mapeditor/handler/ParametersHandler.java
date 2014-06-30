@@ -29,11 +29,15 @@ public class ParametersHandler extends AbstractTableModel{
         }
     }
     
-    private JMEParameter getParameter(String name) throws SQLException{
+    private JMEParameter getParameter(String name){
         JMEParameter param = paramByName.get(name);
         
         if(param == null){
-            param = parameterDAO.getByName(name);
+            try{
+                param = parameterDAO.getByName(name);
+            }catch(SQLException ex){
+                JMapEditor.getErrorHandler().showError("Impossible de récupérer le paramètre...", ex);
+            }
             
             if(param != null){
                 paramByName.put(name, param);
@@ -44,32 +48,41 @@ public class ParametersHandler extends AbstractTableModel{
         return param;
     }
     
-    private JMEParameter getWithDefault(String name, JMEParameter.ParameterType type, Object defaultValue) throws SQLException{
+    private JMEParameter getWithDefault(String name, JMEParameter.ParameterType type, Object defaultValue){
         JMEParameter param = getParameter(name);
         
         if(param == null){
             param = new JMEParameter(name, type, defaultValue);
+            try{
+                parameterDAO.create(param);
+            }catch(SQLException e){
+                JMapEditor.getErrorHandler().showError("Sauvegarde du paramètre impossible !", e);
+                return null;
+            }
             paramByName.put(name, param);
             parameters.add(param);
-            parameterDAO.create(param);
         }
         
         return param;
     }
     
-    public void setParameter(String name, JMEParameter.ParameterType type, Object value) throws SQLException, Exception{
+    public void setParameter(String name, JMEParameter.ParameterType type, Object value){
         JMEParameter param = paramByName.get(name);
         
-        if(param == null){
-            param = new JMEParameter(name, type, value);
-            parameterDAO.create(param);
-            paramByName.put(name, param);
-            parameters.add(param);
-            fireTableRowsInserted(parameters.size() - 1, parameters.size() - 1);
-        }else{
-            param.setValue(value);
-            param.setType(type);
-            parameterDAO.update(param);
+        try{
+            if(param == null){
+                param = new JMEParameter(name, type, value);
+                parameterDAO.create(param);
+                paramByName.put(name, param);
+                parameters.add(param);
+                fireTableRowsInserted(parameters.size() - 1, parameters.size() - 1);
+            }else{
+                param.setValue(value);
+                param.setType(type);
+                parameterDAO.update(param);
+            }
+        }catch(SQLException e){
+            JMapEditor.getErrorHandler().showError("Sauvegarde du paramètre impossible !", e);
         }
     }
 
@@ -155,7 +168,7 @@ public class ParametersHandler extends AbstractTableModel{
         }
     }
     
-    public void removeParameter(String name) throws SQLException{
+    public void removeParameter(String name){
         JMEParameter param = paramByName.get(name);
         
         if(param == null)
@@ -164,19 +177,25 @@ public class ParametersHandler extends AbstractTableModel{
         removeParameterRow(parameters.indexOf(param));
     }
     
-    public void removeParameterRow(int rowIndex) throws SQLException{
+    public void removeParameterRow(int rowIndex){
         if(rowIndex == -1 || rowIndex >= parameters.size())
             return;
         
         JMEParameter param = parameters.get(rowIndex);
         
+        try{
+            parameterDAO.delete(param);
+        }catch(SQLException e){
+            JMapEditor.getErrorHandler().showError("Suppression du paramètre impossible...", e);
+            return;
+        }
+        
         parameters.remove(rowIndex);
         paramByName.remove(param.getName());
-        parameterDAO.delete(param);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
     
-    private Object getAndVerify(String name, JMEParameter.ParameterType type) throws SQLException{
+    private Object getAndVerify(String name, JMEParameter.ParameterType type){
         JMEParameter parameter = verifyParameter(getParameter(name), type);
         return parameter.getValue();
     }
@@ -191,56 +210,56 @@ public class ParametersHandler extends AbstractTableModel{
         return parameter;
     }
     
-    private Object getAndVerifyWithDefault(String name, JMEParameter.ParameterType type, Object defaultValue) throws SQLException{
+    private Object getAndVerifyWithDefault(String name, JMEParameter.ParameterType type, Object defaultValue){
         JMEParameter parameter = verifyParameter(getWithDefault(name, type, defaultValue), type);
         return parameter.getValue();
     }
     
-    public int getInt(String name) throws SQLException{
+    public int getInt(String name){
         return (int)getAndVerify(name, JMEParameter.ParameterType.INT);
     }
     
-    public int getIntDefault(String name, int def) throws SQLException{
+    public int getIntDefault(String name, int def){
         return (int)getAndVerifyWithDefault(name, JMEParameter.ParameterType.INT, def);
     }
     
-    public void setInt(String name, int value) throws Exception{
+    public void setInt(String name, int value){
         setParameter(name, JMEParameter.ParameterType.INT, value);
     }
     
-    public String getString(String name) throws SQLException{
+    public String getString(String name){
         return (String)getAndVerify(name, JMEParameter.ParameterType.STRING);
     }
     
-    public String getStringDefault(String name, String def) throws SQLException{
+    public String getStringDefault(String name, String def){
         return (String)getAndVerifyWithDefault(name, JMEParameter.ParameterType.STRING, def);
     }
     
-    public void setString(String name, String value) throws Exception{
+    public void setString(String name, String value){
         setParameter(name, JMEParameter.ParameterType.STRING, value);
     }
     
-    public boolean getBool(String name) throws SQLException{
+    public boolean getBool(String name){
         return (boolean)getAndVerify(name, JMEParameter.ParameterType.BOOL);
     }
     
-    public boolean getBoolDefault(String name, boolean def) throws SQLException{
+    public boolean getBoolDefault(String name, boolean def){
         return (boolean)getAndVerifyWithDefault(name, JMEParameter.ParameterType.BOOL, def);
     }
     
-    public void setBool(String name, boolean value) throws Exception{
+    public void setBool(String name, boolean value){
         setParameter(name, JMEParameter.ParameterType.BOOL, value);
     }
     
-    public double getDouble(String name) throws SQLException{
+    public double getDouble(String name){
         return (double)getAndVerify(name, JMEParameter.ParameterType.DOUBLE);
     }
     
-    public double getDoubleDefault(String name, double def) throws SQLException{
+    public double getDoubleDefault(String name, double def){
         return (double)getAndVerifyWithDefault(name, JMEParameter.ParameterType.DOUBLE, def);
     }
     
-    public void setDouble(String name, double value) throws Exception{
+    public void setDouble(String name, double value){
         setParameter(name, JMEParameter.ParameterType.DOUBLE, value);
     }
 }

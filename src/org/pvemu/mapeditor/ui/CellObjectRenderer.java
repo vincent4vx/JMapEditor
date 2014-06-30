@@ -8,6 +8,7 @@ package org.pvemu.mapeditor.ui;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.Coordinate;
 import org.pvemu.mapeditor.data.CellObject;
@@ -29,7 +30,7 @@ final public class CellObjectRenderer {
         int height = img.getHeight();
         
         int x = coordinate.getX() - width / 2;
-        int y = (int) (coordinate.getY() - height + Constants.CELL_HALF_HEIGHT);
+        int y = (int) (coordinate.getY() - height + JMapEditor.getParametersHandler().getDouble("CELL_HALF_HEIGHT"));
 
         if (obj.isFlip()) {
             x += width;

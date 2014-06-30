@@ -6,7 +6,8 @@
 package org.pvemu.mapeditor.ui.editor;
 
 import java.awt.Polygon;
-import org.pvemu.mapeditor.common.Constants;
+import java.sql.SQLException;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Coordinate;
 import org.pvemu.mapeditor.data.Cell;
 
@@ -25,11 +26,14 @@ class GridCell extends Polygon implements Coordinate{
         this.cell = cell;
         this.x = x;
         this.y = y;
+        
+        final double CELL_HALF_WIDTH = JMapEditor.getParametersHandler().getDouble("CELL_HALF_WIDTH");
+        final double CELL_HALF_HEIGHT = JMapEditor.getParametersHandler().getDouble("CELL_HALF_HEIGHT");
 
-        addPoint((int) (x - Constants.CELL_HALF_WIDTH), y);
-        addPoint(x, (int) (y + Constants.CELL_HALF_HEIGHT));
-        addPoint((int) (x + Constants.CELL_HALF_WIDTH), y);
-        addPoint(x, (int) (y - Constants.CELL_HALF_HEIGHT));
+        addPoint((int) (x - CELL_HALF_WIDTH), y);
+        addPoint(x, (int) (y + CELL_HALF_HEIGHT));
+        addPoint((int) (x + CELL_HALF_WIDTH), y);
+        addPoint(x, (int) (y - CELL_HALF_HEIGHT));
     }
 
     public Cell getCell() {

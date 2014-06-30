@@ -7,6 +7,7 @@
 package org.pvemu.mapeditor.handler;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,8 +16,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Compressor;
-import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.data.MapData;
 
 /**
@@ -57,7 +58,7 @@ public class ExportHandler {
     final private Path blank;
 
     public ExportHandler() {
-        blank = Paths.get(Constants.BLANK_FILE);
+        blank = Paths.get(JMapEditor.getParametersHandler().getString("BLANK_FILE"));
     }
     
     private String mapToFlm(String pattern, MapData map){        
@@ -69,9 +70,12 @@ public class ExportHandler {
     }
     
     public void export(MapData map) throws FileNotFoundException, IOException, InterruptedException, Exception{
+        String dir = JMapEditor.getParametersHandler().getString("OUTPUT_DIR") + map.getInfo().getId() + "/";
+        Files.createDirectories(Paths.get(dir));
+        
         String baseName = map.getInfo().getId() + "_" + map.getInfo().getLastDate();
-        Path swf = Paths.get(baseName + Constants.SWF_EXT);
-        Path flm = Paths.get(baseName + Constants.FLM_EXT);
+        Path swf = Paths.get(dir + baseName + JMapEditor.getParametersHandler().getString("SWF_EXT"));
+        Path flm = Paths.get(dir + baseName + JMapEditor.getParametersHandler().getString("FLM_EXT"));
         
         Files.copy(blank, swf, StandardCopyOption.REPLACE_EXISTING);
         
@@ -102,15 +106,18 @@ public class ExportHandler {
     
     private String getFlasmCommand() throws Exception{
         String os = System.getProperty("os.name").toLowerCase();
+        String paramName;
         
         if(os.startsWith("windows")){
-            return Constants.FLASM_WIN;
+            paramName = "FLASM_WIN";
         }else if(os.startsWith("linux")){
-            return Constants.FLASM_LINUX;
+            paramName = "FLASM_LINUX";
         }else if(os.startsWith("mac")){
-            return Constants.FLASM_MAC;
+            paramName = "FLASM_MAC";
         }else{
             throw new Exception("Cannot reconnized OS " + os);
         }
+        
+        return JMapEditor.getParametersHandler().getString(paramName);
     }
 }
