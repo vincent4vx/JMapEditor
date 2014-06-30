@@ -16,10 +16,10 @@ import org.pvemu.mapeditor.data.TilesListContainer;
  */
 public enum Layer {
     BACKGROUND("Background", null),
+    GRID("Grille", null),
     GROUND("Sol", JMapEditor.getTilesHandler().getGrounds()),
     LAYER1("Calque 1", JMapEditor.getTilesHandler().getObjects()),
     LAYER2("Calque 2", JMapEditor.getTilesHandler().getObjects()),
-    GRID("Grille", null),
     ;
     private static Layer selected = GROUND;
     
