@@ -6,6 +6,7 @@
 
 package org.pvemu.mapeditor.handler;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import javax.imageio.ImageIO;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Compressor;
 import org.pvemu.mapeditor.data.MapData;
@@ -69,13 +71,27 @@ public class ExportHandler {
         return pattern;
     }
     
-    public void export(MapData map) throws FileNotFoundException, IOException, InterruptedException, Exception{
+    public void export(EditorHandler handler) throws FileNotFoundException, IOException, InterruptedException, Exception{
+        MapData map = handler.getMap();
+        
         String dir = JMapEditor.getParametersHandler().getString("OUTPUT_DIR") + map.getInfo().getId() + "/";
         Files.createDirectories(Paths.get(dir));
         
-        String baseName = map.getInfo().getId() + "_" + map.getInfo().getLastDate();
-        Path swf = Paths.get(dir + baseName + JMapEditor.getParametersHandler().getString("SWF_EXT"));
-        Path flm = Paths.get(dir + baseName + JMapEditor.getParametersHandler().getString("FLM_EXT"));
+        String baseName = dir + map.getInfo().getId() + "_" + map.getInfo().getLastDate();
+        Path swf = Paths.get(baseName + JMapEditor.getParametersHandler().getString("SWF_EXT"));
+        Path flm = Paths.get(baseName + JMapEditor.getParametersHandler().getString("FLM_EXT"));
+        
+        BufferedImage img = new BufferedImage(
+                map.getInfo().getWidth() * JMapEditor.getParametersHandler().getInt("CELL_WIDTH"), 
+                map.getInfo().getHeight() * JMapEditor.getParametersHandler().getInt("CELL_HEIGHT"), 
+                BufferedImage.TYPE_INT_RGB
+        );
+        handler.getUI().getGrid().paintGraphics(img.createGraphics(), false);
+        ImageIO.write(
+                img, 
+                JMapEditor.getParametersHandler().getString("EXPORT_IMG_FORMAT"), 
+                new File(baseName + JMapEditor.getParametersHandler().getString("EXPORT_IMG_EXT"))
+        );
         
         Files.copy(blank, swf, StandardCopyOption.REPLACE_EXISTING);
         

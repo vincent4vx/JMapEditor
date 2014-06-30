@@ -65,7 +65,7 @@ public class ExportDialog extends JDialog{
     private void export(){
         MapData map = handler.getMap();
         try {
-            JMapEditor.getExportHandler().export(map);
+            JMapEditor.getExportHandler().export(handler);
         } catch (Exception ex){
             JOptionPane.showMessageDialog(this, ex, "Exportation : erreur", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace(System.err);

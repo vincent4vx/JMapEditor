@@ -31,8 +31,8 @@ abstract class LayerDisplayer {
         }
     }
 
-    static public void display(Layer layer, EditorGrid grid, Graphics2D g){
-        if (!layer.isVisible()) {
+    static public void display(Layer layer, EditorGrid grid, Graphics2D g, boolean isEdit){
+        if (isEdit && !layer.isVisible()) {
             return;
         }
         
@@ -44,9 +44,11 @@ abstract class LayerDisplayer {
         }
 
         Composite tmp = g.getComposite();
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, layer.getAlpha()));
+        
+        if(isEdit)
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, layer.getAlpha()));
 
-        displayer.draw(layer, grid, g);
+        displayer.draw(layer, grid, g, isEdit);
 
         g.setComposite(tmp);
     }
@@ -54,17 +56,17 @@ abstract class LayerDisplayer {
     private LayerDisplayer() {
     }
 
-    abstract void draw(Layer layer, EditorGrid grid, Graphics2D g);
+    abstract void draw(Layer layer, EditorGrid grid, Graphics2D g, boolean isEdit);
 
     static private class LayerObjectDisplayer extends LayerDisplayer {
 
         @Override
-        void draw(Layer layer, EditorGrid grid, Graphics2D g) {
-            Cell currentCell = grid.getHandler().getSelectedCell();//JMapEditor.getToolsHandler().getCurrentCell();
+        void draw(Layer layer, EditorGrid grid, Graphics2D g, boolean isEdit) {
+            Cell currentCell = grid.getHandler().getSelectedCell();
             for (GridCell shape : grid.getShapes()) {
                 CellObject obj = shape.getCell().getObjectAt(layer);
 
-                if (obj == null) {
+                if (obj == null && isEdit) {
                     //display object to add
                     if(shape.isHovered() && layer.isSelected() && JMapEditor.getToolsHandler().getTool() instanceof AddTool){
                         CellObjectRenderer.render(g, JMapEditor.getToolsHandler().getCurrentObject(), shape, false);
@@ -83,7 +85,10 @@ abstract class LayerDisplayer {
     static private class GridLayerDisplayer extends LayerDisplayer {
 
         @Override
-        void draw(Layer layer, EditorGrid grid, Graphics2D g) {
+        void draw(Layer layer, EditorGrid grid, Graphics2D g, boolean isEdit) {
+            if(!isEdit && !JMapEditor.getParametersHandler().getBool("EXPORT_IMG_GRID"))
+                return;
+            
             for (GridCell cell : grid.getShapes()) {
 
                 g.setColor(Constants.GRID_COLOR);
@@ -106,7 +111,7 @@ abstract class LayerDisplayer {
     
     static private class BackgroundLayerDisplayer extends LayerDisplayer{
         @Override
-        void draw(Layer layer, EditorGrid grid, Graphics2D g) {
+        void draw(Layer layer, EditorGrid grid, Graphics2D g, boolean isEdit) {
             MapData map = grid.getMap();
             
             if(map.getBackground() != null){

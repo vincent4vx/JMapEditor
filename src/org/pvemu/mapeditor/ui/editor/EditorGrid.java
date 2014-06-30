@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -73,26 +72,30 @@ public class EditorGrid extends JPanel{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
         Graphics2D g2d = (Graphics2D)g;
-        
-        g2d.setRenderingHint(
+        paintGraphics(g2d, true);
+    }
+    
+    public void paintGraphics(Graphics2D g, boolean isEdit){
+        g.setRenderingHint(
                 RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON
          );
         
         //display layers
         for(Layer layer : Layer.values()){
-            LayerDisplayer.display(layer, this, g2d);
+            LayerDisplayer.display(layer, this, g, isEdit);
         }
         
-        //display current cell
-        GridCell cell = listener.getHovered();
-        if (cell != null) {
-            Color tmp = g.getColor();
-            g.setColor(Constants.SELECTED_COLOR);
-            g.fillPolygon(cell);
-            g.setColor(tmp);
+        if(isEdit){
+            //display current cell
+            GridCell cell = listener.getHovered();
+            if (cell != null) {
+                Color tmp = g.getColor();
+                g.setColor(Constants.SELECTED_COLOR);
+                g.fillPolygon(cell);
+                g.setColor(tmp);
+            }
         }
     }
 
