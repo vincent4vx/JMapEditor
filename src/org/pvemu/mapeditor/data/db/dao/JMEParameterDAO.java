@@ -63,7 +63,7 @@ public class JMEParameterDAO {
     }
     
     public JMEParameter getByName(String name) throws SQLException{
-        ResultSet RS = connection.executePrepare("SELECT * FROM JME_PARAMETERS WHERE NAME = ?", name);
+        ResultSet RS = connection.executePrepare("SELECT * FROM JME_PARAMETER WHERE NAME = ?", name);
         
         if(!RS.next())
             return null;

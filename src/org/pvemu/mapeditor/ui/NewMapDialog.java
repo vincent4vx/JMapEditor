@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -17,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.action.OpenMap;
-import org.pvemu.mapeditor.common.Constants;
 
 /**
  *
@@ -28,12 +28,12 @@ public class NewMapDialog extends JDialog{
     final private JSpinner width = new JSpinner();
     final private JSpinner height = new JSpinner();
 
-    public NewMapDialog() throws HeadlessException {
+    public NewMapDialog() throws HeadlessException, SQLException {
         super(JMapEditor.getUI(), "Nouvelle map");
         
-        id.setValue(16000);
-        width.setValue(Constants.DEFAULT_WIDTH);
-        height.setValue(Constants.DEFAULT_HEIGHT);
+        id.setValue(JMapEditor.getParametersHandler().getIntDefault("LAST_MAP_ID", 13000) + 1);
+        width.setValue(JMapEditor.getParametersHandler().getInt("DEFAULT_WIDTH"));
+        height.setValue(JMapEditor.getParametersHandler().getInt("DEFAULT_HEIGHT"));
         
         setModal(true);        
         makePanel();
@@ -60,6 +60,11 @@ public class NewMapDialog extends JDialog{
         JButton ok = new JButton("Ok");
         ok.addActionListener((e) -> {
             OpenMap.newMap((Integer)id.getValue(), (Integer)width.getValue(), (Integer)height.getValue());
+            try {
+                JMapEditor.getParametersHandler().setInt("LAST_MAP_ID", (Integer)id.getValue());
+            } catch (Exception ex) {
+                JMapEditor.getErrorHandler().showError("Création de la carte : erreur", ex);
+            }
             setVisible(false);
             dispose();
         });

@@ -45,7 +45,13 @@ public class MainMenuBar extends JMenuBar{
         
         JMenuItem newMap = new JMenuItem("Nouvelle map");
         newMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
-        newMap.addActionListener((e) -> new NewMapDialog());
+        newMap.addActionListener((e) -> {
+            try{
+                new NewMapDialog();    
+            }catch(SQLException ex){
+                JMapEditor.getErrorHandler().showError("Nouvelle map : erreur", ex);
+            }
+        });
         file.add(newMap);
         
         JMenuItem open = new JMenuItem("Ouvrir");
