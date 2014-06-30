@@ -1,6 +1,7 @@
 package org.pvemu.mapeditor.ui.editor;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Composite;
 import org.pvemu.mapeditor.ui.CellObjectRenderer;
 import java.awt.Graphics2D;
@@ -29,6 +30,9 @@ abstract class LayerDisplayer {
                 continue;
             displayers.put(layer, new LayerObjectDisplayer());
         }
+        
+        displayers.put(Layer.WALKABLE, new WalkableLayerDisplayer());
+        displayers.put(Layer.LINE_OF_SIGHT, new LineOfSightDisplayer());
     }
 
     static public void display(Layer layer, EditorGrid grid, Graphics2D g, boolean isEdit){
@@ -118,5 +122,36 @@ abstract class LayerDisplayer {
                 g.drawImage(map.getBackground().getImage(), 0, 0, grid.getSize().width, grid.getSize().height , grid);
             }
         }
+    }
+    
+    static private class WalkableLayerDisplayer extends LayerDisplayer{
+
+        @Override
+        void draw(Layer layer, EditorGrid grid, Graphics2D g, boolean isEdit) {
+            for(GridCell cell : grid.getShapes()){
+                g.setColor(Constants.UNWALKABLE_COLOR);
+                
+                if(cell.getCell().getMovement() != 4){
+                    g.fill(cell);
+                    g.setColor(Color.BLACK);
+                    g.drawString(cell.getCell().getMovement() + "", cell.getX(), cell.getY());
+                }
+            }
+        }
+        
+    }
+    
+    static private class LineOfSightDisplayer extends LayerDisplayer{
+
+        @Override
+        void draw(Layer layer, EditorGrid grid, Graphics2D g, boolean isEdit) {
+            for(GridCell cell : grid.getShapes()){
+                g.setColor(Constants.SIGHT_BLOCK_COLOR);
+                
+                if(!cell.getCell().isLineOfSight())
+                    g.fill(cell);
+            }
+        }
+        
     }
 }

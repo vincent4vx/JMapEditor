@@ -14,10 +14,12 @@ import java.util.Map;
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class ChangeActions {
-    final static public int CHANGE_BACKBROUND_ACTION = 0;
-    final static public int ADD_OBJECT_ACTION        = 1;
-    final static public int REMOVE_OBJECT_ACTION     = 2;
-    final static public int FLIP_ACTION              = 4;
+    final static public int CHANGE_BACKBROUND_ACTION    = 0;
+    final static public int ADD_OBJECT_ACTION           = 1;
+    final static public int REMOVE_OBJECT_ACTION        = 2;
+    final static public int FLIP_ACTION                 = 4;
+    final static public int CHANGE_WALKABLE_ACTION      = 5;
+    final static public int CHANGE_LINE_OF_SIGHT_ACTION = 6;
     
     final static private Map<Integer, ChangeAction> actions = new HashMap<>();
     
@@ -26,6 +28,8 @@ public class ChangeActions {
         registerAction(new AddObjectAction());
         registerAction(new RemoveObjectAction());
         registerAction(new FlipAction());
+        registerAction(new ChangeWalkableAction());
+        registerAction(new ChangeLineOfSightAction());
     }
     
     static public void registerAction(ChangeAction action){

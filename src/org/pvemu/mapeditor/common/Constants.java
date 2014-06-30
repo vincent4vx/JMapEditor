@@ -17,5 +17,7 @@ public class Constants {
     final static public Color GRID_COLOR        = new Color(1f, 1f, 1f, .3f);
     final static public Color BACKGROUND_COLOR  = new Color(30, 30, 30);
     final static public Color SELECTED_COLOR    = new Color(120, 150, 180, 125);
+    final static public Color UNWALKABLE_COLOR  = new Color(.8f, 0, 0, .7f);
+    final static public Color SIGHT_BLOCK_COLOR = new Color(.8f, .8f, 0, .7f);
     final static public String PARAMETERS_DB    = "parameters.db";
 }

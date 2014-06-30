@@ -7,11 +7,11 @@
 package org.pvemu.mapeditor.handler;
 
 import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.handler.tool.AddTool;
 import org.pvemu.mapeditor.handler.tool.RemoveTool;
 import org.pvemu.mapeditor.handler.tool.SelectTool;
+import org.pvemu.mapeditor.handler.tool.StateTool;
 import org.pvemu.mapeditor.handler.tool.Tool;
 
 /**
@@ -23,7 +23,8 @@ public class ToolsHandler {
     
     final private Tool SELECT = new SelectTool(),
                        ADD = new AddTool(),
-                       REMOVE = new RemoveTool();
+                       REMOVE = new RemoveTool(),
+                       STATE = new StateTool();
     
     private Tool toolType = SELECT;
 
@@ -50,5 +51,13 @@ public class ToolsHandler {
     public void setAddTool(){
         toolType = ADD;
         JMapEditor.getUI().getRightMenu().getEditTab().getAdd().setSelected(true);
+    }
+    
+    public void setStateTool(){
+        toolType = STATE;
+    }
+    
+    public StateTool.CellState getCurrentCellState(){
+        return (StateTool.CellState) JMapEditor.getUI().getRightMenu().getEditTab().getStateSelector().getSelectedItem();
     }
 }

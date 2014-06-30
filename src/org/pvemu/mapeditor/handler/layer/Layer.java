@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.handler.layer;
 
 import java.util.EnumMap;
@@ -16,10 +10,12 @@ import org.pvemu.mapeditor.data.TilesListContainer;
  */
 public enum Layer {
     BACKGROUND("Background", null),
+    WALKABLE("Marchable", null),
     GRID("Grille", null),
     GROUND("Sol", JMapEditor.getTilesHandler().getGrounds()),
     LAYER1("Calque 1", JMapEditor.getTilesHandler().getObjects()),
     LAYER2("Calque 2", JMapEditor.getTilesHandler().getObjects()),
+    LINE_OF_SIGHT("Ligne de vue", null),
     ;
     private static Layer selected = GROUND;
     

@@ -64,4 +64,22 @@ public class ChangeActionFactory {
                 flip ? "1" : "0"
         );
     }
+    
+    static public Change walkable(EditorHandler handler, Cell cell, boolean walkable){
+        return new Change(
+                ChangeActions.CHANGE_WALKABLE_ACTION, 
+                handler, 
+                new int[]{walkable ? 1 : 0, cell.getId()}, 
+                Compressor.compressCell(cell)
+        );
+    }
+    
+    static public Change lineOfSight(EditorHandler handler, Cell cell, boolean lineOfSight){
+        return new Change(
+                ChangeActions.CHANGE_LINE_OF_SIGHT_ACTION, 
+                handler, 
+                new int[]{lineOfSight ? 1 : 0, cell.getId()}, 
+                Compressor.compressCell(cell)
+        );
+    }
 }

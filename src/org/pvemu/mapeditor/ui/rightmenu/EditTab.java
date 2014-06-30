@@ -1,19 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.ui.rightmenu;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import org.pvemu.mapeditor.action.JMapEditor;
+import org.pvemu.mapeditor.handler.tool.StateTool;
 import org.pvemu.mapeditor.ui.Icons;
 
 /**
@@ -24,16 +20,20 @@ public class EditTab extends JPanel{
     final private JToggleButton select = new JToggleButton(Icons.SELECT);
     final private JToggleButton add = new JToggleButton(Icons.ADD);
     final private JToggleButton remove = new JToggleButton(Icons.REMOVE);
+    final private JToggleButton state = new JToggleButton(Icons.STATE);
+    final private JComboBox<StateTool.CellState> stateSelector = new JComboBox<>(StateTool.CellState.values());
+    
+    final private ButtonGroup group = new ButtonGroup();
 
     public EditTab() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         tilesTools();
+        stateTools();
     }
     
-    private void tilesTools(){  
+    private void tilesTools(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        
-        panel.add(new JLabel("Actions"));
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Objets"));
         
         select.setPreferredSize(new Dimension(20, 20));
         select.setSelected(true);
@@ -51,10 +51,25 @@ public class EditTab extends JPanel{
         remove.addActionListener((e) -> JMapEditor.getToolsHandler().setRemoveTool());
         panel.add(remove);
         
-        ButtonGroup group = new ButtonGroup();
         group.add(select);
         group.add(remove);
         group.add(add);
+        
+        add(panel);
+    }
+    
+    private void stateTools(){
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "État"));
+        
+        state.setPreferredSize(new Dimension(20, 20));
+        state.setToolTipText("Changer l'état de la cellule");
+        state.addActionListener((e) -> JMapEditor.getToolsHandler().setStateTool());
+        panel.add(state);
+        
+        panel.add(stateSelector);
+        
+        group.add(state);
         
         add(panel);
     }
@@ -70,5 +85,8 @@ public class EditTab extends JPanel{
     public JToggleButton getRemove() {
         return remove;
     }
-    
+
+    public JComboBox<StateTool.CellState> getStateSelector() {
+        return stateSelector;
+    }
 }

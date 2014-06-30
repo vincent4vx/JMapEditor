@@ -19,4 +19,5 @@ final public class Icons {
     final static public Icon REMOVE = new ImageIcon(JMapEditor.getParametersHandler().getString("REMOVE_ICON"));
     final static public Icon ADD    = new ImageIcon(JMapEditor.getParametersHandler().getString("ADD_ICON"));
     final static public Icon ROTATE = new ImageIcon(JMapEditor.getParametersHandler().getString("ROTATE_ICON"));
+    final static public Icon STATE  = new ImageIcon(JMapEditor.getParametersHandler().getString("STATE_ICON"));
 }

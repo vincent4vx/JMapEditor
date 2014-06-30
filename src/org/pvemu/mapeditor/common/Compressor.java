@@ -54,19 +54,14 @@ final public class Compressor {
                 JMapEditor.getTilesHandler().getObjects()
         );
         
+        cell.setActive(((_loc8[0] & 32) >> 5) != 0);
+        
         cell.setLineOfSight((_loc8[0] & 1) == 1);
         cell.setLayerGroundRot((_loc8[1] & 48) >> 4);
         cell.setGroundLevel(_loc8[1] & 15);
         cell.setMovement((_loc8[2] & 56) >> 3);
-        //cell.setLayerGroundNum(((_loc8[0] & 24) << 6) + ((_loc8[2] & 7) << 6) + _loc8[3]);
         cell.setGroundSlope((_loc8[4] & 60) >> 2);
-        //cell.setLayerGroundFlip(((_loc8[4] & 2) >> 1) == 1);
-        //cell.setLayerObject1Num(((_loc8[0] & 4) << 11) + ((_loc8[4] & 1) << 12) + (_loc8[5] << 6) + _loc8[6]);
         cell.setLayerObject1Rot((_loc8[7] & 48) >> 4);
-        //cell.setLayerObject1Flip((_loc8[7] & 8) >> 3 == 1);
-        //cell.setLayerObject2Flip((_loc8[7] & 4) >> 2 == 1);
-        //cell.setLayerObject2Interactive((_loc8[7] & 2) >> 1 == 1);
-        //cell.setLayerObject2Num(((_loc8[0] & 2) << 12) + ((_loc8[7] & 1) << 12) + (_loc8[8] << 6) + _loc8[9]);
         
         cell.setGround(ground);
         cell.setLayer1(layer1);
@@ -122,7 +117,7 @@ final public class Compressor {
         boolean layer2Interactive = layer2 == null ? false : layer2.isInteractive();
         
         int[] _loc4 = new int[10];
-        _loc4[0] = (1) << 5;
+        _loc4[0] = (cell.isActive() ? 1 : 0) << 5;
         _loc4[0] = _loc4[0] | (cell.isLineOfSight() ? (1) : (0));
         _loc4[0] = _loc4[0] | (groundNum & 1536) >> 6;
         _loc4[0] = _loc4[0] | (layer1Num & 8192) >> 11;

@@ -34,8 +34,8 @@ public class AdvancedParameters extends JFrame{
         super("Paramètres avancés");
         table = new JTable(JMapEditor.getParametersHandler());
         makeContent();
-        setLocationRelativeTo(JMapEditor.getUI());
         pack();
+        setLocationRelativeTo(JMapEditor.getUI());
     }
     
     private void makeContent(){
