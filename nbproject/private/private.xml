@@ -3,10 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/handler/ExportHandler.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/common/Constants.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/ui/MainWindow.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/ui/MainMenuBar.java</file>
+            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/data/db/model/JMEParameter.java</file>
+            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/data/db/dao/JMEParameterDAO.java</file>
         </group>
     </open-files>
 </project-private>

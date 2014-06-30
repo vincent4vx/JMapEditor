@@ -25,6 +25,7 @@ import org.pvemu.mapeditor.common.JMEFileChooser;
 import org.pvemu.mapeditor.data.db.model.MapHistory;
 import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.handler.MapDBHandler;
+import org.pvemu.mapeditor.ui.editor.parameter.AdvancedParameters;
 
 /**
  *
@@ -34,6 +35,7 @@ public class MainMenuBar extends JMenuBar{
 
     public MainMenuBar() {
         add(file());
+        add(edit());
         add(map());
     }
     
@@ -57,6 +59,17 @@ public class MainMenuBar extends JMenuBar{
         file.add(save);
         
         return file;
+    }
+    
+    private JMenu edit(){
+        JMenu edit = new JMenu("Edition");
+        edit.setMnemonic('E');
+        
+        JMenuItem settings = new JMenuItem("Paramètres");
+        edit.add(settings);
+        settings.addActionListener((e) -> {AdvancedParameters a = new AdvancedParameters(); a.setVisible(true);});
+        
+        return edit;
     }
     
     private JMenu map(){

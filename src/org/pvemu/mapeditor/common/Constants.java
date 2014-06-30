@@ -40,4 +40,5 @@ public class Constants {
     final static public String FLASM_WIN        = FLASM_DIR + "flasm16win/flasm.exe";
     final static public String FLASM_LINUX      = FLASM_DIR + "flasm16linux/flasm";
     final static public String FLASM_MAC        = FLASM_DIR + "flasm16mac/flasm";
+    final static public String PARAMETERS_DB    = "parameters.db";
 }
