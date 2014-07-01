@@ -26,6 +26,7 @@ import org.pvemu.mapeditor.data.db.model.MapHistory;
 import org.pvemu.mapeditor.handler.EditorHandler;
 import org.pvemu.mapeditor.handler.MapDBHandler;
 import org.pvemu.mapeditor.ui.editor.parameter.AdvancedParameters;
+import org.pvemu.mapeditor.ui.editor.parameter.SettingsDialog;
 
 /**
  *
@@ -73,7 +74,7 @@ public class MainMenuBar extends JMenuBar{
         
         JMenuItem settings = new JMenuItem("Paramètres");
         edit.add(settings);
-        settings.addActionListener((e) -> {AdvancedParameters a = new AdvancedParameters(); a.setVisible(true);});
+        settings.addActionListener((e) -> new SettingsDialog().setVisible(true));
         
         return edit;
     }

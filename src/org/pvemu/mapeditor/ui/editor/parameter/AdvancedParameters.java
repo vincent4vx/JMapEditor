@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.data.db.model.JMEParameter;
+import org.pvemu.mapeditor.handler.ParametersHandler.ParameterType;
 
 /**
  *
@@ -30,7 +30,7 @@ import org.pvemu.mapeditor.data.db.model.JMEParameter;
 public class AdvancedParameters extends JFrame{
     final private JTable table;
 
-    public AdvancedParameters() throws HeadlessException {
+    AdvancedParameters() throws HeadlessException {
         super("Paramètres avancés");
         table = new JTable(JMapEditor.getParametersHandler());
         makeContent();
@@ -48,14 +48,14 @@ public class AdvancedParameters extends JFrame{
         
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scroll = new JScrollPane(table);
-        table.setDefaultEditor(JMEParameter.ParameterType.class, new DefaultCellEditor(new JComboBox<>(JMEParameter.ParameterType.values())));
+        table.setDefaultEditor(ParameterType.class, new DefaultCellEditor(new JComboBox<>(ParameterType.values())));
         
         panel.add(scroll, BorderLayout.CENTER);
         
         JPanel buttons = new JPanel(new FlowLayout());
         JButton add = new JButton("Ajouter");
         buttons.add(add);
-        add.addActionListener((e) -> new AddParameterDialog(this));
+        add.addActionListener((e) -> add());
         
         JButton remove = new JButton("Supprimer");
         remove.addActionListener((e) -> remove());
@@ -67,6 +67,24 @@ public class AdvancedParameters extends JFrame{
         panel.add(buttons, BorderLayout.SOUTH);
         
         setContentPane(panel);
+    }
+    
+    private void add(){
+        EditParameterDialog dialog = new EditParameterDialog(this, null, null, null);
+        int r = dialog.edit();
+        
+        if(r == EditParameterDialog.CANCEL_OPTION)
+            return;
+        
+        String name = dialog.getParamName();
+        ParameterType type = dialog.getParamType();
+        Object value = dialog.getParamValue();
+        
+        try{
+            JMapEditor.getParametersHandler().setParameter(name, type, value);
+        }catch(Exception e){
+            JMapEditor.getErrorHandler().showError(this, "Ajouter un paramètre : erreur", e);
+        }
     }
     
     private void remove(){

@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
 
 /**
  *
@@ -42,7 +43,7 @@ public class SQLiteConnection {
         
         int i = 0;
         for(Object arg : args){
-            stmt.setString(++i, arg.toString());
+            stmt.setString(++i, Objects.toString(arg));
         }
         
         return stmt;

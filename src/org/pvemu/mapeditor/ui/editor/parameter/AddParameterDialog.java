@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.db.model.JMEParameter;
+import org.pvemu.mapeditor.handler.ParametersHandler.ParameterType;
 
 /**
  *
@@ -22,10 +23,10 @@ import org.pvemu.mapeditor.data.db.model.JMEParameter;
  */
 public class AddParameterDialog extends JDialog{
     final private JTextField name = new JTextField(12);
-    final private JComboBox<JMEParameter.ParameterType> type = new JComboBox<>(JMEParameter.ParameterType.values());
+    final private JComboBox<ParameterType> type = new JComboBox<>(ParameterType.values());
     final private JTextField value = new JTextField(32);
 
-    public AddParameterDialog(Frame owner) {
+    AddParameterDialog(Frame owner) {
         super(owner, "Ajouter un paramètre", true);
         
         JPanel panel = new JPanel(new BorderLayout());
@@ -45,7 +46,7 @@ public class AddParameterDialog extends JDialog{
     }
     
     private void save(){
-        JMEParameter.ParameterType pType = (JMEParameter.ParameterType)type.getSelectedItem();
+        ParameterType pType = (ParameterType)type.getSelectedItem();
         String pName = name.getText();
         
         try{

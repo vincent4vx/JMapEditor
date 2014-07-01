@@ -3,11 +3,10 @@ package org.pvemu.mapeditor.data.db.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.pvemu.mapeditor.common.SQLiteConnection;
 import org.pvemu.mapeditor.data.db.model.JMEParameter;
+import org.pvemu.mapeditor.handler.ParametersHandler.ParameterType;
 
 /**
  *
@@ -21,7 +20,7 @@ public class JMEParameterDAO {
     }
     
     private JMEParameter getByRS(ResultSet RS) throws SQLException{
-        JMEParameter.ParameterType type = JMEParameter.ParameterType.valueOf(RS.getString("TYPE"));
+        ParameterType type = ParameterType.valueOf(RS.getString("TYPE"));
         return new JMEParameter(
                 RS.getString("NAME"), 
                 type, 

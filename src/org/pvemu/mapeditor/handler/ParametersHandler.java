@@ -8,21 +8,63 @@ import javax.swing.table.AbstractTableModel;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.SQLiteConnection;
 import org.pvemu.mapeditor.data.db.dao.JMEParameterDAO;
+import org.pvemu.mapeditor.data.db.dao.JMERegistryDAO;
 import org.pvemu.mapeditor.data.db.model.JMEParameter;
+import org.pvemu.mapeditor.data.db.model.JMERegistry;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class ParametersHandler extends AbstractTableModel{
+    public enum ParameterType{
+        STRING{
+            @Override
+            public Object getValue(String value) {
+                return value;
+            }
+        },
+        INT{
+            @Override
+            public Object getValue(String value) {
+                return Integer.parseInt(value);
+            }
+        },
+        DOUBLE{
+            @Override
+            public Object getValue(String value) {
+                return Double.parseDouble(value);
+            }
+        },
+        BOOL{
+            @Override
+            public Object getValue(String value) {
+                return Boolean.parseBoolean(value);
+            }
+        },
+        NULL{
+            @Override
+            public Object getValue(String value) {
+                return null;
+            }
+        }
+        ;
+        abstract public Object getValue(String value);
+    }
+    
     final private JMEParameterDAO parameterDAO;
+    final private JMERegistryDAO registryDAO;
     final private List<JMEParameter> parameters;
     final private Map<String, JMEParameter> paramByName = new HashMap<>();
+    final private JMERegistry registry;
 
     public ParametersHandler(SQLiteConnection connection) throws SQLException {
         parameterDAO = new JMEParameterDAO(connection);
+        registryDAO = new JMERegistryDAO(connection);
+        registryDAO.createTable();
         parameterDAO.createTable();
         parameters = parameterDAO.getAll();
+        registry = registryDAO.getRoot();
         
         for(JMEParameter param : parameters){
             paramByName.put(param.getName(), param);
@@ -48,7 +90,7 @@ public class ParametersHandler extends AbstractTableModel{
         return param;
     }
     
-    private JMEParameter getWithDefault(String name, JMEParameter.ParameterType type, Object defaultValue){
+    private JMEParameter getWithDefault(String name, ParameterType type, Object defaultValue){
         JMEParameter param = getParameter(name);
         
         if(param == null){
@@ -66,7 +108,7 @@ public class ParametersHandler extends AbstractTableModel{
         return param;
     }
     
-    public void setParameter(String name, JMEParameter.ParameterType type, Object value){
+    public void setParameter(String name, ParameterType type, Object value){
         JMEParameter param = paramByName.get(name);
         
         try{
@@ -118,7 +160,7 @@ public class ParametersHandler extends AbstractTableModel{
             case 0:
                 return String.class;
             case 1:
-                return JMEParameter.ParameterType.class;
+                return ParameterType.class;
             default:
                 return Object.class;
         }
@@ -136,7 +178,7 @@ public class ParametersHandler extends AbstractTableModel{
         try{
             switch(columnIndex){
                 case 1:{
-                    JMEParameter.ParameterType type = (JMEParameter.ParameterType)aValue;
+                    ParameterType type = (ParameterType)aValue;
                     Object nValue = type.getValue(param.getValue().toString());
                     param.setValue(nValue);
                     param.setType(type);
@@ -195,12 +237,12 @@ public class ParametersHandler extends AbstractTableModel{
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
     
-    private Object getAndVerify(String name, JMEParameter.ParameterType type){
+    private Object getAndVerify(String name, ParameterType type){
         JMEParameter parameter = verifyParameter(getParameter(name), type);
         return parameter.getValue();
     }
     
-    private JMEParameter verifyParameter(JMEParameter parameter, JMEParameter.ParameterType type){
+    private JMEParameter verifyParameter(JMEParameter parameter, ParameterType type){
         if(parameter == null)
             throw new IllegalArgumentException("The parameter is null");
         
@@ -210,56 +252,60 @@ public class ParametersHandler extends AbstractTableModel{
         return parameter;
     }
     
-    private Object getAndVerifyWithDefault(String name, JMEParameter.ParameterType type, Object defaultValue){
+    private Object getAndVerifyWithDefault(String name, ParameterType type, Object defaultValue){
         JMEParameter parameter = verifyParameter(getWithDefault(name, type, defaultValue), type);
         return parameter.getValue();
     }
     
     public int getInt(String name){
-        return (int)getAndVerify(name, JMEParameter.ParameterType.INT);
+        return (int)getAndVerify(name, ParameterType.INT);
     }
     
     public int getIntDefault(String name, int def){
-        return (int)getAndVerifyWithDefault(name, JMEParameter.ParameterType.INT, def);
+        return (int)getAndVerifyWithDefault(name, ParameterType.INT, def);
     }
     
     public void setInt(String name, int value){
-        setParameter(name, JMEParameter.ParameterType.INT, value);
+        setParameter(name, ParameterType.INT, value);
     }
     
     public String getString(String name){
-        return (String)getAndVerify(name, JMEParameter.ParameterType.STRING);
+        return (String)getAndVerify(name, ParameterType.STRING);
     }
     
     public String getStringDefault(String name, String def){
-        return (String)getAndVerifyWithDefault(name, JMEParameter.ParameterType.STRING, def);
+        return (String)getAndVerifyWithDefault(name, ParameterType.STRING, def);
     }
     
     public void setString(String name, String value){
-        setParameter(name, JMEParameter.ParameterType.STRING, value);
+        setParameter(name, ParameterType.STRING, value);
     }
     
     public boolean getBool(String name){
-        return (boolean)getAndVerify(name, JMEParameter.ParameterType.BOOL);
+        return (boolean)getAndVerify(name, ParameterType.BOOL);
     }
     
     public boolean getBoolDefault(String name, boolean def){
-        return (boolean)getAndVerifyWithDefault(name, JMEParameter.ParameterType.BOOL, def);
+        return (boolean)getAndVerifyWithDefault(name, ParameterType.BOOL, def);
     }
     
     public void setBool(String name, boolean value){
-        setParameter(name, JMEParameter.ParameterType.BOOL, value);
+        setParameter(name, ParameterType.BOOL, value);
     }
     
     public double getDouble(String name){
-        return (double)getAndVerify(name, JMEParameter.ParameterType.DOUBLE);
+        return (double)getAndVerify(name, ParameterType.DOUBLE);
     }
     
     public double getDoubleDefault(String name, double def){
-        return (double)getAndVerifyWithDefault(name, JMEParameter.ParameterType.DOUBLE, def);
+        return (double)getAndVerifyWithDefault(name, ParameterType.DOUBLE, def);
     }
     
     public void setDouble(String name, double value){
-        setParameter(name, JMEParameter.ParameterType.DOUBLE, value);
+        setParameter(name, ParameterType.DOUBLE, value);
+    }
+
+    public JMERegistry getRegistry() {
+        return registry;
     }
 }
