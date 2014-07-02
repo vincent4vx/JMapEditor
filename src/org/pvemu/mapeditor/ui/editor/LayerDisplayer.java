@@ -90,7 +90,7 @@ abstract class LayerDisplayer {
 
         @Override
         void draw(Layer layer, EditorGrid grid, Graphics2D g, boolean isEdit) {
-            if(!isEdit && !JMapEditor.getParametersHandler().getBool("EXPORT_IMG_GRID"))
+            if(!isEdit && !JMapEditor.getParameters().getBool("EXPORT_IMG_GRID"))
                 return;
             
             for (GridCell cell : grid.getShapes()) {

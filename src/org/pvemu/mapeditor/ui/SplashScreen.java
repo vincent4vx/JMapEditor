@@ -46,7 +46,7 @@ public class SplashScreen extends JWindow{
         public SplashPanel() throws IOException {
             setLayout(null);
             setPreferredSize(new Dimension(440, 286));
-            bg = ImageIO.read(new File(JMapEditor.getParametersHandler().getString("SPLASH_IMG")));
+            bg = ImageIO.read(new File(JMapEditor.getParameters().getString("SPLASH_IMG")));
         }
 
         @Override

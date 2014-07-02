@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.ui.editor.parameter;
 
 import java.awt.BorderLayout;
@@ -13,26 +7,61 @@ import java.awt.Font;
 import java.awt.HeadlessException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.handler.ParametersHandler.ParameterType;
+import org.pvemu.mapeditor.handler.setting.ParameterType;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class AdvancedParameters extends JFrame{
+public class ParametersEditor extends JFrame{
+    private class CellEditor extends DefaultCellEditor{
+        final private ParametersEditor editor;
+
+        public CellEditor(ParametersEditor editor, JTextField textField) {
+            super(textField);
+            this.editor = editor;
+        }
+
+        public CellEditor(ParametersEditor editor, JCheckBox checkBox) {
+            super(checkBox);
+            this.editor = editor;
+        }
+
+        public CellEditor(ParametersEditor editor, JComboBox comboBox) {
+            super(comboBox);
+            this.editor = editor;
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            try{
+                return super.stopCellEditing();
+            }catch(IllegalArgumentException e){
+                JMapEditor.getErrorHandler().showError(editor, "Éditeur de paramètre : erreur", "Valeur invalide !");
+                return false;
+            }catch(Exception e){
+                JMapEditor.getErrorHandler().showError(editor, "Éditeur de paramètre : erreur", e);
+                return false;
+            }
+        }
+        
+    }
+    
     final private JTable table;
 
-    AdvancedParameters() throws HeadlessException {
+    ParametersEditor() throws HeadlessException {
         super("Paramètres avancés");
-        table = new JTable(JMapEditor.getParametersHandler());
+        table = new JTable(JMapEditor.getParameters().getModel());
         makeContent();
         pack();
         setLocationRelativeTo(JMapEditor.getUI());
@@ -48,7 +77,8 @@ public class AdvancedParameters extends JFrame{
         
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scroll = new JScrollPane(table);
-        table.setDefaultEditor(ParameterType.class, new DefaultCellEditor(new JComboBox<>(ParameterType.values())));
+        table.setCellEditor(new CellEditor(this, new JTextField()));
+        table.setDefaultEditor(ParameterType.class, new CellEditor(this, new JComboBox<>(ParameterType.values())));
         
         panel.add(scroll, BorderLayout.CENTER);
         
@@ -70,7 +100,7 @@ public class AdvancedParameters extends JFrame{
     }
     
     private void add(){
-        EditParameterDialog dialog = new EditParameterDialog(this, null, null, null);
+        EditParameterDialog dialog = new EditParameterDialog(this);
         int r = dialog.edit();
         
         if(r == EditParameterDialog.CANCEL_OPTION)
@@ -81,7 +111,7 @@ public class AdvancedParameters extends JFrame{
         Object value = dialog.getParamValue();
         
         try{
-            JMapEditor.getParametersHandler().setParameter(name, type, value);
+            JMapEditor.getParameters().add(name, type, value);
         }catch(Exception e){
             JMapEditor.getErrorHandler().showError(this, "Ajouter un paramètre : erreur", e);
         }
@@ -94,7 +124,7 @@ public class AdvancedParameters extends JFrame{
             return;
         
         try{
-            JMapEditor.getParametersHandler().removeParameterRow(row);
+            JMapEditor.getParameters().removeParameterRow(row);
         }catch(Exception e){
             JMapEditor.getErrorHandler().showError(this, "Suppression d'un paramètre : erreur", e);
         }

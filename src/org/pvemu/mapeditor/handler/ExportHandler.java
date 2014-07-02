@@ -60,7 +60,7 @@ public class ExportHandler {
     final private Path blank;
 
     public ExportHandler() {
-        blank = Paths.get(JMapEditor.getParametersHandler().getString("BLANK_FILE"));
+        blank = Paths.get(JMapEditor.getParameters().getString("BLANK_FILE"));
     }
     
     private String mapToFlm(String pattern, MapData map){        
@@ -74,23 +74,23 @@ public class ExportHandler {
     public void export(EditorHandler handler) throws FileNotFoundException, IOException, InterruptedException, Exception{
         MapData map = handler.getMap();
         
-        String dir = JMapEditor.getParametersHandler().getString("OUTPUT_DIR") + map.getInfo().getId() + "/";
+        String dir = JMapEditor.getParameters().getString("OUTPUT_DIR") + map.getInfo().getId() + "/";
         Files.createDirectories(Paths.get(dir));
         
         String baseName = dir + map.getInfo().getId() + "_" + map.getInfo().getLastDate();
-        Path swf = Paths.get(baseName + JMapEditor.getParametersHandler().getString("SWF_EXT"));
-        Path flm = Paths.get(baseName + JMapEditor.getParametersHandler().getString("FLM_EXT"));
+        Path swf = Paths.get(baseName + JMapEditor.getParameters().getString("SWF_EXT"));
+        Path flm = Paths.get(baseName + JMapEditor.getParameters().getString("FLM_EXT"));
         
         BufferedImage img = new BufferedImage(
-                map.getInfo().getWidth() * JMapEditor.getParametersHandler().getInt("CELL_WIDTH"), 
-                map.getInfo().getHeight() * JMapEditor.getParametersHandler().getInt("CELL_HEIGHT"), 
+                map.getInfo().getWidth() * JMapEditor.getParameters().getInt("CELL_WIDTH"), 
+                map.getInfo().getHeight() * JMapEditor.getParameters().getInt("CELL_HEIGHT"), 
                 BufferedImage.TYPE_INT_RGB
         );
         handler.getUI().getGrid().paintGraphics(img.createGraphics(), false);
         ImageIO.write(
                 img, 
-                JMapEditor.getParametersHandler().getString("EXPORT_IMG_FORMAT"), 
-                new File(baseName + JMapEditor.getParametersHandler().getString("EXPORT_IMG_EXT"))
+                JMapEditor.getParameters().getString("EXPORT_IMG_FORMAT"), 
+                new File(baseName + JMapEditor.getParameters().getString("EXPORT_IMG_EXT"))
         );
         
         Files.copy(blank, swf, StandardCopyOption.REPLACE_EXISTING);
@@ -134,6 +134,6 @@ public class ExportHandler {
             throw new Exception("Cannot reconnized OS " + os);
         }
         
-        return JMapEditor.getParametersHandler().getString(paramName);
+        return JMapEditor.getParameters().getString(paramName);
     }
 }

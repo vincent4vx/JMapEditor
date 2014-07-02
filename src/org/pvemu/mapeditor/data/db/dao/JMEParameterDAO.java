@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.pvemu.mapeditor.common.SQLiteConnection;
 import org.pvemu.mapeditor.data.db.model.JMEParameter;
-import org.pvemu.mapeditor.handler.ParametersHandler.ParameterType;
+import org.pvemu.mapeditor.handler.setting.ParameterType;
 
 /**
  *

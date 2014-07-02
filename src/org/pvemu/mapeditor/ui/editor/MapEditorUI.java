@@ -34,8 +34,8 @@ public class MapEditorUI extends JInternalFrame {
         setMaximizable(false);
         setClosable(true);
         
-        final int CELL_WIDTH = JMapEditor.getParametersHandler().getInt("CELL_WIDTH");
-        final int CELL_HEIGHT = JMapEditor.getParametersHandler().getInt("CELL_HEIGHT");
+        final int CELL_WIDTH = JMapEditor.getParameters().getInt("CELL_WIDTH");
+        final int CELL_HEIGHT = JMapEditor.getParameters().getInt("CELL_HEIGHT");
         
         setSize((handler.getMap().getInfo().getWidth() - 1) * CELL_WIDTH + 10, handler.getMap().getInfo().getHeight() * CELL_HEIGHT + 6);
 

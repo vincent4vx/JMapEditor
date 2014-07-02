@@ -22,20 +22,20 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.data.db.model.JMERegistry;
+import org.pvemu.mapeditor.handler.setting.RegistryHandler;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class RegistryEditor extends JFrame{
-    final private Map<DefaultMutableTreeNode, JMERegistry> regByNode = new HashMap<>();
+    final private Map<DefaultMutableTreeNode, RegistryHandler> regByNode = new HashMap<>();
     final private JTree tree;
 
     public RegistryEditor() throws HeadlessException {
         super("Éditeur du registre");
         
-        tree = new JTree(createTree(JMapEditor.getParametersHandler().getRegistry()));
+        tree = new JTree(createTree(JMapEditor.getRegistry()));
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         
         JScrollPane scroll = new JScrollPane(tree);
@@ -75,18 +75,16 @@ public class RegistryEditor extends JFrame{
         if(node == null)
             return;
         
-        JMERegistry registry = regByNode.get(node);
+        RegistryHandler registry = regByNode.get(node);
         
         EditParameterDialog dialog = new EditParameterDialog(this);
         int r = dialog.edit();
         
         if(r == EditParameterDialog.CANCEL_OPTION)
             return;
-        
-        JMERegistry child;
-                
+          
         try{
-             child = registry.put(
+             registry.add(
                     dialog.getParamName(), 
                     dialog.getParamType(), 
                     dialog.getParamValue()
@@ -96,9 +94,10 @@ public class RegistryEditor extends JFrame{
             return;
         }
         
-        DefaultMutableTreeNode cNode = new DefaultMutableTreeNode(child.getName());
+        /*DefaultMutableTreeNode cNode = createTree(child);//new DefaultMutableTreeNode(child.getData().getName());
         ((DefaultTreeModel)tree.getModel()).insertNodeInto(cNode, node, node.getChildCount());
-        regByNode.put(cNode, child);
+        regByNode.put(cNode, child);*/
+        updateTree();
     }
     
     private void remove(){
@@ -112,10 +111,10 @@ public class RegistryEditor extends JFrame{
         if(node == null)
             return;
         
-        JMERegistry registry = regByNode.get(node);
+        RegistryHandler registry = regByNode.get(node);
         
         try{
-            registry.delete();
+            registry.unset("");
             ((DefaultTreeModel)tree.getModel()).removeNodeFromParent(node);
         }catch(Exception e){
             JMapEditor.getErrorHandler().showError(this, "Edition du registre : erreur", e);
@@ -133,26 +132,26 @@ public class RegistryEditor extends JFrame{
         if(node == null)
             return;
         
-        JMERegistry registry = regByNode.get(node);
+        RegistryHandler registry = regByNode.get(node);
         
-        EditParameterDialog dialog = new EditParameterDialog(
-                this,
-                registry.getName(),
-                registry.getType(),
-                registry.getValue()
-        );
+        EditParameterDialog dialog = new EditParameterDialog(this, registry.getData());
         int r = dialog.edit();
         
         if(r == EditParameterDialog.CANCEL_OPTION)
             return;
         
-        
+        try{
+            registry.set("", dialog.getParamType(), dialog.getParamValue());
+        }catch(Exception e){
+            JMapEditor.getErrorHandler().showError(this, "Edition du registre : erreur", e);
+        }
     }
     
-    private DefaultMutableTreeNode createTree(JMERegistry registry){
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(registry.getName());
+    private DefaultMutableTreeNode createTree(RegistryHandler registry){
+        regByNode.clear();
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(registry.getData().getName());
         
-        for(JMERegistry child : registry.getChildren()){
+        for(RegistryHandler child : registry.getChildren()){
             node.add(createTree(child));
         }
         
@@ -160,4 +159,7 @@ public class RegistryEditor extends JFrame{
         return node;
     }
     
+    private void updateTree(){
+        tree.setModel(new DefaultTreeModel(createTree(JMapEditor.getRegistry())));
+    }
 }

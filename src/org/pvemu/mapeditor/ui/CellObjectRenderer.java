@@ -30,7 +30,7 @@ final public class CellObjectRenderer {
         int height = img.getHeight();
         
         int x = coordinate.getX() - width / 2;
-        int y = (int) (coordinate.getY() - height + JMapEditor.getParametersHandler().getDouble("CELL_HALF_HEIGHT"));
+        int y = (int) (coordinate.getY() - height + JMapEditor.getParameters().getDouble("CELL_HALF_HEIGHT"));
 
         if (obj.isFlip()) {
             x += width;

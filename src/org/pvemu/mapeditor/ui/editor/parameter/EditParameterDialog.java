@@ -15,7 +15,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.handler.ParametersHandler.ParameterType;
+import org.pvemu.mapeditor.handler.setting.BasicParameter;
+import org.pvemu.mapeditor.handler.setting.ParameterType;
 
 /**
  *
@@ -37,6 +38,10 @@ public class EditParameterDialog extends JDialog{
 
     EditParameterDialog(Frame owner) {
         this(owner, null, null, null);
+    }
+
+    public EditParameterDialog(Frame owner, BasicParameter param) {
+        this(owner, param.getName(), param.getType(), param.getValue());
     }
 
     EditParameterDialog(Frame owner, String name, ParameterType type, Object value) {

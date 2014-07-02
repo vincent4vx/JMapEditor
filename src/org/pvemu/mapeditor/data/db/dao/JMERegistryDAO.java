@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.data.db.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import org.pvemu.mapeditor.common.SQLiteConnection;
 import org.pvemu.mapeditor.data.db.model.JMERegistry;
-import org.pvemu.mapeditor.handler.ParametersHandler;
+import org.pvemu.mapeditor.handler.setting.ParameterType;
 
 /**
  *
@@ -38,15 +30,10 @@ public class JMERegistryDAO {
         );
     }
     
-    public JMERegistry getRoot(){
-        return new JMERegistry(-1, null, "ROOT", ParametersHandler.ParameterType.NULL, null, this){
+    public JMERegistry getRoot() throws SQLException{
+        JMERegistry root = new JMERegistry(-1, "ROOT", null, ParameterType.NULL, null){
             @Override
-            public void delete() {
-                throw new UnsupportedOperationException("Cannot delete the root node");
-            }
-
-            @Override
-            public void setType(ParametersHandler.ParameterType type) {
+            public void setType(ParameterType type) {
                 throw new UnsupportedOperationException("Cannot change type of root node");
             }
 
@@ -55,30 +42,32 @@ public class JMERegistryDAO {
                 throw new UnsupportedOperationException("Cannot change value of root node");
             }
         };
+        
+        addChildren(root);
+        
+        return root;
     }
     
     private JMERegistry getByRS(ResultSet RS, JMERegistry parent) throws SQLException{
-        ParametersHandler.ParameterType type = ParametersHandler.ParameterType.valueOf(RS.getString("TYPE"));
+        ParameterType type = ParameterType.valueOf(RS.getString("TYPE"));
         return new JMERegistry(
-                RS.getInt("ID"), 
-                parent, 
+                RS.getInt("ID"),
                 RS.getString("NAME"), 
+                parent,
                 type, 
-                type.getValue(RS.getString("VALUE")),
-                this
+                type.getValue(RS.getString("VALUE"))
         );
     }
     
-    public List<JMERegistry> getChildren(JMERegistry parent) throws SQLException{
-        List<JMERegistry> children = new ArrayList<>();
-        
+    private void addChildren(JMERegistry registry) throws SQLException{
         connection.forEachPrepare(
                 "SELECT * FROM JME_REGISTRY WHERE PARENT = ?", 
-                (rs) -> children.add(getByRS(rs, parent)), 
-                parent.getId()
+                (rs) -> {
+                    JMERegistry child = getByRS(rs, registry);
+                    registry.add(child);
+                }, 
+                registry.getId()
         );
-        
-        return children;
     }
     
     private int getLastId() throws SQLException{
@@ -87,9 +76,9 @@ public class JMERegistryDAO {
         return RS.getInt(1);
     }
     
-    public JMERegistry create(String name, JMERegistry parent, ParametersHandler.ParameterType type, Object value) throws SQLException{
+    public JMERegistry create(String name, JMERegistry parent, ParameterType type, Object value) throws SQLException{
         int id = getLastId() + 1;
-        JMERegistry registry = new JMERegistry(id, parent, name, type, value, this);
+        JMERegistry registry = new JMERegistry(id, name, parent, type, value);
         
         connection.executeUpdate(
                 "INSERT INTO JME_REGISTRY(ID, NAME, PARENT, TYPE, VALUE) VALUES(?,?,?,?,?)", 

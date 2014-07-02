@@ -6,13 +6,14 @@
 
 package org.pvemu.mapeditor.data.db.model;
 
-import org.pvemu.mapeditor.handler.ParametersHandler.ParameterType;
+import org.pvemu.mapeditor.handler.setting.Parameter;
+import org.pvemu.mapeditor.handler.setting.ParameterType;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class JMEParameter {
+public class JMEParameter implements Parameter{
     
     final private String name;
     private ParameterType type;
@@ -24,22 +25,27 @@ public class JMEParameter {
         this.value = value;
     }
 
+    @Override
     public Object getValue() {
         return value;
     }
 
+    @Override
     public void setValue(Object value) {
         this.value = value;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public ParameterType getType() {
         return type;
     }
 
+    @Override
     public void setType(ParameterType type) {
         this.type = type;
     }

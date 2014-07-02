@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.handler;
 
 import java.awt.Component;
@@ -20,7 +14,7 @@ public class ErrorHandler {
     }
     
     public void showError(Component component, String title, Throwable cause){
-        showError(component, title, cause.getMessage());
+        showError(component, title, cause.toString());
         cause.printStackTrace();
     }
     

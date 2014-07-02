@@ -26,7 +26,7 @@ public class JMEFileChooser extends JFileChooser {
                 if(!f.canRead() || !f.canWrite())
                     return false;
                 
-                return f.isDirectory() || f.getName().endsWith(JMapEditor.getParametersHandler().getString("JME_EXT"));
+                return f.isDirectory() || f.getName().endsWith(JMapEditor.getParameters().getString("JME_EXT"));
             }
 
             @Override
@@ -51,7 +51,7 @@ public class JMEFileChooser extends JFileChooser {
         
         //ADD ext
         if(selected.getName().split("\\.").length < 2){
-            selected = new File(selected.getAbsolutePath() + JMapEditor.getParametersHandler().getString("JME_EXT"));
+            selected = new File(selected.getAbsolutePath() + JMapEditor.getParameters().getString("JME_EXT"));
         }
         
         return selected;

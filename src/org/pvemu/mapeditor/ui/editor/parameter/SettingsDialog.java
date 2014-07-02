@@ -22,7 +22,7 @@ public class SettingsDialog extends JFrame{
         super("Paramètres");
         
         JButton parameters = new JButton("Paramètres avancés");
-        parameters.addActionListener((e) -> new AdvancedParameters().setVisible(true));
+        parameters.addActionListener((e) -> new ParametersEditor().setVisible(true));
         add(parameters, BorderLayout.EAST);
         
         JButton registry = new JButton("Registre");

@@ -1,30 +1,29 @@
 package org.pvemu.mapeditor.data.db.model;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.data.db.dao.JMERegistryDAO;
-import org.pvemu.mapeditor.handler.ParametersHandler;
+import org.pvemu.mapeditor.handler.setting.Parameter;
+import org.pvemu.mapeditor.handler.setting.ParameterType;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class JMERegistry extends JMEParameter{
+public class JMERegistry implements Parameter{
     final private int id;
+    final private String name;
     final private JMERegistry parent;
-    
+    private ParameterType type;
+    private Object value;
     final private Map<String, JMERegistry> children = new HashMap<>();
-    final private JMERegistryDAO dao;
 
-    public JMERegistry(int id, JMERegistry parent, String name, ParametersHandler.ParameterType type, Object value, JMERegistryDAO dao) {
-        super(name, type, value);
+    public JMERegistry(int id, String name, JMERegistry parent, ParameterType type, Object value) {
         this.id = id;
+        this.name = name;
         this.parent = parent;
-        this.dao = dao;
+        this.type = type;
+        this.value = value;
     }
 
     public int getId() {
@@ -34,78 +33,49 @@ public class JMERegistry extends JMEParameter{
     public JMERegistry getParent() {
         return parent;
     }
-    
-    private void checkChildren(){
-        if(children.isEmpty()){
-            try{
-                for(JMERegistry child : dao.getChildren(this)){
-                    children.put(child.getName(), child);
-                }
-            }catch(SQLException e){
-                JMapEditor.getErrorHandler().showError("Registre : erreur", e);
-            }
-        }
+
+    @Override
+    public ParameterType getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(ParameterType type) {
+        this.type = type;
+    }
+
+    @Override
+    public Object getValue() {
+        return value;
+    }
+
+    @Override
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
     
     public Collection<JMERegistry> getChildren(){
-        checkChildren();
         return children.values();
     }
     
     public JMERegistry get(String name){
-        checkChildren();
         return children.get(name);
     }
     
-    public JMERegistry put(String name, ParametersHandler.ParameterType type, Object value){
-        JMERegistry child = null;
-        if(children.containsKey(name)){
-            child = children.get(name);
-            Object nValue = type.getValue(value.toString());
-            child.setType(type);
-            child.setValue(nValue);
-            try{
-                dao.update(child);
-            }catch(SQLException e){
-                JMapEditor.getErrorHandler().showError("Registre : erreur", e);
-            }
-        }else{
-            try{
-                child = dao.create(name, this, type, value);
-                children.put(name, child);
-            }catch(SQLException e){
-                JMapEditor.getErrorHandler().showError("Registre : erreur", e);
-            }
-        }
-        
-        return child;
+    public void add(JMERegistry registry){
+        children.put(registry.name, registry);
     }
     
     public void remove(String name){
-        JMERegistry registry = children.get(name);
-        
-        if(registry == null)
-            return;
-        
-        try{
-            registry.delete();
-        }catch(SQLException e){
-            JMapEditor.getErrorHandler().showError("Registre : erreur", e);
-        }
+        children.remove(name);
     }
     
-    public void delete() throws SQLException{
-        parent.children.remove(getName());
-        
-        Collection<JMERegistry> tmp = new ArrayList<>(children.values());
-        
-        for(JMERegistry child : tmp){
-            child.delete();
-        }
-        
+    public void clear(){
         children.clear();
-        setValue(null);
-        setType(ParametersHandler.ParameterType.NULL);
-        dao.delete(this);
     }
 }

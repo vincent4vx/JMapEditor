@@ -33,7 +33,7 @@ public class TilesHandler {
         
         try{
             loader.setInfoText("Loading backgrounds");
-            backgrounds = new TilesList(new File(JMapEditor.getParametersHandler().getString("BACKGROUNDS_DIR")));
+            backgrounds = new TilesList(new File(JMapEditor.getParameters().getString("BACKGROUNDS_DIR")));
             
             backgrounds.setLoadingListener((s, v) -> {
                     loadingValue += v * 10;
@@ -45,7 +45,7 @@ public class TilesHandler {
             loader.setValue((int)loadingValue);
             loader.setInfoText("Loading grounds");
             grounds = new TilesListContainer(
-                    new File(JMapEditor.getParametersHandler().getString("GROUNDS_DIR")),
+                    new File(JMapEditor.getParameters().getString("GROUNDS_DIR")),
                     (s, v) -> {
                         loadingValue += v * 20;
                         loader.setValue((int)loadingValue);
@@ -55,7 +55,7 @@ public class TilesHandler {
             
             loader.setInfoText("Loading objects");
             objects = new TilesListContainer(
-                    new File(JMapEditor.getParametersHandler().getString("OBJECTS_DIR")),
+                    new File(JMapEditor.getParameters().getString("OBJECTS_DIR")),
                     (s, v) -> {
                         loadingValue += v * 70;
                         loader.setValue((int)loadingValue);

@@ -27,8 +27,8 @@ class GridCell extends Polygon implements Coordinate{
         this.x = x;
         this.y = y;
         
-        final double CELL_HALF_WIDTH = JMapEditor.getParametersHandler().getDouble("CELL_HALF_WIDTH");
-        final double CELL_HALF_HEIGHT = JMapEditor.getParametersHandler().getDouble("CELL_HALF_HEIGHT");
+        final double CELL_HALF_WIDTH = JMapEditor.getParameters().getDouble("CELL_HALF_WIDTH");
+        final double CELL_HALF_HEIGHT = JMapEditor.getParameters().getDouble("CELL_HALF_HEIGHT");
 
         addPoint((int) (x - CELL_HALF_WIDTH), y);
         addPoint(x, (int) (y + CELL_HALF_HEIGHT));

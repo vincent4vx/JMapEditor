@@ -37,9 +37,9 @@ public class EditorGrid extends JPanel{
         int _loc10 = 0;
         double _loc11 = 0;
         
-        final double CELL_HALF_WIDTH = JMapEditor.getParametersHandler().getDouble("CELL_HALF_WIDTH");
-        final double CELL_HALF_HEIGHT = JMapEditor.getParametersHandler().getDouble("CELL_HALF_HEIGHT");
-        final int CELL_WIDTH = JMapEditor.getParametersHandler().getInt("CELL_WIDTH");
+        final double CELL_HALF_WIDTH = JMapEditor.getParameters().getDouble("CELL_HALF_WIDTH");
+        final double CELL_HALF_HEIGHT = JMapEditor.getParameters().getDouble("CELL_HALF_HEIGHT");
+        final int CELL_WIDTH = JMapEditor.getParameters().getInt("CELL_WIDTH");
         
         for(Cell cell : map){
             if(_loc9 == _loc14){

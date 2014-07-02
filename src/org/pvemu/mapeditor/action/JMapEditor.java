@@ -10,9 +10,10 @@ import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.SQLiteConnection;
 import org.pvemu.mapeditor.handler.ErrorHandler;
 import org.pvemu.mapeditor.handler.ExportHandler;
-import org.pvemu.mapeditor.handler.ParametersHandler;
+import org.pvemu.mapeditor.handler.setting.ParametersHandler;
 import org.pvemu.mapeditor.handler.TilesHandler;
 import org.pvemu.mapeditor.handler.ToolsHandler;
+import org.pvemu.mapeditor.handler.setting.RegistryHandler;
 import org.pvemu.mapeditor.ui.MainWindow;
 
 /**
@@ -25,13 +26,14 @@ public class JMapEditor {
     final private static ErrorHandler errorHandler = new ErrorHandler();
     final private static ToolsHandler toolsHandler = new ToolsHandler();
     private static ExportHandler exportHandler;
-    private static SQLiteConnection parametersDatabase;
-    private static ParametersHandler parametersHandler;
+    private static ParametersHandler parameters;
+    private static RegistryHandler registry;
     
     public static void main(String[] args){
         try{
-            parametersDatabase = new SQLiteConnection(Constants.PARAMETERS_DB);
-            parametersHandler = new ParametersHandler(parametersDatabase);
+            SQLiteConnection db = new SQLiteConnection(Constants.PARAMETERS_DB);
+            parameters = new ParametersHandler(db);
+            registry = new RegistryHandler(db);
             exportHandler = new ExportHandler();
             tilesHandler = new TilesHandler();
             ui = new MainWindow();
@@ -57,16 +59,16 @@ public class JMapEditor {
         return exportHandler;
     }
 
-    public static SQLiteConnection getParametersDatabase() {
-        return parametersDatabase;
-    }
-
-    public static ParametersHandler getParametersHandler() {
-        return parametersHandler;
+    public static ParametersHandler getParameters() {
+        return parameters;
     }
 
     public static ErrorHandler getErrorHandler() {
         return errorHandler;
+    }
+
+    public static RegistryHandler getRegistry() {
+        return registry;
     }
 
 }

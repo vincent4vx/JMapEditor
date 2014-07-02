@@ -31,9 +31,9 @@ public class NewMapDialog extends JDialog{
     public NewMapDialog() throws HeadlessException, SQLException {
         super(JMapEditor.getUI(), "Nouvelle map");
         
-        id.setValue(JMapEditor.getParametersHandler().getIntDefault("LAST_MAP_ID", 13000) + 1);
-        width.setValue(JMapEditor.getParametersHandler().getInt("DEFAULT_WIDTH"));
-        height.setValue(JMapEditor.getParametersHandler().getInt("DEFAULT_HEIGHT"));
+        id.setValue(JMapEditor.getParameters().getIntDefault("LAST_MAP_ID", 13000) + 1);
+        width.setValue(JMapEditor.getParameters().getInt("DEFAULT_WIDTH"));
+        height.setValue(JMapEditor.getParameters().getInt("DEFAULT_HEIGHT"));
         
         setModal(true);        
         makePanel();
@@ -61,7 +61,7 @@ public class NewMapDialog extends JDialog{
         ok.addActionListener((e) -> {
             OpenMap.newMap((Integer)id.getValue(), (Integer)width.getValue(), (Integer)height.getValue());
             try {
-                JMapEditor.getParametersHandler().setInt("LAST_MAP_ID", (Integer)id.getValue());
+                JMapEditor.getParameters().setInt("LAST_MAP_ID", (Integer)id.getValue());
             } catch (Exception ex) {
                 JMapEditor.getErrorHandler().showError("Création de la carte : erreur", ex);
             }
