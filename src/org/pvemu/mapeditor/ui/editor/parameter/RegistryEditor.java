@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.ui.editor.parameter;
 
 import java.awt.BorderLayout;
@@ -67,15 +61,14 @@ public class RegistryEditor extends JFrame{
     private void add(){
         TreePath path = tree.getSelectionPath();
         
-        if(path == null)
-            return;
+        RegistryHandler registry = JMapEditor.getRegistry();
         
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-        
-        if(node == null)
-            return;
-        
-        RegistryHandler registry = regByNode.get(node);
+        if(path != null){
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+
+            if(node != null)
+                registry = regByNode.get(node);
+        }
         
         EditParameterDialog dialog = new EditParameterDialog(this);
         int r = dialog.edit();
@@ -94,9 +87,6 @@ public class RegistryEditor extends JFrame{
             return;
         }
         
-        /*DefaultMutableTreeNode cNode = createTree(child);//new DefaultMutableTreeNode(child.getData().getName());
-        ((DefaultTreeModel)tree.getModel()).insertNodeInto(cNode, node, node.getChildCount());
-        regByNode.put(cNode, child);*/
         updateTree();
     }
     
