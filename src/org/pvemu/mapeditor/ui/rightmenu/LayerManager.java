@@ -1,6 +1,7 @@
 package org.pvemu.mapeditor.ui.rightmenu;
 
 import java.awt.BorderLayout;
+import java.awt.event.ContainerAdapter;
 import java.awt.event.ItemEvent;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
@@ -37,6 +38,8 @@ public class LayerManager extends JPanel{
         JPanel panel = new JPanel(new BorderLayout());
         JTable table = new JTable(new LayerHandler());
         table.setDefaultEditor(Float.class, new DefaultCellEditor(new JComboBox<>(new Float[]{1f, .9f, .8f, .7f, .6f, .5f, .4f, .3f, .2f, .1f, 0f})));
+        
+        table.addPropertyChangeListener((e) -> JMapEditor.getUI().repaintAllEditors());
         
         panel.add(table.getTableHeader(), BorderLayout.NORTH);
         panel.add(table, BorderLayout.CENTER);
