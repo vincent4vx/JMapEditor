@@ -17,11 +17,11 @@ import org.pvemu.mapeditor.ui.rightmenu.ObjectTab;
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class SelectTool implements Tool{
+public class SelectTool extends CellObjectTool{
 
     @Override
     public void onClick(EditorHandler handler, Cell cell) {
-        Layer layer = Layer.getSelected();
+        Layer layer = JMapEditor.getLayerHandler().getSelected();
         CellObject obj = cell.getObjectAt(layer);
         
         if(obj == null){

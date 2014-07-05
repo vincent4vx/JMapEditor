@@ -42,6 +42,14 @@ public enum ParameterType {
                 public Object getValue(Object value) {
                     return null;
                 }
+            },
+    FLOAT {
+
+                @Override
+                public Object getValue(Object value) {
+                    return Float.parseFloat(String.valueOf(value));
+                }
+
             };
 
     abstract public Object getValue(Object value);

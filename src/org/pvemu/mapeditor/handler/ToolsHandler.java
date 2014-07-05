@@ -1,32 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.handler;
 
 import org.pvemu.mapeditor.action.JMapEditor;
+import org.pvemu.mapeditor.common.LayerMaskable;
 import org.pvemu.mapeditor.data.CellObject;
-import org.pvemu.mapeditor.handler.tool.AddTool;
-import org.pvemu.mapeditor.handler.tool.RemoveTool;
-import org.pvemu.mapeditor.handler.tool.SelectTool;
+import org.pvemu.mapeditor.data.LayerMask;
 import org.pvemu.mapeditor.handler.tool.StateTool;
 import org.pvemu.mapeditor.handler.tool.Tool;
+import org.pvemu.mapeditor.handler.tool.Tools;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class ToolsHandler {
+public class ToolsHandler implements LayerMaskable{
     private CellObject currentObject = null;
     
-    final private Tool SELECT = new SelectTool(),
-                       ADD = new AddTool(),
-                       REMOVE = new RemoveTool(),
-                       STATE = new StateTool();
-    
-    private Tool toolType = SELECT;
+    private Tool tool = Tools.SELECT;
 
     public CellObject getCurrentObject() {
         return currentObject;
@@ -37,27 +26,26 @@ public class ToolsHandler {
     }
 
     public Tool getTool() {
-        return toolType;
+        return tool;
     }
 
-    public void setSelectTool(){
-        toolType = SELECT;
-    }
-    
-    public void setRemoveTool(){
-        toolType = REMOVE;
-    }
-    
-    public void setAddTool(){
-        toolType = ADD;
-        JMapEditor.getUI().getRightMenu().getEditTab().getAdd().setSelected(true);
-    }
-    
-    public void setStateTool(){
-        toolType = STATE;
+    public void setTool(Tool tool) {
+        this.tool = tool;
+        tool.onSelect();
+        JMapEditor.getUI().repaintAllEditors();
     }
     
     public StateTool.CellState getCurrentCellState(){
         return (StateTool.CellState) JMapEditor.getUI().getRightMenu().getEditTab().getStateSelector().getSelectedItem();
+    }
+
+    @Override
+    public LayerMask getLayerMask() {
+        return tool.getLayerMask();
+    }
+
+    @Override
+    public boolean isPriority() {
+        return tool.isPriority();
     }
 }

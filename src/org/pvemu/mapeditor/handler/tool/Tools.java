@@ -3,18 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.pvemu.mapeditor.handler.tool;
-
-import org.pvemu.mapeditor.common.LayerMaskable;
-import org.pvemu.mapeditor.data.Cell;
-import org.pvemu.mapeditor.handler.EditorHandler;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public interface Tool extends LayerMaskable{
-    public void onClick(EditorHandler handler, Cell cell);
-    default public void onSelect(){}
+public class Tools {
+    final static public Tool 
+            SELECT = new SelectTool(),
+            ADD = new AddTool(),
+            REMOVE = new RemoveTool(),
+            STATE = new StateTool(),
+            PREVIEW = new PreviewTool();
 }

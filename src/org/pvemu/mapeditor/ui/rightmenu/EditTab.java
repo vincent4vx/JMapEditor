@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.handler.tool.StateTool;
+import org.pvemu.mapeditor.handler.tool.Tools;
 import org.pvemu.mapeditor.ui.Icons;
 
 /**
@@ -29,6 +30,7 @@ public class EditTab extends JPanel{
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         tilesTools();
         stateTools();
+        utilsTools();
     }
     
     private void tilesTools(){
@@ -38,17 +40,17 @@ public class EditTab extends JPanel{
         select.setPreferredSize(new Dimension(20, 20));
         select.setSelected(true);
         select.setToolTipText("Sélectionner");
-        select.addActionListener((e) -> JMapEditor.getToolsHandler().setSelectTool());
+        select.addActionListener((e) -> JMapEditor.getToolsHandler().setTool(Tools.SELECT));
         panel.add(select);
         
         add.setPreferredSize(new Dimension(20, 20));
         add.setToolTipText("Ajouter une tile");
-        add.addActionListener((e) -> JMapEditor.getToolsHandler().setAddTool());
+        add.addActionListener((e) -> JMapEditor.getToolsHandler().setTool(Tools.ADD));
         panel.add(add);
         
         remove.setPreferredSize(new Dimension(20, 20));
         remove.setToolTipText("Supprimer");
-        remove.addActionListener((e) -> JMapEditor.getToolsHandler().setRemoveTool());
+        remove.addActionListener((e) -> JMapEditor.getToolsHandler().setTool(Tools.REMOVE));
         panel.add(remove);
         
         group.add(select);
@@ -64,12 +66,28 @@ public class EditTab extends JPanel{
         
         state.setPreferredSize(new Dimension(20, 20));
         state.setToolTipText("Changer l'état de la cellule");
-        state.addActionListener((e) -> JMapEditor.getToolsHandler().setStateTool());
+        state.addActionListener((e) -> JMapEditor.getToolsHandler().setTool(Tools.STATE));
         panel.add(state);
         
         panel.add(stateSelector);
         
         group.add(state);
+        
+        add(panel);
+    }
+    
+    private void utilsTools(){
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Outils"));
+        
+        JToggleButton preview = new JToggleButton(Icons.PREVIEW);
+        
+        preview.setPreferredSize(new Dimension(20, 20));
+        preview.setToolTipText("Apperçue de la map");
+        preview.addActionListener((e) -> JMapEditor.getToolsHandler().setTool(Tools.PREVIEW));
+        panel.add(preview);
+        
+        group.add(preview);
         
         add(panel);
     }

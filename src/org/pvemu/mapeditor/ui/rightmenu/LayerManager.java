@@ -1,8 +1,6 @@
 package org.pvemu.mapeditor.ui.rightmenu;
 
 import java.awt.BorderLayout;
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ItemEvent;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -12,7 +10,6 @@ import javax.swing.JTable;
 import javax.swing.border.Border;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.handler.layer.Layer;
-import org.pvemu.mapeditor.handler.layer.LayerHandler;
 
 /**
  *
@@ -36,10 +33,8 @@ public class LayerManager extends JPanel{
     
     private void makeTable(){
         JPanel panel = new JPanel(new BorderLayout());
-        JTable table = new JTable(new LayerHandler());
+        JTable table = new JTable(JMapEditor.getLayerHandler().getTableModel());
         table.setDefaultEditor(Float.class, new DefaultCellEditor(new JComboBox<>(new Float[]{1f, .9f, .8f, .7f, .6f, .5f, .4f, .3f, .2f, .1f, 0f})));
-        
-        table.addPropertyChangeListener((e) -> JMapEditor.getUI().repaintAllEditors());
         
         panel.add(table.getTableHeader(), BorderLayout.NORTH);
         panel.add(table, BorderLayout.CENTER);
@@ -54,16 +49,8 @@ public class LayerManager extends JPanel{
                 selector.addItem(layer);
         }
         
-        selector.addItemListener((e) -> {
-            if(e.getStateChange() == ItemEvent.DESELECTED)
-                return;
-            
-            Layer selected = (Layer) e.getItem();
-            Layer.setSelected(selected);
-            JMapEditor.getUI().getTileSelector().setTilesListContainer(selected.getTiles());
-            JMapEditor.getToolsHandler().setCurrentObject(null);
-            JMapEditor.getUI().repaintAllEditors();
-        });
+        selector.setSelectedItem(JMapEditor.getLayerHandler().getSelected());
+        selector.addItemListener(JMapEditor.getLayerHandler().getItemListener());
         
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel("Calque courant"), BorderLayout.WEST);

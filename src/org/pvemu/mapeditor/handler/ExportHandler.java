@@ -86,7 +86,7 @@ public class ExportHandler {
                 map.getInfo().getHeight() * JMapEditor.getParameters().getInt("CELL_HEIGHT"), 
                 BufferedImage.TYPE_INT_RGB
         );
-        handler.getUI().getGrid().paintGraphics(img.createGraphics(), false);
+        handler.getUI().getGrid().paintLayers(img.createGraphics(), JMapEditor.getMaskHandler().getPreviewMask());
         ImageIO.write(
                 img, 
                 JMapEditor.getParameters().getString("EXPORT_IMG_FORMAT"), 

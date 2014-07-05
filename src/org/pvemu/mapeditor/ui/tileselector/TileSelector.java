@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.ui.tileselector;
 
 import java.awt.BorderLayout;
@@ -11,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.TilesListContainer;
-import org.pvemu.mapeditor.handler.layer.Layer;
 
 /**
  *
@@ -27,7 +21,7 @@ final public class TileSelector extends JToolBar{
     public TileSelector() {
         panel.add(listUI, BorderLayout.CENTER);
         add(panel);
-        setTilesListContainer(Layer.getSelected().getTiles());
+        setTilesListContainer(JMapEditor.getLayerHandler().getSelected().getTiles());
     }
     
     public void setTilesListContainer(TilesListContainer tlc){

@@ -6,9 +6,12 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.common.Constants;
+import org.pvemu.mapeditor.data.LayerMask;
 import org.pvemu.mapeditor.common.Utils;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.MapData;
@@ -67,16 +70,25 @@ public class EditorGrid extends JPanel{
         
         addMouseListener(listener);
         addMouseMotionListener(listener);
+        
+        JPopupMenu menu = new JPopupMenu("test");
+        
+        menu.add(new JMenu("test"));
+        menu.add(new JMenu("test"));
+        menu.add(new JMenu("test"));
+        menu.add(new JMenu("test"));
+        
+        setComponentPopupMenu(menu);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
-        paintGraphics(g2d, true);
+        paintLayers(g2d, JMapEditor.getMaskHandler().mergeAllMasks());
     }
     
-    public void paintGraphics(Graphics2D g, boolean isEdit){
+    public void paintLayers(Graphics2D g, LayerMask mask){
         g.setRenderingHint(
                 RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON
@@ -84,10 +96,10 @@ public class EditorGrid extends JPanel{
         
         //display layers
         for(Layer layer : Layer.values()){
-            LayerDisplayer.display(layer, this, g, isEdit);
+            LayerDisplayer.display(layer, this, g, mask);
         }
         
-        if(isEdit){
+        //if(isEdit){
             //display current cell
             GridCell cell = listener.getHovered();
             if (cell != null) {
@@ -96,7 +108,7 @@ public class EditorGrid extends JPanel{
                 g.fillPolygon(cell);
                 g.setColor(tmp);
             }
-        }
+        //}
     }
 
     List<GridCell> getShapes() {

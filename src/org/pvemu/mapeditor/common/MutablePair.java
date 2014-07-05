@@ -10,11 +10,11 @@ package org.pvemu.mapeditor.common;
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class Pair<F, S> implements IPair<F, S>{
-    final private F first;
-    final private S second;
+public class MutablePair<F, S> implements IPair<F, S>{
+    private F first;
+    private S second;
 
-    public Pair(F first, S second) {
+    public MutablePair(F first, S second) {
         this.first = first;
         this.second = second;
     }
@@ -24,9 +24,17 @@ public class Pair<F, S> implements IPair<F, S>{
         return first;
     }
 
+    public void setFirst(F first) {
+        this.first = first;
+    }
+
     @Override
     public S getSecond() {
         return second;
+    }
+
+    public void setSecond(S second) {
+        this.second = second;
     }
     
 }

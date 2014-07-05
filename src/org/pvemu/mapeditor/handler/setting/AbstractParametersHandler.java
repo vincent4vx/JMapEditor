@@ -130,5 +130,18 @@ abstract class AbstractParametersHandler<T extends Parameter>{
     public void setDouble(String name, double value){
         set(name, ParameterType.DOUBLE, value);
     }
+    
+    
+    public float getFloat(String name){
+        return (float)getAndVerify(name, ParameterType.FLOAT);
+    }
+    
+    public float getFloatDefault(String name, float def){
+        return (float)getAndVerifyWithDefault(name, ParameterType.FLOAT, def);
+    }
+    
+    public void setFloat(String name, float value){
+        set(name, ParameterType.FLOAT, value);
+    }
 }
 

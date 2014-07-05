@@ -1,18 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.action;
 
 import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.common.SQLiteConnection;
 import org.pvemu.mapeditor.handler.ErrorHandler;
 import org.pvemu.mapeditor.handler.ExportHandler;
+import org.pvemu.mapeditor.handler.LayerMaskHandler;
 import org.pvemu.mapeditor.handler.setting.ParametersHandler;
 import org.pvemu.mapeditor.handler.TilesHandler;
 import org.pvemu.mapeditor.handler.ToolsHandler;
+import org.pvemu.mapeditor.handler.layer.LayerHandler;
 import org.pvemu.mapeditor.handler.setting.RegistryHandler;
 import org.pvemu.mapeditor.ui.MainWindow;
 
@@ -24,7 +20,9 @@ public class JMapEditor {
     private static MainWindow ui;
     private static TilesHandler tilesHandler;
     final private static ErrorHandler errorHandler = new ErrorHandler();
-    final private static ToolsHandler toolsHandler = new ToolsHandler();
+    private static ToolsHandler toolsHandler;
+    private static LayerHandler layerHandler;
+    private static LayerMaskHandler maskHandler;
     private static ExportHandler exportHandler;
     private static ParametersHandler parameters;
     private static RegistryHandler registry;
@@ -36,6 +34,14 @@ public class JMapEditor {
             registry = new RegistryHandler(db);
             exportHandler = new ExportHandler();
             tilesHandler = new TilesHandler();
+            maskHandler = new LayerMaskHandler();
+            
+            toolsHandler = new ToolsHandler();
+            maskHandler.registerLayerMaskable(toolsHandler);
+            
+            layerHandler = new LayerHandler();
+            maskHandler.registerLayerMaskable(layerHandler);
+            
             ui = new MainWindow();
             ui.setVisible(true);
         }catch(Exception ex){
@@ -69,6 +75,14 @@ public class JMapEditor {
 
     public static RegistryHandler getRegistry() {
         return registry;
+    }
+
+    public static LayerHandler getLayerHandler() {
+        return layerHandler;
+    }
+
+    public static LayerMaskHandler getMaskHandler() {
+        return maskHandler;
     }
 
 }

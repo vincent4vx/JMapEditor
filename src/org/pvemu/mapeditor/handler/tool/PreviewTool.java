@@ -8,20 +8,26 @@ package org.pvemu.mapeditor.handler.tool;
 
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.Cell;
-import org.pvemu.mapeditor.data.Change;
+import org.pvemu.mapeditor.data.LayerMask;
 import org.pvemu.mapeditor.handler.EditorHandler;
-import org.pvemu.mapeditor.handler.changeaction.ChangeActionFactory;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
-public class RemoveTool extends CellObjectTool{
+public class PreviewTool implements Tool{
 
     @Override
-    public void onClick(EditorHandler handler, Cell cell) {
-        Change change = ChangeActionFactory.removeObject(handler, cell, JMapEditor.getLayerHandler().getSelected());
-        handler.getChangeHandler().addChange(change);
+    public void onClick(EditorHandler handler, Cell cell) {}
+
+    @Override
+    public LayerMask getLayerMask() {
+        return JMapEditor.getMaskHandler().getPreviewMask();
+    }
+
+    @Override
+    public boolean isPriority() {
+        return true;
     }
     
 }

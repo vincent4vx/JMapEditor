@@ -2,13 +2,11 @@ package org.pvemu.mapeditor.ui.editor;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.common.Constants;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.CellObject;
 import org.pvemu.mapeditor.handler.EditorHandler;
@@ -58,7 +56,7 @@ public class MapEditorUI extends JInternalFrame {
                     Cell cell = handler.getSelectedCell();
                     
                     if(cell != null){
-                        handler.getChangeHandler().addChange(ChangeActionFactory.flip(handler, cell, Layer.getSelected()));
+                        handler.getChangeHandler().addChange(ChangeActionFactory.flip(handler, cell, JMapEditor.getLayerHandler().getSelected()));
                     }else{
                         CellObject obj = JMapEditor.getToolsHandler().getCurrentObject();
                         
@@ -74,7 +72,7 @@ public class MapEditorUI extends JInternalFrame {
                         return;
                     
                     handler.setSelectedCell(null);
-                    handler.getChangeHandler().addChange(ChangeActionFactory.removeObject(handler, cell, Layer.getSelected()));
+                    handler.getChangeHandler().addChange(ChangeActionFactory.removeObject(handler, cell, JMapEditor.getLayerHandler().getSelected()));
                 }
             }
             

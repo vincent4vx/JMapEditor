@@ -1,17 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.handler.tool;
 
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.Cell;
 import org.pvemu.mapeditor.data.Change;
+import org.pvemu.mapeditor.data.LayerMask;
 import org.pvemu.mapeditor.handler.EditorHandler;
-import org.pvemu.mapeditor.handler.changeaction.ChangeAction;
 import org.pvemu.mapeditor.handler.changeaction.ChangeActionFactory;
+import org.pvemu.mapeditor.handler.layer.Layer;
 
 /**
  *
@@ -50,6 +45,19 @@ public class StateTool implements Tool{
     @Override
     public void onClick(EditorHandler handler, Cell cell) {
         handler.getChangeHandler().addChange(JMapEditor.getToolsHandler().getCurrentCellState().getChange(handler, cell));
+    }
+
+    @Override
+    public LayerMask getLayerMask() {
+        LayerMask mask = JMapEditor.getMaskHandler().getNeutralMask();
+        float alpha = JMapEditor.getParameters().getFloatDefault("STATE_TOOL_OBJECT_ALPHA_RATE", .5f);
+        
+        for(Layer layer : Layer.values()){
+            if(layer.isEditable())
+                mask.setAlpha(layer, alpha);
+        }
+        
+        return mask;
     }
     
 }

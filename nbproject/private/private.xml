@@ -3,17 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/ui/editor/parameter/AdvancedParameters.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/handler/ParametersHandler.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/data/db/dao/JMERegistryDAO.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/ui/MainMenuBar.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/data/db/model/JMEParameter.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/ui/tileselector/FolderSelector.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/ui/editor/parameter/SettingsDialog.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/ui/editor/parameter/RegistryEditor.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/ui/editor/parameter/AddParameterDialog.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/data/db/dao/JMEParameterDAO.java</file>
-            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/data/db/model/JMERegistry.java</file>
+            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/handler/LayerMaskHandler.java</file>
+            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/handler/layer/LayerHandler.java</file>
+            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/handler/tool/CellObjectTool.java</file>
+            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/handler/tool/SelectTool.java</file>
+            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/data/LayerMask.java</file>
+            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/ui/rightmenu/LayerManager.java</file>
+            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/handler/ToolsHandler.java</file>
+            <file>file:/home/vincent/NetBeansProjects/map-editor/src/org/pvemu/mapeditor/ui/editor/EditorGrid.java</file>
         </group>
     </open-files>
 </project-private>

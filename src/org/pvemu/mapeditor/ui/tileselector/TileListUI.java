@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.pvemu.mapeditor.ui.tileselector;
 
 import java.awt.Dimension;
@@ -13,12 +7,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import org.pvemu.mapeditor.action.JMapEditor;
 import org.pvemu.mapeditor.data.CellObject;
-import org.pvemu.mapeditor.data.Change;
 import org.pvemu.mapeditor.data.Tile;
 import org.pvemu.mapeditor.data.TilesList;
-import org.pvemu.mapeditor.handler.EditorHandler;
-import org.pvemu.mapeditor.handler.changeaction.ChangeActions;
-import org.pvemu.mapeditor.handler.layer.Layer;
+import org.pvemu.mapeditor.handler.tool.Tools;
 import org.pvemu.mapeditor.ui.TileRenderer;
 import org.pvemu.mapeditor.ui.rightmenu.ObjectTab;
 
@@ -45,7 +36,7 @@ public class TileListUI extends JScrollPane{
             CellObject obj = new CellObject(tile);
             JMapEditor.getToolsHandler().setCurrentObject(obj);
             JMapEditor.getUI().getRightMenu().setObjectTab(new ObjectTab(obj));
-            JMapEditor.getToolsHandler().setAddTool();
+            JMapEditor.getToolsHandler().setTool(Tools.ADD);
         });
         
         setViewportView(list);
