@@ -1,8 +1,25 @@
+/* 
+ * Copyright (C) 2014 Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.pvemu.mapeditor.handler.tool;
 
-import org.pvemu.mapeditor.action.JMapEditor;
+import org.pvemu.mapeditor.base.editor.tool.Tool;
+import org.pvemu.mapeditor.JMapEditor;
 import org.pvemu.mapeditor.data.LayerMask;
-import org.pvemu.mapeditor.handler.layer.Layer;
+import org.pvemu.mapeditor.hierarchy.LayerSet;
 
 /**
  *
@@ -13,10 +30,10 @@ abstract public class CellObjectTool implements Tool{
     @Override
     public LayerMask getLayerMask() {
         LayerMask mask = JMapEditor.getMaskHandler().getNeutralMask();
-        Layer selected = JMapEditor.getLayerHandler().getSelected();
+        LayerSet selected = JMapEditor.getLayerHandler().getSelected();
         float alpha = JMapEditor.getParameters().getFloatDefault("UNSELECTED_LAYER_ALPHA_RATE", .75f);
         
-        for(Layer layer : Layer.values()){
+        for(LayerSet layer : LayerSet.values()){
             if(layer.equals(selected))
                 continue;
             

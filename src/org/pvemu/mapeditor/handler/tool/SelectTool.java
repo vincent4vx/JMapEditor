@@ -1,16 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2014 Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.pvemu.mapeditor.handler.tool;
 
-import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.data.Cell;
-import org.pvemu.mapeditor.data.CellObject;
-import org.pvemu.mapeditor.handler.EditorHandler;
-import org.pvemu.mapeditor.handler.layer.Layer;
+import org.pvemu.mapeditor.JMapEditor;
+import org.pvemu.mapeditor.base.editor.data.Cell;
+import org.pvemu.mapeditor.hierarchy.CellObject;
+import org.pvemu.mapeditor.base.editor.Editor;
+import org.pvemu.mapeditor.hierarchy.LayerSet;
 import org.pvemu.mapeditor.ui.rightmenu.ObjectTab;
 
 /**
@@ -20,19 +30,19 @@ import org.pvemu.mapeditor.ui.rightmenu.ObjectTab;
 public class SelectTool extends CellObjectTool{
 
     @Override
-    public void onClick(EditorHandler handler, Cell cell) {
-        Layer layer = JMapEditor.getLayerHandler().getSelected();
+    public void onClick(Editor handler, Cell cell) {
+        LayerSet layer = JMapEditor.getLayerHandler().getSelected();
         CellObject obj = cell.getObjectAt(layer);
         
         if(obj == null){
-            JMapEditor.getUI().getRightMenu().removeObjectTab();
+            //JMapEditor.getUI().getRightToolBar().removeObjectTab();
             handler.setSelectedCell(null);
             JMapEditor.getToolsHandler().setCurrentObject(null);
             return;
         }
         
         handler.setSelectedCell(cell);
-        JMapEditor.getUI().getRightMenu().setObjectTab(new ObjectTab(cell));
+        //JMapEditor.getUI().getRightToolBar().setObjectTab(new ObjectTab(cell));
         JMapEditor.getToolsHandler().setCurrentObject(obj);
         handler.getUI().getGrid().repaint();
     }

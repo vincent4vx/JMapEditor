@@ -1,17 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2014 Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.pvemu.mapeditor.common;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.data.Cell;
-import org.pvemu.mapeditor.data.CellObject;
-import org.pvemu.mapeditor.data.MapData;
+import org.pvemu.mapeditor.JMapEditor;
+import org.pvemu.mapeditor.base.editor.data.Cell;
+import org.pvemu.mapeditor.hierarchy.CellObject;
+import org.pvemu.mapeditor.base.editor.data.MapData;
 
 /**
  *
@@ -37,21 +47,21 @@ final public class Compressor {
                 ((_loc8[0] & 24) << 6) + ((_loc8[2] & 7) << 6) + _loc8[3], 
                 ((_loc8[4] & 2) >> 1) == 1, 
                 false, 
-                JMapEditor.getTilesHandler().getGrounds()
+                JMapEditor.APP.getTilesHandler().getGrounds()
         );
         
         CellObject layer1 = CellObject.getCellObject(
                 ((_loc8[0] & 4) << 11) + ((_loc8[4] & 1) << 12) + (_loc8[5] << 6) + _loc8[6], 
                 (_loc8[7] & 8) >> 3 == 1, 
                 false, 
-                JMapEditor.getTilesHandler().getObjects()
+                JMapEditor.APP.getTilesHandler().getObjects()
         );
         
         CellObject layer2 = CellObject.getCellObject(
                 ((_loc8[0] & 2) << 12) + ((_loc8[7] & 1) << 12) + (_loc8[8] << 6) + _loc8[9], 
                 (_loc8[7] & 4) >> 2 == 1, 
                 (_loc8[7] & 2) >> 1 == 1, 
-                JMapEditor.getTilesHandler().getObjects()
+                JMapEditor.APP.getTilesHandler().getObjects()
         );
         
         cell.setActive(((_loc8[0] & 32) >> 5) != 0);

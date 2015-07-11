@@ -1,10 +1,26 @@
+/* 
+ * Copyright (C) 2014 Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.pvemu.mapeditor.handler;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.pvemu.mapeditor.common.LayerMaskable;
 import org.pvemu.mapeditor.data.LayerMask;
-import org.pvemu.mapeditor.handler.layer.Layer;
+import org.pvemu.mapeditor.hierarchy.LayerSet;
 
 /**
  *
@@ -25,18 +41,18 @@ public class LayerMaskHandler {
     }
     
     private void fillNeutralMask(){
-        for(Layer layer : Layer.values()){
+        for(LayerSet layer : LayerSet.values()){
             neutralMask.setAlpha(layer, 1f);
             neutralMask.setVisible(layer, true);
         }
     }
     
     private void fillPreviewMask(){
-        Layer[] toDisplay = {
-            Layer.BACKGROUND, Layer.GROUND, Layer.LAYER1, Layer.LAYER2
+        LayerSet[] toDisplay = {
+            LayerSet.BACKGROUND, LayerSet.GROUND, LayerSet.LAYER1, LayerSet.LAYER2
         };
         
-        for(Layer layer : toDisplay){
+        for(LayerSet layer : toDisplay){
             previewMask.setAlpha(layer, 1f);
             previewMask.setVisible(layer, true);
         }
@@ -46,7 +62,7 @@ public class LayerMaskHandler {
         if(mask == null)
             return;
         
-        for(Layer layer : Layer.values()){
+        for(LayerSet layer : LayerSet.values()){
             float alpha = result.getAlpha(layer) * mask.getAlpha(layer);
             boolean visible = result.isVisible(layer) && mask.isVisible(layer);
             result.setAlpha(layer, alpha);

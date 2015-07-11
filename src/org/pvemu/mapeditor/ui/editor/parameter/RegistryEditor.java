@@ -1,3 +1,19 @@
+/* 
+ * Copyright (C) 2014 Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.pvemu.mapeditor.ui.editor.parameter;
 
 import java.awt.BorderLayout;
@@ -15,15 +31,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import org.pvemu.mapeditor.action.JMapEditor;
-import org.pvemu.mapeditor.handler.setting.RegistryHandler;
+import org.pvemu.mapeditor.JMapEditor;
+import org.pvemu.mapeditor.param.registry.Registry;
 
 /**
  *
  * @author Vincent Quatrevieux <quatrevieux.vincent@gmail.com>
  */
 public class RegistryEditor extends JFrame{
-    final private Map<DefaultMutableTreeNode, RegistryHandler> regByNode = new HashMap<>();
+    final private Map<DefaultMutableTreeNode, Registry> regByNode = new HashMap<>();
     final private JTree tree;
 
     public RegistryEditor() throws HeadlessException {
@@ -61,7 +77,7 @@ public class RegistryEditor extends JFrame{
     private void add(){
         TreePath path = tree.getSelectionPath();
         
-        RegistryHandler registry = JMapEditor.getRegistry();
+        Registry registry = JMapEditor.getRegistry();
         
         if(path != null){
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
@@ -101,7 +117,7 @@ public class RegistryEditor extends JFrame{
         if(node == null)
             return;
         
-        RegistryHandler registry = regByNode.get(node);
+        Registry registry = regByNode.get(node);
         
         try{
             registry.unset("");
@@ -122,7 +138,7 @@ public class RegistryEditor extends JFrame{
         if(node == null)
             return;
         
-        RegistryHandler registry = regByNode.get(node);
+        Registry registry = regByNode.get(node);
         
         EditParameterDialog dialog = new EditParameterDialog(this, registry.getData());
         int r = dialog.edit();
@@ -137,11 +153,11 @@ public class RegistryEditor extends JFrame{
         }
     }
     
-    private DefaultMutableTreeNode createTree(RegistryHandler registry){
+    private DefaultMutableTreeNode createTree(Registry registry){
         regByNode.clear();
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(registry.getData().getName());
         
-        for(RegistryHandler child : registry.getChildren()){
+        for(Registry child : registry.getChildren()){
             node.add(createTree(child));
         }
         
